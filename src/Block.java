@@ -21,7 +21,7 @@ public class Block extends JPanel {
         
         // Left panel containing inputs
         JPanel leftPanel = new JPanel();
-        leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
+        leftPanel.setLayout(new GridLayout(0, 1, 0, 5));
         leftPanel.setOpaque(false);
 
         for (int i = 0; i < nbInputs; i++) {
@@ -32,7 +32,7 @@ public class Block extends JPanel {
         
         // Right panel containing outputs
         JPanel rightPanel = new JPanel();
-        rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.Y_AXIS));
+        rightPanel.setLayout(new GridLayout(0, 1, 0, 5));
         rightPanel.setOpaque(false);
 
         for (int i = 0; i < nbOutputs; i++) {

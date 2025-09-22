@@ -70,10 +70,27 @@ public class Port extends JPanel {
 
 	public void connect() {
 		isConnected = true;
+		
+		if (isInput) {
+			this.removeAll();
+	        JLabel title = new JLabel(name);
+			this.add(clickablePart, BorderLayout.WEST);
+			this.add(title, BorderLayout.CENTER);
+			revalidate();
+		}
 	}
 	
 	public void disconnect() {
 		isConnected = false;
+		
+		if (isInput) {
+			this.removeAll();
+	        JLabel title = new JLabel(name);
+			this.add(clickablePart, BorderLayout.WEST);
+			this.add(title, BorderLayout.CENTER);
+			this.add(defaultField, BorderLayout.EAST);
+			revalidate();
+		}
 	}
 
 	public String getDefaultValue() {

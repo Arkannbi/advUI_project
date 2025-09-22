@@ -2,6 +2,7 @@ import java.awt.BasicStroke;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.geom.CubicCurve2D;
 import java.awt.event.*;
 import java.util.*;
 
@@ -29,8 +30,8 @@ public class Canvas extends JLayeredPane {
 		});
 	}
 	
-	public void addBlock(Block b, int x, int y, int w, int h) {
-        b.setBounds(x, y, w, h);
+	public void addBlock(Block b, int x, int y) {
+        b.setBounds(x, y, 200, Math.max(b.getInputs().size(), b.getOutputs().size()) * 25 + 20);
 
         for (Port p : b.getOutputs()) {
             p.addMouseListener(new MouseAdapter() {
@@ -106,8 +107,8 @@ public class Canvas extends JLayeredPane {
         g2.setStroke(new BasicStroke(2));
 
         for (Connection c : connections) {
-            Point a = SwingUtilities.convertPoint(c.getFrom(), c.getFrom().getWidth(), c.getFrom().getHeight(), this);
-            Point b = SwingUtilities.convertPoint(c.getTo(), 0, 0, this);
+            Point a = SwingUtilities.convertPoint(c.getFrom(), c.getFrom().getWidth(), c.getFrom().getHeight()/2, this);
+            Point b = SwingUtilities.convertPoint(c.getTo(), 0, c.getFrom().getHeight()/2, this);
 
             drawCurve(g2, a, b);
         }
@@ -119,12 +120,12 @@ public class Canvas extends JLayeredPane {
     }
 
     private void drawCurve(Graphics2D g2, Point a, Point b) {
-        int ctrl1x = a.x + 50;
+        int ctrl1x = a.x + 80;
         int ctrl1y = a.y;
-        int ctrl2x = b.x - 50;
+        int ctrl2x = b.x - 80;
         int ctrl2y = b.y;
 
-        java.awt.geom.CubicCurve2D curve = new java.awt.geom.CubicCurve2D.Float(
+        CubicCurve2D curve = new java.awt.geom.CubicCurve2D.Float(
                 a.x, a.y, ctrl1x, ctrl1y, ctrl2x, ctrl2y, b.x, b.y
         );
         g2.draw(curve);

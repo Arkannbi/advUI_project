@@ -2,10 +2,9 @@ import java.awt.BasicStroke;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
-import java.awt.geom.CubicCurve2D;
 import java.awt.event.*;
+import java.awt.geom.CubicCurve2D;
 import java.util.*;
-
 import javax.swing.*;
 
 public class Canvas extends JLayeredPane {
@@ -28,6 +27,8 @@ public class Canvas extends JLayeredPane {
 				repaint();
 			}
 		});
+        
+        setTransferHandler(new BlockTransferHandler());
 	}
 	
 	public void addBlock(Block b, int x, int y) {

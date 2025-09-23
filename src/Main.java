@@ -3,19 +3,15 @@ import javax.swing.*;
 public class Main {
 	public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
-            JFrame frame = new JFrame("Blueprint-like UI");
+            MainFrame frame = new MainFrame();
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             frame.setSize(1000, 700);
 
-            Canvas canvas = new Canvas();
+            StringBuilder codeModel = new StringBuilder();
+            MainController controller = new MainController(codeModel, frame);
 
-            Block block1 = new Block("Addition", 7, 1);
-            Block block2 = new Block("Multiply", 2, 1);
+            frame.setController(controller);
 
-            canvas.addBlock(block1, 50, 100);
-            canvas.addBlock(block2, 400, 200);
-
-            frame.setContentPane(canvas);
             frame.setVisible(true);
         });
     }

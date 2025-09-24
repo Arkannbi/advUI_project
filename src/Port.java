@@ -54,6 +54,7 @@ public class Port extends JPanel {
         	this.add(defaultField, BorderLayout.EAST);
         }
         else {
+        	title.setHorizontalAlignment(SwingConstants.RIGHT);
         	this.add(title, BorderLayout.CENTER);
         	this.add(clickablePart, BorderLayout.EAST);
         }
@@ -97,6 +98,10 @@ public class Port extends JPanel {
 			this.add(defaultField, BorderLayout.EAST);
 			revalidate();
 		}
+	}
+	
+	public Port getConnectedPort() {
+		return connectedPort;
 	}
 
 	public String getDefaultValue() {

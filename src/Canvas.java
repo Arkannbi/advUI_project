@@ -160,8 +160,23 @@ public class Canvas extends JLayeredPane {
     }
 	
 	public void removeBlock(Block b) {
+		List<Connection> toRemove = new ArrayList<>();
+		for (Connection c : connections) {
+			if (b.getOutputs().contains(c.getFrom()) || b.getInputs().contains(c.getTo())) {
+				toRemove.add(c);
+			}
+		}
+		for (Connection c : toRemove) {
+			removeConnection(c);
+		}
 		blocks.remove(b);
 		remove(b);
+	}
+	
+	public void removeConnection(Connection c) {
+		c.getFrom().disconnect();
+		c.getTo().disconnect();
+		connections.remove(c);
 	}
 	
 	@Override

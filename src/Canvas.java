@@ -1,4 +1,5 @@
 import java.awt.BasicStroke;
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -13,22 +14,55 @@ public class Canvas extends JLayeredPane {
 	
 	private Port tempFrom;
 	private Point mousePos;
+	private Block currentSelectedBlock;
 	
 	public Canvas() {
 		this.blocks = new ArrayList<>();
 		this.connections = new ArrayList<>();
 		this.tempFrom = null;
 		this.mousePos = null;
+		this.currentSelectedBlock = null;
+
+		setFocusable(true);
+		requestFocusInWindow();
+		
+		setupListeners();
+        setTransferHandler(new BlockTransferHandler());
+	}
+	
+	private void setupListeners() {
+		addMouseListener(new MouseAdapter() {
+			@Override
+            public void mousePressed(MouseEvent e) {
+            	tempFrom = null;
+            	currentSelectedBlock = null;
+            	repaint();
+			}
+		});
 		
 		addMouseMotionListener(new MouseMotionAdapter() {
 			@Override
 			public void mouseMoved(MouseEvent e) {
+				requestFocusInWindow();
 				mousePos = e.getPoint();
-				repaint();
+				if (tempFrom != null) {
+					repaint();
+				}
 			}
 		});
-        
-        setTransferHandler(new BlockTransferHandler());
+		
+		addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+            	if (e.getKeyCode() == KeyEvent.VK_DELETE || e.getKeyCode()==KeyEvent.VK_BACK_SPACE) {
+            		if (currentSelectedBlock != null) {
+            			removeBlock(currentSelectedBlock);
+            			currentSelectedBlock = null;
+            		}
+            	}
+            	repaint();
+            }
+        });
 	}
 	
 	public void addBlock(Block b, int x, int y) {
@@ -62,14 +96,25 @@ public class Canvas extends JLayeredPane {
             p.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mousePressed(MouseEvent e) {
-                    if (tempFrom != null && !p.isInput()) return;
-                    if (tempFrom != null && p.isInput()) {
+                	if (p.isConnected()) {
+                		List<Connection> toRemove = new ArrayList<>();
+                		for (Connection connection : connections)  {
+                			if (connection.getTo().equals(p)) {
+                				toRemove.add(connection);
+                				Port from = connection.getFrom();
+                				from.disconnect();
+                			}
+                		}
+                		connections.removeAll(toRemove);
+                		p.disconnect();
+                	}
+                    if (tempFrom != null) {
                         connections.add(new Connection(tempFrom, p));
                         tempFrom.connect();
                         p.connect();
                         tempFrom = null;
-                        repaint();
                     }
+                    repaint();
                 }
             });
         }
@@ -79,10 +124,22 @@ public class Canvas extends JLayeredPane {
         	public void mousePressed(MouseEvent e) {
         		mousePos = e.getPoint();
         		tempFrom = null;
+        		currentSelectedBlock = b;
+        		b.getParent().repaint();
         	}
         });
         
         b.addMouseMotionListener(new MouseMotionAdapter() {
+        	@Override
+            public void mouseMoved(MouseEvent e) {
+                if (mousePos != null) {
+                    mousePos.x = b.getX() + e.getX();
+                    mousePos.y = b.getY() + e.getY();
+
+                    b.getParent().repaint();
+                }
+            }
+        	
             @Override
             public void mouseDragged(MouseEvent e) {
                 if (mousePos != null) {
@@ -98,7 +155,14 @@ public class Canvas extends JLayeredPane {
         
         blocks.add(b);
         add(b, JLayeredPane.DEFAULT_LAYER);
+        currentSelectedBlock = b;
+        repaint();
     }
+	
+	public void removeBlock(Block b) {
+		blocks.remove(b);
+		remove(b);
+	}
 	
 	@Override
     protected void paintComponent(Graphics g) {
@@ -117,6 +181,14 @@ public class Canvas extends JLayeredPane {
         if (tempFrom != null && mousePos != null) {
             Point a = SwingUtilities.convertPoint(tempFrom, tempFrom.getWidth()/2, tempFrom.getHeight()/2, this);
             drawCurve(g2, a, mousePos);
+        }
+        for (Block b : blocks) {
+        	if (b != null && b != currentSelectedBlock) {
+    			b.setBorder(BorderFactory.createLineBorder(Color.black, 2));
+    		}
+        	else if (b != null && b == currentSelectedBlock) {
+        		b.setBorder(BorderFactory.createLineBorder(Color.red, 2));
+        	}
         }
     }
 

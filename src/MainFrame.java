@@ -1,12 +1,15 @@
 import java.awt.*;
+import java.util.List;
 import javax.swing.*;
 
 public class MainFrame extends JFrame {
 
     private final ToolboxPanel toolboxPanel;
     private final Canvas canvas;
-    private final ButtonPanel buttonPanel;
+    private final RunCodeButtonPanel buttonPanel;
     private final ConsolePanel consolePanel;
+
+    private MainController controller;
 
     public MainFrame() {
         setTitle("No-Code Platformer Engine");
@@ -18,10 +21,11 @@ public class MainFrame extends JFrame {
         // Create the individual panels
         this.toolboxPanel = new ToolboxPanel();
         this.canvas = new Canvas();
-        this.buttonPanel = new ButtonPanel();
+        this.buttonPanel = new RunCodeButtonPanel();
         this.consolePanel = new ConsolePanel();
 
         // Canvas
+        // canvas.setMainController(controller);
         Block block1 = new Block("Addition", 7, 1);
         Block block2 = new Block("Multiply", 2, 1);
 
@@ -38,7 +42,6 @@ public class MainFrame extends JFrame {
     }
 
     public void setController(MainController controller) {
-        toolboxPanel.setController(controller);
         buttonPanel.setController(controller);
     }
 
@@ -52,5 +55,9 @@ public class MainFrame extends JFrame {
 
     public void showLog(String log) {
         consolePanel.appendLog(log);
+    }
+
+    public List<Block> getCanvasBlocks() {
+        return canvas.getBlocks();
     }
 }

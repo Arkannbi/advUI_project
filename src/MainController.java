@@ -1,6 +1,7 @@
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.List;
 import javax.tools.JavaCompiler;
 import javax.tools.ToolProvider;
 
@@ -8,10 +9,14 @@ public class MainController {
 
     private final StringBuilder codeModel;
     private final MainFrame mainFrame;
+    private List blocks;
+    
+    private String codeToBeGenerateded;
 
     public MainController(StringBuilder codeModel, MainFrame mainFrame) {
         this.codeModel = codeModel;
         this.mainFrame = mainFrame;
+        initCode();
     }
 
     public void addDebugBlock() {
@@ -81,7 +86,15 @@ public class MainController {
     }
 
     private String generateCode() {
-        return """
+        for (Block block : mainFrame.getCanvasBlocks()) {
+            addCode(block.getCode());
+        }
+        addCode("");
+        return codeToBeGenerateded.formatted(codeModel.toString());
+    }
+
+    private void initCode() {
+        codeToBeGenerateded = """
             import javax.swing.*;
 
             public class GameRunner {
@@ -101,6 +114,11 @@ public class MainController {
 
                 }
             }
-            """.formatted(codeModel.toString());
+            """;
+    }    
+    
+    private void addCode(String codeToBeAdded) {
+        codeToBeGenerateded = String.format(codeToBeGenerateded, codeToBeAdded);
     }
+
 }

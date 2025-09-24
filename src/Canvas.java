@@ -131,4 +131,8 @@ public class Canvas extends JLayeredPane {
         );
         g2.draw(curve);
     }
+
+    public List<Block> getBlocks() {
+        return blocks;
+    }
 }

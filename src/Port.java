@@ -2,6 +2,7 @@ import java.awt.*;
 import javax.swing.*;
 
 public class Port extends JPanel {
+	private final boolean isActivationPort;
 	private final boolean isInput;
 	private final String name;
 	private boolean isConnected;
@@ -11,8 +12,9 @@ public class Port extends JPanel {
 	private Port connectedPort;
 	private final Block parent;
 	
-	public Port(boolean isInput, String name, Block parent) {
+	public Port(Block parent, boolean isInput, String name, boolean isActivationPort) {
 		this.isInput = isInput;
+		this.isActivationPort = isActivationPort;
 		this.isConnected = false;
 		this.defaultField = new JTextField();
 		this.name = name;
@@ -32,7 +34,10 @@ public class Port extends JPanel {
 			@Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
-                g.setColor(isInput ? Color.BLUE : Color.RED);
+				if (isActivationPort)
+                	g.setColor(isInput ? Color.CYAN : Color.MAGENTA);
+				else
+                	g.setColor(isInput ? Color.BLUE : Color.RED);
                 if (!isConnected) {
                 	g.fillOval(2, 2, getWidth() - 4, getHeight() - 4);
                 }
@@ -51,7 +56,7 @@ public class Port extends JPanel {
         	
         	this.add(clickablePart, BorderLayout.WEST);
         	this.add(title, BorderLayout.CENTER);
-        	this.add(defaultField, BorderLayout.EAST);
+        	if (!isActivationPort) this.add(defaultField, BorderLayout.EAST);
         }
         else {
         	title.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -95,7 +100,7 @@ public class Port extends JPanel {
 	        JLabel title = new JLabel(name);
 			this.add(clickablePart, BorderLayout.WEST);
 			this.add(title, BorderLayout.CENTER);
-			this.add(defaultField, BorderLayout.EAST);
+			if (!isActivationPort) this.add(defaultField, BorderLayout.EAST);
 			revalidate();
 		}
 	}

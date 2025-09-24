@@ -22,10 +22,10 @@ public class ToolboxPanel extends JPanel {
         debugBlock = new Block("Debug Block", BlockType.Action, 1, 1);
         model.addElement(debugBlock);
 
-        emptyBlock = new Block("Empty Block", BlockType.Action, 1, 1);
+        emptyBlock = new Block("Set Message", BlockType.Action, 2, 1);
         model.addElement(emptyBlock);
 
-        onStartBlock = new Block("On Start", BlockType.Event, 1, 1);
+        onStartBlock = new Block("On Start", BlockType.Event, 0, 1);
         model.addElement(onStartBlock);
 
         blockJList.setModel(model);

@@ -29,7 +29,8 @@ public class Block extends JPanel {
         leftPanel.setOpaque(false);
 
         for (int i = 0; i < nbInputs; i++) {
-            Port p = new Port(true, "i_" + i, this);
+            var isActivationPort = (i==0 && type == BlockType.Action);
+            Port p = new Port(this, true, "i_" + i, isActivationPort);
             inputs.add(p);
             leftPanel.add(p);
         }
@@ -40,7 +41,8 @@ public class Block extends JPanel {
         rightPanel.setOpaque(false);
 
         for (int i = 0; i < nbOutputs; i++) {
-            Port p = new Port(false, "j_" + i, this);
+            var isActivationPort = (i==0 && (type == BlockType.Action || type == BlockType.Event));
+            Port p = new Port(this, false, "j_" + i, isActivationPort);
             outputs.add(p);
             rightPanel.add(p);
         }
@@ -76,16 +78,17 @@ public class Block extends JPanel {
         System.out.println(title);
         switch (title) {
             case "Debug Block" -> {
-                return "System.out.println(\"hey from the debug block!\");\n%s";
+                return "System.out.println(\"hey from the debug block!\");\n        %s";
             }
-            case "Empty Block" -> {
-                return "System.out.println(\"hey from an empty block!\");\n%s";
+            case "Set Message" -> {
+                String message = inputs.get(1).getDefaultValue();
+                return "label.setText(\"" + message + "\");\n       %s";
             }
             case "On Start" -> {
-                return "System.out.println(\"Starting the chain of blocks...\");\n%s";
+                return "System.out.println(\"Starting the chain of blocks...\");\n      %s";
             }
             default -> {
-                return "System.out.println(\"hey from another block!\");\n%s";
+                return "System.out.println(\"hey from another block!\");\n      %s";
             }
         }
     }

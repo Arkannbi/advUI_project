@@ -26,8 +26,8 @@ public class MainFrame extends JFrame {
 
         // Canvas
         // canvas.setMainController(controller);
-        Block block1 = new Block("Addition", 7, 1);
-        Block block2 = new Block("Multiply", 2, 1);
+        Block block1 = new Block("Addition", BlockType.Intermediary, 7, 1);
+        Block block2 = new Block("Multiply", BlockType.Intermediary, 2, 1);
 
         // Blocks on the canva
         canvas.addBlock(block1, 50, 100);

@@ -71,10 +71,11 @@ public class BlockTransferHandler extends TransferHandler {
 
             // Create a NEW instance of Block
             String title = ((JLabel) originalBlock.getComponent(0)).getText();
+            BlockType type = originalBlock.getType();
             int nbInputs = originalBlock.getInputs().size();
             int nbOutputs = originalBlock.getOutputs().size();
 
-            Block newBlock = new Block(title, nbInputs, nbOutputs);
+            Block newBlock = new Block(title, type, nbInputs, nbOutputs);
 
             JComponent target = (JComponent) support.getComponent();
 

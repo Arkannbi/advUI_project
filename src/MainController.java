@@ -1,7 +1,10 @@
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
+import javax.swing.JLabel;
 import javax.tools.JavaCompiler;
 import javax.tools.ToolProvider;
 
@@ -16,7 +19,6 @@ public class MainController {
     public MainController(StringBuilder codeModel, MainFrame mainFrame) {
         this.codeModel = codeModel;
         this.mainFrame = mainFrame;
-        initCode();
     }
 
     public void addDebugBlock() {
@@ -25,6 +27,8 @@ public class MainController {
     }
 
     public void runCode() {
+        initCode();
+        System.out.println("\n\n\n\n--- CODE RUNNGIN ---\n\n\n");
         String generatedCode = generateCode();
 
         // The generated directory is now a constant, making it easier to manage.
@@ -86,12 +90,34 @@ public class MainController {
     }
 
     private String generateCode() {
+        System.out.println("Generating code...");
+        Queue<Block> blockQueue = new LinkedList<>();
+
+        // Add all Event blocks to the queue
         for (Block block : mainFrame.getCanvasBlocks()) {
-            addCode(block.getCode());
+            if (block.getType() == BlockType.Event) {
+                blockQueue.add(block);
+            }
         }
+
+        // Process the queue
+        while (!blockQueue.isEmpty()) {
+            Block currentBlock = blockQueue.poll();
+            System.out.println("Current block: " + ((JLabel) currentBlock.getComponent(0)).getText());
+
+            // Add the current block's code
+            addCode(currentBlock.getCode());
+
+            // Enqueue all next blocks
+            for (Block nextBlock : currentBlock.getNextBlocks()) {
+                blockQueue.add(nextBlock);
+            }
+        }
+
         addCode("");
         return codeToBeGenerateded.formatted(codeModel.toString());
     }
+
 
     private void initCode() {
         codeToBeGenerateded = """
@@ -119,6 +145,8 @@ public class MainController {
     
     private void addCode(String codeToBeAdded) {
         codeToBeGenerateded = String.format(codeToBeGenerateded, codeToBeAdded);
+        System.out.println("\n--- Current portion of the code to be added ---");
+        System.out.println(codeToBeAdded);
     }
 
 }

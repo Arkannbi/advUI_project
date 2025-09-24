@@ -110,8 +110,8 @@ public class Canvas extends JLayeredPane {
                 	}
                     if (tempFrom != null) {
                         connections.add(new Connection(tempFrom, p));
-                        tempFrom.connect();
-                        p.connect();
+                        tempFrom.connect(p);
+                        p.connect(tempFrom);
                         tempFrom = null;
                     }
                     repaint();

@@ -1,5 +1,4 @@
 import java.awt.*;
-
 import javax.swing.*;
 
 public class Port extends JPanel {
@@ -8,12 +7,16 @@ public class Port extends JPanel {
 	private boolean isConnected;
 	private JTextField defaultField;
 	private JComponent clickablePart;
+
+	private Port connectedPort;
+	private final Block parent;
 	
-	public Port(boolean isInput, String name) {
+	public Port(boolean isInput, String name, Block parent) {
 		this.isInput = isInput;
 		this.isConnected = false;
 		this.defaultField = new JTextField();
 		this.name = name;
+		this.parent = parent;
 		
 		setLayout(new BorderLayout());
 		setOpaque(false);
@@ -60,6 +63,7 @@ public class Port extends JPanel {
 		return isInput;
 	}
 	
+	@Override
 	public String getName() {
 		return name;
 	}
@@ -68,8 +72,9 @@ public class Port extends JPanel {
 		return isConnected;
 	}
 
-	public void connect() {
+	public void connect(Port port) {
 		isConnected = true;
+		connectedPort = port;
 		
 		if (isInput) {
 			this.removeAll();
@@ -82,6 +87,7 @@ public class Port extends JPanel {
 	
 	public void disconnect() {
 		isConnected = false;
+		connectedPort = null;
 		
 		if (isInput) {
 			this.removeAll();
@@ -99,5 +105,16 @@ public class Port extends JPanel {
 	
 	public void setDefaultValue(String newText) {
 		defaultField.setText(newText);
+	}
+
+	public Block getConnectedBlock() {
+		if (isConnected) {
+			return connectedPort.getBlock();
+		}
+		else return null;
+	}
+
+	public Block getBlock() {
+		return parent;
 	}
 }

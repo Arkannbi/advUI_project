@@ -5,6 +5,7 @@ public class ToolboxPanel extends JPanel {
     private final JList<Block> blockJList;
     private final Block debugBlock;
     private final Block emptyBlock;
+    private final Block onStartBlock;
     
 
     public ToolboxPanel() {
@@ -18,11 +19,14 @@ public class ToolboxPanel extends JPanel {
 
         DefaultListModel<Block> model = new DefaultListModel<>();
 
-        debugBlock = new Block("Debug Block", 1, 1);
+        debugBlock = new Block("Debug Block", BlockType.Action, 1, 1);
         model.addElement(debugBlock);
 
-        emptyBlock = new Block("Empty Block", 1, 1);
+        emptyBlock = new Block("Empty Block", BlockType.Action, 1, 1);
         model.addElement(emptyBlock);
+
+        onStartBlock = new Block("On Start", BlockType.Event, 1, 1);
+        model.addElement(onStartBlock);
 
         blockJList.setModel(model);
         blockJList.setDragEnabled(true);

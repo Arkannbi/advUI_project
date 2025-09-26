@@ -9,8 +9,8 @@ import java.util.*;
 import javax.swing.*;
 
 public class Canvas extends JLayeredPane {
-	private List<Block> blocks;
-	private List<Connection> connections;
+	private final List<Block> blocks;
+	private final List<Connection> connections;
 	
 	private Port tempFrom;
 	private Point mousePos;

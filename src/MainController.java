@@ -1,37 +1,32 @@
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Queue;
+import java.util.Map;
 import javax.swing.JLabel;
-import javax.tools.JavaCompiler;
+import javax.tools.JavaCompiler; // Import ArrayList
 import javax.tools.ToolProvider;
 
 public class MainController {
 
-    private final StringBuilder codeModel;
     private final MainFrame mainFrame;
-    private List blocks;
     
-    private String codeToBeGenerateded;
+    private final List<String> eventCodeFragments = new ArrayList<>(3); // 0: KeyPressed, 1: OnFrame, 2: OnStart
 
-    public MainController(StringBuilder codeModel, MainFrame mainFrame) {
-        this.codeModel = codeModel;
+    private String codeTemplate; // Stores the template with %s placeholders
+    List<Map<String, String>> variables;
+
+    public MainController(MainFrame mainFrame) {
         this.mainFrame = mainFrame;
-    }
-
-    public void addDebugBlock() {
-        codeModel.append("System.out.println(\"Hello from the debug block!\");\n");
-        mainFrame.updateCodeDisplay(codeModel.toString());
     }
 
     public void runCode() {
         initCode();
-        System.out.println("\n\n\n\n--- CODE RUNNGIN ---\n\n\n");
+        System.out.println("\n\n\n\n--- CODE RUNNING ---\n\n\n");
         String generatedCode = generateCode();
 
-        // The generated directory is now a constant, making it easier to manage.
+        // ... (rest of runCode remains the same) ...
         String dirPath = "./generated/";
         String className = "GameRunner";
         String fileName = className + ".java";
@@ -56,7 +51,8 @@ public class MainController {
             return;
         }
 
-        int compilationResult = compiler.run(null, null, null, "-d", dirPath, dirPath + fileName);
+        // Using System.err for compiler output for better logging, though null is fine
+        int compilationResult = compiler.run(null, System.err, System.err, "-d", dirPath, dirPath + fileName);
 
         if (compilationResult == 0) {
             // --- RUN THE GENERATED CLASS ---
@@ -91,62 +87,181 @@ public class MainController {
 
     private String generateCode() {
         System.out.println("Generating code...");
-        Queue<Block> blockQueue = new LinkedList<>();
 
-        // Add all Event blocks to the queue
-        for (Block block : mainFrame.getCanvasBlocks()) {
-            if (block.getType() == BlockType.Event) {
-                blockQueue.add(block);
+        var currentCode = codeTemplate;
+
+        currentCode = generateVariables(currentCode);
+
+        
+        // Reset code fragments
+        eventCodeFragments.clear();
+        eventCodeFragments.add(""); // KeyPressed (index 0)
+        eventCodeFragments.add(""); // OnFrame (index 1)
+        eventCodeFragments.add(""); // OnStart (index 2)
+
+        // Find and process event chains
+        for (Block eventBlock : mainFrame.getCanvasBlocks()) {
+            // Find the event blocks to start the chain
+            if (eventBlock.getType() == BlockType.Event) {
+                // Determine where to put the code depending on the event type
+                int fragmentIndex = getFragmentIndex(eventBlock);
+                
+                // Check if the event is recognized
+                if (fragmentIndex != -1) {
+                    // Generate the code for the entire chain starting from the event block
+                    String eventCode = eventBlock.getCode();
+                    String generatedChainCode = "";
+                    var nextBlocks = eventBlock.getNextBlocks();
+                    System.out.println("nouveau block : " + eventBlock.getTitle() + " !");
+                    if (!nextBlocks.isEmpty()) {
+                        generatedChainCode = processBlockChain(nextBlocks.get(0),""); // Start processing from the block *after* the event block
+                    }                    
+                    String fullChainCode = String.format(eventCode, generatedChainCode);
+                    // Write the code on the corresponding code fragment
+                    addCodeToFragment(fullChainCode, fragmentIndex);
+                }
             }
         }
 
-        // Process the queue
-        while (!blockQueue.isEmpty()) {
-            Block currentBlock = blockQueue.poll();
-            System.out.println("Current block: " + ((JLabel) currentBlock.getComponent(0)).getText());
-
-            // Add the current block's code
-            addCode(currentBlock.getCode());
-
-            // Enqueue all next blocks
-            for (Block nextBlock : currentBlock.getNextBlocks()) {
-                blockQueue.add(nextBlock);
-            }
-        }
-
-        addCode("");
-        return codeToBeGenerateded.formatted(codeModel.toString());
+        // Now all three fragments are complete, fill the template.
+        return String.format(currentCode, 
+            eventCodeFragments.get(0), // KeyPressed
+            eventCodeFragments.get(1), // OnFrame
+            eventCodeFragments.get(2)  // OnStart
+        );
     }
 
+    // Initialize the variables
+    private String generateVariables(String currentCode) {
+        String variablesCode = "";
+        for (var variable : variables) {
+            String varName = variable.get("name");
+            String varType = variable.get("type");
+            variablesCode = variablesCode + "\n" + varType + " " + varName + ";";
+        }
+        return String.format(currentCode, variablesCode, "%s", "%s", "%s");
+    }
+    
+    // Traverse the chain of blocks
+    private String processBlockChain(Block currentBlock, String currentChainCode) {
 
+
+        String currentBlockCode = currentBlock.getCode();
+        currentChainCode = currentChainCode + "\n" + currentBlockCode;
+        
+        List<Block> nextBlocks = currentBlock.getNextBlocks();
+        
+        if (nextBlocks.isEmpty()) {
+            System.out.println("chain : " + currentBlock.getTitle() + " -> ???");
+            return currentChainCode;
+        } else {
+            // Assuming a linear chain for sequential logic, process the first (and typically only) next block
+            Block nextBlock = nextBlocks.get(0); 
+            System.out.println("chain : " + currentBlock.getTitle() + " -> " + nextBlock.getTitle());
+            return processBlockChain(nextBlock, currentChainCode);
+        }
+    }
+    
+    // Get the event index to know where to insert the code
+    private int getFragmentIndex(Block block) {
+        return switch (((JLabel) block.getComponent(0)).getText()) {
+            case "On KeyPressed (Space)" -> 0;
+            case "On Frame" -> 1;
+            case "On Start" -> 2;
+            default -> -1;
+        };
+    }
+    
+    // Add the code of the block to the fragment
+    private void addCodeToFragment(String generatedChainCode, int fragmentIndex) {
+        String currentCode = eventCodeFragments.get(fragmentIndex);
+
+        // Add a bit of indentation (e.g., 8 spaces) to align with the template
+        // This must be done on the *final* generated code for the whole chain.
+        String indentedCode = generatedChainCode.replaceAll("(?m)^", "        "); 
+        
+        eventCodeFragments.set(fragmentIndex, currentCode + indentedCode + "\n");
+    }
+    
     private void initCode() {
-        codeToBeGenerateded = """
+        // Store the template here, the placeholders are now for the event code fragments
+        codeTemplate = """
+            import java.awt.*;
+            import java.awt.event.KeyAdapter;
+            import java.awt.event.KeyEvent;
             import javax.swing.*;
 
-            public class GameRunner {
+            public class GameRunner extends JPanel implements Runnable {
+                private int playerX = 200;
+                private int playerY = 200;
+                private int playerWidth = 30;
+                private int playerHeight = 50;
+                private boolean isMovingLeft = false;
+                private boolean isMovingRight = false;
+                private Thread gameThread;
+
+                // Variables
+                %s
+
+                public GameRunner() {
+                    setFocusable(true);
+                    addKeyListener(new KeyAdapter() {
+                        @Override
+                        public void keyPressed(KeyEvent e) {
+                            // KeyPressed event
+                            %s 
+                        }
+                    });
+                }
+
+                @Override
+                public void run() {
+                    while (true) {
+                        update();
+                        repaint();
+                        try {
+                            Thread.sleep(16); // ~60 FPS
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+
+                private void update() {
+                    // OnFrameEvent
+                    %s 
+                }
+
+                @Override
+                protected void paintComponent(Graphics g) {
+                    super.paintComponent(g);
+                    g.setColor(Color.BLUE);
+                    g.fillRect(playerX, playerY, playerWidth, playerHeight);
+                }
+
                 public static void main(String[] args) {
                     System.out.println("Starting your game...");
                     JFrame frame = new JFrame("Platformer Game");
-                    frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                     frame.setSize(400, 300);
                     frame.setLocationRelativeTo(null);
-                    JLabel label = new JLabel("Game running... Check console for debug output!", SwingConstants.CENTER);
-                    frame.add(label);
+
+                    GameRunner game = new GameRunner();
+                    frame.add(game);
                     frame.setVisible(true);
 
-                    // Generated pseudo-code from blocks starts here:
-                    %s
+                    game.gameThread = new Thread(game);
+                    game.gameThread.start();
 
-
+                    // OnStart Event
+                    %s 
                 }
             }
+
             """;
-    }    
-    
-    private void addCode(String codeToBeAdded) {
-        codeToBeGenerateded = String.format(codeToBeGenerateded, codeToBeAdded);
-        System.out.println("\n--- Current portion of the code to be added ---");
-        System.out.println(codeToBeAdded);
     }
 
+    public void setVariables(List<Map<String, String>> variables) {
+        this.variables = variables;
+    }
 }

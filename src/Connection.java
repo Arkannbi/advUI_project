@@ -1,8 +1,7 @@
-import javax.swing.*;
 
 public class Connection {
-	private Port from;
-	private Port to;
+	private final Port from;
+	private final Port to;
 	
 	public Connection(Port from, Port to) {
         this.from = from;

@@ -73,22 +73,36 @@ public class Block extends JPanel {
      }
 
 
-     // --- Import the code to the generated file ---
+    // --- Import the code to the generated file ---
     public String getCode() {
-        System.out.println(title);
         switch (title) {
             case "Debug Block" -> {
-                return "System.out.println(\"hey from the debug block!\");\n        %s";
-            }
-            case "Set Message" -> {
                 String message = inputs.get(1).getDefaultValue();
-                return "label.setText(\"" + message + "\");\n       %s";
+                if (message != null && !message.isEmpty() && message.charAt(0) == '%') {
+                    return "System.out.println(game." + message.substring(1) + ");\n";
+                }
+                return "System.out.println(\"" + message + "\");\n";
+            }
+            case "Set Variable" -> {
+                String variableName = inputs.get(1).getDefaultValue();
+                String variableValue = inputs.get(2).getDefaultValue();
+                return "game." + variableName + " = " + variableValue + ";";
             }
             case "On Start" -> {
-                return "System.out.println(\"Starting the chain of blocks...\");\n      %s";
+                return "System.out.println(\"On Start event triggered!\");\n%s";
+            }
+            case "On Frame" -> {
+                return "%s";
+            }
+            case "On KeyPressed (Space)" -> {
+                return """
+                            if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+                                %s
+                            }
+                       """;
             }
             default -> {
-                return "System.out.println(\"hey from another block!\");\n      %s";
+                return "System.out.println(\"hey from another block!\");";
             }
         }
     }
@@ -102,6 +116,10 @@ public class Block extends JPanel {
         }
 
         return nextBlocks;
+    }
+
+    public String getTitle() {
+        return title;
     }
 
 }

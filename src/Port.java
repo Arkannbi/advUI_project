@@ -6,8 +6,8 @@ public class Port extends JPanel {
 	private final boolean isInput;
 	private final String name;
 	private boolean isConnected;
-	private JTextField defaultField;
-	private JComponent clickablePart;
+	private final JTextField defaultField;
+	private final JComponent clickablePart;
 
 	private Port connectedPort;
 	private final Block parent;

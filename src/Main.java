@@ -7,8 +7,7 @@ public class Main {
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             frame.setSize(1000, 700);
 
-            StringBuilder codeModel = new StringBuilder();
-            MainController controller = new MainController(codeModel, frame);
+            MainController controller = new MainController( frame);
 
             frame.setController(controller);
 

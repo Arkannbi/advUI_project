@@ -2,7 +2,8 @@ import java.awt.*;
 import javax.swing.*;
 
 public class Port extends JPanel {
-	private final boolean isActivationPort;
+	public final boolean isActivationPort;
+	
 	private final boolean isInput;
 	private final String name;
 	private boolean isConnected;
@@ -11,6 +12,8 @@ public class Port extends JPanel {
 
 	private Port connectedPort;
 	private final Block parent;
+
+	private String outputValue;
 	
 	public Port(Block parent, boolean isInput, String name, boolean isActivationPort) {
 		this.isInput = isInput;
@@ -110,7 +113,8 @@ public class Port extends JPanel {
 	}
 
 	public String getDefaultValue() {
-		return defaultField.getText();
+		if (!isConnected) return defaultField.getText();
+		else return connectedPort.getOutputValue();
 	}
 	
 	public void setDefaultValue(String newText) {
@@ -126,5 +130,13 @@ public class Port extends JPanel {
 
 	public Block getBlock() {
 		return parent;
+	}
+
+	public String getOutputValue() {
+		return outputValue;
+	}
+
+	public void setOutputValue(String outputValue) {
+		this.outputValue = outputValue;
 	}
 }

@@ -2,11 +2,20 @@
 import javax.swing.*;;
 
 public class BlocksPanel extends JPanel{
+    // Actions
     private final Block debugBlock;
     private final Block setVarBlock;
+
+    // Events
     private final Block onStartBlock;
     private final Block onSpacePressed;
     private final Block onFrame;
+
+    // Intermediary
+    private final Block addBlock;
+    private final Block subBlock;
+    private final Block multBlock;
+    private final Block divBlock;
     
 
     public BlocksPanel() { 
@@ -31,6 +40,18 @@ public class BlocksPanel extends JPanel{
 
         onFrame = new Block("On Frame", BlockType.Event, 0, 1);
         model.addElement(onFrame);
+
+        addBlock = new Block("Add", BlockType.Intermediary, 2, 1);
+        model.addElement(addBlock);
+                
+        subBlock = new Block("Substract", BlockType.Intermediary, 2, 1);
+        model.addElement(subBlock);
+
+        multBlock = new Block("Multiply", BlockType.Intermediary, 2, 1);
+        model.addElement(multBlock);
+
+        divBlock = new Block("Divide", BlockType.Intermediary, 2, 1);
+        model.addElement(divBlock);
 
         blockJList.setModel(model);
         blockJList.setDragEnabled(true);

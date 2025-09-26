@@ -26,7 +26,7 @@ public class VariableCreatorPanel extends JPanel {
         JPanel inputPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         inputPanel.setPreferredSize(new Dimension(0, 100));
         variableNameField = new JTextField(10);
-        String[] types = {"int", "float", "bool"};
+        String[] types = {"boolean", "int", "float", "String"};
         typeSelector = new JComboBox<>(types);
         addButton = new JButton("Add Variable");
 
@@ -49,20 +49,25 @@ public class VariableCreatorPanel extends JPanel {
 
         // Action to add a variable
         addButton.addActionListener((ActionEvent _) -> {
-            String variableName = variableNameField.getText().trim();
-            String type = (String) typeSelector.getSelectedItem();
-            if (!variableName.isEmpty()) {
-                Map<String, String> var = new HashMap<>();
-                var.put("name", variableName);
-                var.put("type", type);
-                variables.add(var);
-                // Add a display string to the JList model
-                variableListModel.addElement(variableName + " (" + type + ")");
-                variableNameField.setText("");
-                this.controller.setVariables(variables);
+            String varName = variableNameField.getText().trim();
+            String varType = (String) typeSelector.getSelectedItem();
+            String varValue;
+            switch (varType) {
+                case "boolean" -> varValue = "true";
+                case "float" -> varValue = "0";
+                case "int" -> varValue = "0";
+                case "String" -> varValue = "\"\"";
+                default -> {
+                    varValue = "0";
+                }
             }
+            addVariable(varName, varType, varValue);
         });
 
+        addVariable("playerX", "int", "200");
+        addVariable("playerY", "int", "200");
+        addVariable("playerWidth", "int", "50");
+        addVariable("playerHeight", "int", "50");
         // Add components to main panel
         add(inputPanel, BorderLayout.NORTH);
         add(scrollPane, BorderLayout.CENTER);
@@ -91,5 +96,20 @@ public class VariableCreatorPanel extends JPanel {
 
     public void setController(MainController controller) {
         this.controller = controller;
+        this.controller.setVariables(variables);
+    }
+
+    private void addVariable(String varName, String varType, String varValue) {
+        if (!varName.isEmpty()) {
+            Map<String, String> var = new HashMap<>();
+            var.put("name", varName);
+            var.put("type", varType);
+            var.put("value", varValue);
+            variables.add(var);
+            // Add a display string to the JList model
+            variableListModel.addElement(varType + " " + varName + " : " + varValue);
+            variableNameField.setText("");
+            if (this.controller != null) this.controller.setVariables(variables);
+        }
     }
 }

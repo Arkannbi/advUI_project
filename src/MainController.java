@@ -137,7 +137,8 @@ public class MainController {
         for (var variable : variables) {
             String varName = variable.get("name");
             String varType = variable.get("type");
-            variablesCode = variablesCode + "\n" + varType + " " + varName + ";";
+            String varValue = variable.get("value");
+            variablesCode = variablesCode + "\n" + varType + " " + varName + " = " + varValue + ";";
         }
         return String.format(currentCode, variablesCode, "%s", "%s", "%s");
     }
@@ -146,6 +147,7 @@ public class MainController {
     private String processBlockChain(Block currentBlock, String currentChainCode) {
 
 
+        currentChainCode = BackpropagateBlockChain(currentBlock, currentChainCode);
         String currentBlockCode = currentBlock.getCode();
         currentChainCode = currentChainCode + "\n" + currentBlockCode;
         
@@ -160,6 +162,17 @@ public class MainController {
             System.out.println("chain : " + currentBlock.getTitle() + " -> " + nextBlock.getTitle());
             return processBlockChain(nextBlock, currentChainCode);
         }
+    }
+
+    private String BackpropagateBlockChain(Block currentBlock, String currentChainCode) {
+        for (var port : currentBlock.getInputs()) {
+            if (!port.isActivationPort && port.isConnected()) {
+                var previousBlock = port.getConnectedBlock();
+                currentChainCode = BackpropagateBlockChain(previousBlock, currentChainCode);
+                currentChainCode = currentChainCode + previousBlock.getCode();
+            }
+        }
+        return currentChainCode;
     }
     
     // Get the event index to know where to insert the code
@@ -192,12 +205,6 @@ public class MainController {
             import javax.swing.*;
 
             public class GameRunner extends JPanel implements Runnable {
-                private int playerX = 200;
-                private int playerY = 200;
-                private int playerWidth = 30;
-                private int playerHeight = 50;
-                private boolean isMovingLeft = false;
-                private boolean isMovingRight = false;
                 private Thread gameThread;
 
                 // Variables
@@ -216,6 +223,7 @@ public class MainController {
 
                 @Override
                 public void run() {
+                    startGame();
                     while (true) {
                         update();
                         repaint();
@@ -238,6 +246,11 @@ public class MainController {
                     g.setColor(Color.BLUE);
                     g.fillRect(playerX, playerY, playerWidth, playerHeight);
                 }
+                
+                private void startGame() {
+                    // OnStart Event
+                    %s 
+                }
 
                 public static void main(String[] args) {
                     System.out.println("Starting your game...");
@@ -252,9 +265,6 @@ public class MainController {
 
                     game.gameThread = new Thread(game);
                     game.gameThread.start();
-
-                    // OnStart Event
-                    %s 
                 }
             }
 

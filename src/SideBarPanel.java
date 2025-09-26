@@ -17,12 +17,12 @@ public class SideBarPanel extends JPanel {
         gbc.gridy = 0;
 
         BlocksPanel blocksPanel = new BlocksPanel();
-        gbc.weighty = 0.6;
+        gbc.weighty = 0.5;
         add(blocksPanel, gbc);
 
         gbc.gridy = 1;
         variablesPanel = new VariableCreatorPanel();
-        gbc.weighty = 0.4;
+        gbc.weighty = 0.5;
         add(variablesPanel, gbc);
     }
 

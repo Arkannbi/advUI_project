@@ -72,21 +72,68 @@ public class Block extends JPanel {
         return type;
      }
 
+     // If the value starts with "%" it is a variable, else it is a constant
+     private String serializeStringValue(String value) {
+        if (value != null && !value.isEmpty()) {
+            if (value.charAt(0) == '%') {
+                return value.substring(1);
+            }
+            return "\"" + value + "\"";
+        }
+        return "0";
+    }
+
+    // If the value starts with "%" it is a variable but we don't need the quote for a constant now
+    private String serializeFloatValue(String value) {
+        if (value != null && !value.isEmpty()) {
+            if (value.charAt(0) == '%') {
+                return value.substring(1);
+            }
+            return value;
+        }
+        return "0";
+    }
+
 
     // --- Import the code to the generated file ---
     public String getCode() {
         switch (title) {
             case "Debug Block" -> {
                 String message = inputs.get(1).getDefaultValue();
-                if (message != null && !message.isEmpty() && message.charAt(0) == '%') {
-                    return "System.out.println(game." + message.substring(1) + ");\n";
-                }
-                return "System.out.println(\"" + message + "\");\n";
+                return "System.out.println(" + serializeStringValue(message) + ");\n";
             }
             case "Set Variable" -> {
                 String variableName = inputs.get(1).getDefaultValue();
                 String variableValue = inputs.get(2).getDefaultValue();
-                return "game." + variableName + " = " + variableValue + ";";
+                return variableName + " = " + variableValue + ";";
+            }
+            case "Add" -> {
+                String number1 = inputs.get(0).getDefaultValue();
+                String number2 = inputs.get(1).getDefaultValue();
+                var output = "%" + serializeFloatValue(number1) + " + " + serializeFloatValue(number2);
+                outputs.get(0).setOutputValue(output);
+                return "";
+            }
+            case "Substract" -> {
+                String number1 = inputs.get(0).getDefaultValue();
+                String number2 = inputs.get(1).getDefaultValue();
+                var output = "%" + serializeFloatValue(number1) + " - " + serializeFloatValue(number2);
+                outputs.get(0).setOutputValue(output);
+                return "";
+            }
+            case "Multiply" -> {
+                String number1 = inputs.get(0).getDefaultValue();
+                String number2 = inputs.get(1).getDefaultValue();
+                var output = "%" + serializeFloatValue(number1) + " * " + serializeFloatValue(number2);
+                outputs.get(0).setOutputValue(output);
+                return "";
+            }
+            case "Divide" -> {
+                String number1 = inputs.get(0).getDefaultValue();
+                String number2 = inputs.get(1).getDefaultValue();
+                var output = "%" + serializeFloatValue(number1) + " / " + serializeFloatValue(number2);
+                outputs.get(0).setOutputValue(output);
+                return "";
             }
             case "On Start" -> {
                 return "System.out.println(\"On Start event triggered!\");\n%s";

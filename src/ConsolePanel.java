@@ -10,13 +10,15 @@ public class ConsolePanel extends JPanel {
 
         textArea = new JTextArea("\n  >> Welcome to the newest no code game engine!");
         textArea.setEditable(false);
-        JScrollPane scrollPane = new JScrollPane(textArea);
 
+        JScrollPane scrollPane = new JScrollPane(textArea);
         add(scrollPane, BorderLayout.CENTER);
     }
 
     // Method to append logs to the text area
     public void appendLog(String log) {
         textArea.append("\n  >> " + log);
+        textArea.setCaretPosition(textArea.getDocument().getLength()); // scrolls to the bottom
     }
+
 }

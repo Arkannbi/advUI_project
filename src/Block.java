@@ -148,6 +148,34 @@ public class Block extends JPanel {
                             }
                        """;
             }
+            case "On KeyPressed (Left)" -> {
+                return """
+                            if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+                                %s
+                            }
+                       """;
+            }
+            case "On KeyPressed (Right)" -> {
+                return """
+                            if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+                                %s
+                            }
+                       """;
+            }
+            case "On KeyPressed (Up)" -> {
+                return """
+                            if (e.getKeyCode() == KeyEvent.VK_UP) {
+                                %s
+                            }
+                       """;
+            }
+            case "On KeyPressed (Down)" -> {
+                return """
+                            if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+                                %s
+                            }
+                       """;
+            }
             default -> {
                 return "System.out.println(\"hey from another block!\");";
             }

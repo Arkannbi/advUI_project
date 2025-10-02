@@ -31,7 +31,7 @@ public class MainFrame extends JFrame {
         add(buttonPanel, BorderLayout.NORTH);
     }
 
-    public void setController(MainController controller) {
+    public void setController(CodeGenerator controller) {
         buttonPanel.setController(controller);
         sidebarPanel.setController(controller);
     }

@@ -13,7 +13,7 @@ public class RunCodeButtonPanel extends JPanel {
         add(runCodeButton, BorderLayout.CENTER);
     }
 
-    public void setController(MainController controller) {
+    public void setController(CodeGenerator controller) {
         runCodeButton.addActionListener(_ -> controller.runCode());
     }
 }

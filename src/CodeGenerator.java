@@ -8,7 +8,7 @@ import javax.swing.JLabel;
 import javax.tools.JavaCompiler; // Import ArrayList
 import javax.tools.ToolProvider;
 
-public class MainController {
+public class CodeGenerator {
 
     private final MainFrame mainFrame;
     
@@ -17,7 +17,7 @@ public class MainController {
     private String codeTemplate; // Stores the template with %s placeholders
     List<Map<String, String>> variables;
 
-    public MainController(MainFrame mainFrame) {
+    public CodeGenerator(MainFrame mainFrame) {
         this.mainFrame = mainFrame;
     }
 
@@ -179,6 +179,10 @@ public class MainController {
     private int getFragmentIndex(Block block) {
         return switch (((JLabel) block.getComponent(0)).getText()) {
             case "On KeyPressed (Space)" -> 0;
+            case "On KeyPressed (Left)" -> 0;
+            case "On KeyPressed (Right)" -> 0;
+            case "On KeyPressed (Up)" -> 0;
+            case "On KeyPressed (Down)" -> 0;
             case "On Frame" -> 1;
             case "On Start" -> 2;
             default -> -1;

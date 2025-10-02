@@ -26,7 +26,7 @@ public class SideBarPanel extends JPanel {
         add(variablesPanel, gbc);
     }
 
-    public void setController(MainController controller) {
+    public void setController(CodeGenerator controller) {
         variablesPanel.setController(controller);
     }
 }

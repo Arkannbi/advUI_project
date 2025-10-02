@@ -8,8 +8,12 @@ public class BlocksPanel extends JPanel{
 
     // Events
     private final Block onStartBlock;
-    private final Block onSpacePressed;
     private final Block onFrame;
+    private final Block onSpacePressed;
+    private final Block onLeftPressed;
+    private final Block onRightPressed;
+    private final Block onUpPressed;
+    private final Block onDownPressed;
 
     // Intermediary
     private final Block addBlock;
@@ -34,12 +38,24 @@ public class BlocksPanel extends JPanel{
 
         onStartBlock = new Block("On Start", BlockType.Event, 0, 1);
         model.addElement(onStartBlock);
-        
-        onSpacePressed = new Block("On KeyPressed (Space)", BlockType.Event, 0, 1);
-        model.addElement(onSpacePressed);
 
         onFrame = new Block("On Frame", BlockType.Event, 0, 1);
         model.addElement(onFrame);
+        
+        onSpacePressed = new Block("On KeyPressed (Space)", BlockType.Event, 0, 1);
+        model.addElement(onSpacePressed);
+        
+        onLeftPressed = new Block("On KeyPressed (Left)", BlockType.Event, 0, 1);
+        model.addElement(onLeftPressed);
+        
+        onRightPressed = new Block("On KeyPressed (Right)", BlockType.Event, 0, 1);
+        model.addElement(onRightPressed);
+        
+        onUpPressed = new Block("On KeyPressed (Up)", BlockType.Event, 0, 1);
+        model.addElement(onUpPressed);
+        
+        onDownPressed = new Block("On KeyPressed (Down)", BlockType.Event, 0, 1);
+        model.addElement(onDownPressed);
 
         addBlock = new Block("Add", BlockType.Intermediary, 2, 1);
         model.addElement(addBlock);

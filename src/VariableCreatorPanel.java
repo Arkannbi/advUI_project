@@ -7,7 +7,7 @@ import java.util.Map;
 import javax.swing.*;
 
 public class VariableCreatorPanel extends JPanel {
-    private MainController controller;
+    private CodeGenerator controller;
 
     private final JTextField variableNameField; 			    // Text field to enter the variable name
     private final JComboBox<String> typeSelector; 			    // Type Selcetor (to define the type of the variable)
@@ -94,7 +94,7 @@ public class VariableCreatorPanel extends JPanel {
         }
     }
 
-    public void setController(MainController controller) {
+    public void setController(CodeGenerator controller) {
         this.controller = controller;
         this.controller.setVariables(variables);
     }

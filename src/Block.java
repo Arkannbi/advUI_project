@@ -105,7 +105,7 @@ public class Block extends JPanel {
             case "Set Variable" -> {
                 String variableName = inputs.get(1).getDefaultValue();
                 String variableValue = inputs.get(2).getDefaultValue();
-                return variableName + " = " + variableValue + ";";
+                return variableName + " = " + serializeFloatValue(variableValue) + ";";
             }
             case "Add" -> {
                 String number1 = inputs.get(0).getDefaultValue();

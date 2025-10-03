@@ -1,5 +1,6 @@
-
-import javax.swing.*;;
+import javax.swing.*;
+import java.util.List;
+import java.util.ArrayList;
 
 public class BlocksPanel extends JPanel{
     // Actions
@@ -30,43 +31,43 @@ public class BlocksPanel extends JPanel{
 
         DefaultListModel<Block> model = new DefaultListModel<>();
 
-        debugBlock = new Block("Debug Block", BlockType.Action, 2, 1);
+        debugBlock = new Block("Debug Block", BlockType.Action, List.of("In", "Str"), List.of("Out")) ;
         model.addElement(debugBlock);
 
-        setVarBlock = new Block("Set Variable", BlockType.Action, 3, 1);
+        setVarBlock = new Block("Set Variable", BlockType.Action, List.of("In", "Var", "Value"), List.of("Out"));
         model.addElement(setVarBlock);
 
-        onStartBlock = new Block("On Start", BlockType.Event, 0, 1);
+        onStartBlock = new Block("On Start", BlockType.Event, List.of(), List.of("Start"));
         model.addElement(onStartBlock);
 
-        onFrame = new Block("On Frame", BlockType.Event, 0, 1);
+        onFrame = new Block("On Frame", BlockType.Event, List.of(), List.of("Frame"));
         model.addElement(onFrame);
         
-        onSpacePressed = new Block("On KeyPressed (Space)", BlockType.Event, 0, 1);
+        onSpacePressed = new Block("On KeyPressed (Space)", BlockType.Event, List.of(), List.of("Space"));
         model.addElement(onSpacePressed);
         
-        onLeftPressed = new Block("On KeyPressed (Left)", BlockType.Event, 0, 1);
+        onLeftPressed = new Block("On KeyPressed (Left)", BlockType.Event, List.of(), List.of("Left"));
         model.addElement(onLeftPressed);
         
-        onRightPressed = new Block("On KeyPressed (Right)", BlockType.Event, 0, 1);
+        onRightPressed = new Block("On KeyPressed (Right)", BlockType.Event, List.of(), List.of("Right"));
         model.addElement(onRightPressed);
         
-        onUpPressed = new Block("On KeyPressed (Up)", BlockType.Event, 0, 1);
+        onUpPressed = new Block("On KeyPressed (Up)", BlockType.Event, List.of(), List.of("Up"));
         model.addElement(onUpPressed);
         
-        onDownPressed = new Block("On KeyPressed (Down)", BlockType.Event, 0, 1);
+        onDownPressed = new Block("On KeyPressed (Down)", BlockType.Event, List.of(), List.of("Down"));
         model.addElement(onDownPressed);
 
-        addBlock = new Block("Add", BlockType.Intermediary, 2, 1);
+        addBlock = new Block("Add", BlockType.Intermediary, List.of("x1", "x2"), List.of("Out"));
         model.addElement(addBlock);
                 
-        subBlock = new Block("Substract", BlockType.Intermediary, 2, 1);
+        subBlock = new Block("Substract", BlockType.Intermediary, List.of("x1", "x2"), List.of("Out"));
         model.addElement(subBlock);
 
-        multBlock = new Block("Multiply", BlockType.Intermediary, 2, 1);
+        multBlock = new Block("Multiply", BlockType.Intermediary, List.of("x1", "x2"), List.of("Out"));
         model.addElement(multBlock);
 
-        divBlock = new Block("Divide", BlockType.Intermediary, 2, 1);
+        divBlock = new Block("Divide", BlockType.Intermediary, List.of("x1", "x2"), List.of("Out"));
         model.addElement(divBlock);
 
         blockJList.setModel(model);

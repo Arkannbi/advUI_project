@@ -25,8 +25,12 @@ public class MainFrame extends JFrame {
         JPanel centerPanel = new JPanel(new BorderLayout());
         centerPanel.add(canvas, BorderLayout.CENTER);
         centerPanel.add(consolePanel, BorderLayout.SOUTH);
+        
+        sidebarPanel.setBorder(BorderFactory.createEmptyBorder(0,0,0,15));
+        JScrollPane scrollSidebar = new JScrollPane(sidebarPanel);
+        scrollSidebar.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
-        add(sidebarPanel, BorderLayout.WEST);
+        add(scrollSidebar, BorderLayout.WEST);
         add(centerPanel, BorderLayout.CENTER);
         add(buttonPanel, BorderLayout.NORTH);
     }

@@ -41,14 +41,14 @@ public class VariableCreatorPanel extends JPanel {
 
         // Scroll Pane to store the list of variables
         JScrollPane scrollPane = new JScrollPane(variableJList);
-        scrollPane.setPreferredSize(new Dimension(0, 200)); // Ensure visible space
+        scrollPane.setPreferredSize(new Dimension(0, 100)); // Ensure visible space
 
         // Internal list to store variables (name, type)
         variables = new ArrayList<>();
 
 
         // Action to add a variable
-        addButton.addActionListener((ActionEvent _) -> {
+        addButton.addActionListener((ActionEvent e) -> {
             String varName = variableNameField.getText().trim();
             String varType = (String) typeSelector.getSelectedItem();
             String varValue;

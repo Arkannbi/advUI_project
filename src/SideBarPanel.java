@@ -5,7 +5,6 @@ public class SideBarPanel extends JPanel {
     VariableCreatorPanel variablesPanel;
 
     public SideBarPanel() {
-        setPreferredSize(new Dimension(150, 600));
         setBackground(Color.WHITE);
         setOpaque(true);
         setLayout(new GridBagLayout());

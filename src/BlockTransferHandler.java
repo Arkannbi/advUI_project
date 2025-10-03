@@ -1,6 +1,8 @@
 import java.awt.Point;
 import java.awt.datatransfer.*;
 import java.io.IOException;
+import java.util.List;
+
 import javax.swing.*;
 
 // Custom TransferHandler for enabling drag-and-drop of Block from the toolboxPanel (the sidebar) and the canvas.
@@ -83,9 +85,9 @@ public class BlockTransferHandler extends TransferHandler {
             // Create a new instance of Block with the same properties
             String title = ((JLabel) originalBlock.getComponent(0)).getText();
             BlockType type = originalBlock.getType();
-            int nbInputs = originalBlock.getInputs().size();
-            int nbOutputs = originalBlock.getOutputs().size();
-            Block newBlock = new Block(title, type, nbInputs, nbOutputs);
+            List<String> inputs = originalBlock.getInputNames();
+            List<String> outputs = originalBlock.getOutputNames();
+            Block newBlock = new Block(title, type, inputs, outputs);
 
             // Add the new Block to the Canvas at the drop location
             JComponent target = (JComponent) support.getComponent();

@@ -10,7 +10,7 @@ public class Block extends JPanel {
 	private final List<Port> outputs;
     private final BlockType type;
 
-	public Block(String title, BlockType type, int nbInputs, int nbOutputs) {
+	public Block(String title, BlockType type, List<String> inputNames, List<String> outputNames) {
 		this.inputs = new ArrayList<>();
 		this.outputs = new ArrayList<>();
         this.title = title;
@@ -28,9 +28,9 @@ public class Block extends JPanel {
         leftPanel.setLayout(new GridLayout(0, 1, 0, 5));
         leftPanel.setOpaque(false);
 
-        for (int i = 0; i < nbInputs; i++) {
+        for (int i = 0; i < inputNames.size(); i++) {
             var isActivationPort = (i==0 && type == BlockType.Action);
-            Port p = new Port(this, true, "i_" + i, isActivationPort);
+            Port p = new Port(this, true, inputNames.get(i), isActivationPort);
             inputs.add(p);
             leftPanel.add(p);
         }
@@ -40,9 +40,9 @@ public class Block extends JPanel {
         rightPanel.setLayout(new GridLayout(0, 1, 0, 5));
         rightPanel.setOpaque(false);
 
-        for (int i = 0; i < nbOutputs; i++) {
+        for (int i = 0; i < outputNames.size(); i++) {
             var isActivationPort = (i==0 && (type == BlockType.Action || type == BlockType.Event));
-            Port p = new Port(this, false, "j_" + i, isActivationPort);
+            Port p = new Port(this, false, outputNames.get(i), isActivationPort);
             outputs.add(p);
             rightPanel.add(p);
         }
@@ -66,6 +66,22 @@ public class Block extends JPanel {
 	 
 	 public List<Port> getOutputs() {
 		 return outputs;
+	 }
+	 
+	 public List<String> getInputNames() {
+		 List<String> names = new ArrayList<String>();
+		 for(Port input : getInputs()) {
+			 names.add(input.getName());
+		 }
+		 return names;
+	 }
+	 
+	 public List<String> getOutputNames() {
+		 List<String> names = new ArrayList<String>();
+		 for(Port input : getOutputs()) {
+			 names.add(input.getName());
+		 }
+		 return names;
 	 }
 
      public BlockType getType() {

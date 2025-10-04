@@ -1,4 +1,6 @@
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+
 import javax.swing.*;
 
 public class Port extends JPanel {
@@ -48,7 +50,7 @@ public class Port extends JPanel {
         JLabel title = new JLabel(name);
         
         if (isInput) {
-        	defaultField.setPreferredSize(new Dimension(50,20));
+        	defaultField.setPreferredSize(new Dimension(50,16));
         	
         	this.add(clickablePart, BorderLayout.WEST);
         	title.setBorder(BorderFactory.createEmptyBorder(0,0,0,3));
@@ -132,5 +134,9 @@ public class Port extends JPanel {
 
 	public void setOutputValue(String outputValue) {
 		this.outputValue = outputValue;
+	}
+	
+	public void setClickablePartAdapter(MouseAdapter adapter) {
+		clickablePart.addMouseListener(adapter);
 	}
 }

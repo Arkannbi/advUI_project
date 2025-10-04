@@ -97,6 +97,7 @@ public class Port extends JPanel {
 		if (isInput) {
 			this.removeAll();
 	        JLabel title = new JLabel(name);
+	        title.setBorder(BorderFactory.createEmptyBorder(0,0,0,3));
 			this.add(clickablePart, BorderLayout.WEST);
 			this.add(title, BorderLayout.CENTER);
 			if (!isActivationPort) this.add(defaultField, BorderLayout.EAST);

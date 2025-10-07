@@ -29,7 +29,7 @@ public class Block extends JPanel {
         leftPanel.setOpaque(false);
 
         for (int i = 0; i < nbInputs; i++) {
-            var isActivationPort = (i==0 && type == BlockType.Action);
+            var isActivationPort = (i==0 && (type == BlockType.Action || type == BlockType.Logic));
             Port p = new Port(this, true, "i_" + i, isActivationPort);
             inputs.add(p);
             leftPanel.add(p);
@@ -41,7 +41,7 @@ public class Block extends JPanel {
         rightPanel.setOpaque(false);
 
         for (int i = 0; i < nbOutputs; i++) {
-            var isActivationPort = (i==0 && (type == BlockType.Action || type == BlockType.Event));
+            var isActivationPort = ((i==0 && (type == BlockType.Action || type == BlockType.Event)) || type == BlockType.Logic);
             Port p = new Port(this, false, "j_" + i, isActivationPort);
             outputs.add(p);
             rightPanel.add(p);
@@ -98,6 +98,14 @@ public class Block extends JPanel {
     // --- Import the code to the generated file ---
     public String getCode() {
         switch (title) {
+            case "If Block" -> {
+                String condition = inputs.get(1).getDefaultValue();
+                return "if (" + condition + ") { \n%s\n }";
+            }
+            case "If Else Block" -> {
+                String condition = inputs.get(1).getDefaultValue();
+                return "if (" + condition + ") { \n%s\n } else { \n%s\n }";
+            }
             case "Debug Block" -> {
                 String message = inputs.get(1).getDefaultValue();
                 return "System.out.println(" + serializeStringValue(message) + ");\n";
@@ -132,6 +140,13 @@ public class Block extends JPanel {
                 String number1 = inputs.get(0).getDefaultValue();
                 String number2 = inputs.get(1).getDefaultValue();
                 var output = "%" + serializeFloatValue(number1) + " / " + serializeFloatValue(number2);
+                outputs.get(0).setOutputValue(output);
+                return "";
+            }
+            case "Convert" -> {
+                String inputValue = inputs.get(0).getDefaultValue();
+                String newType = inputs.get(1).getDefaultValue();
+                var output = "%(" + newType + ")(" + serializeFloatValue(inputValue) + ")";
                 outputs.get(0).setOutputValue(output);
                 return "";
             }

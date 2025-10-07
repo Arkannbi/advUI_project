@@ -64,6 +64,7 @@ public class VariableCreatorPanel extends JPanel {
             addVariable(varName, varType, varValue);
         });
 
+        addVariable("deltaTime", "float", "0.0f");
         addVariable("playerX", "int", "200");
         addVariable("playerY", "int", "200");
         addVariable("playerWidth", "int", "50");

@@ -228,7 +228,11 @@ public class CodeGenerator {
                 @Override
                 public void run() {
                     startGame();
+                    long lastTime = System.nanoTime();
                     while (true) {
+                        long currentTime = System.nanoTime();
+                        deltaTime = (currentTime - lastTime) / 1_000_000_000.0f;
+                        lastTime = currentTime;
                         update();
                         repaint();
                         try {

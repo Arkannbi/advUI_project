@@ -66,10 +66,12 @@ public class Canvas extends JLayeredPane {
 	}
 	
 	public void addBlock(Block b, int x, int y) {
-        b.setBounds(x, y, 200, Math.max(b.getInputs().size(), b.getOutputs().size()) * 25 + 20);
+		// A bit ugly but to make it simple we're using hardcoded port sizes and their number to create the good block size
+        // And we have to do it here because blocks aren't instantiated with x and y coordinates, as they depend on the canvas
+		b.setBounds(x, y, 200, Math.max(b.getInputs().size(), b.getOutputs().size()) * 21 + 16);
 
         for (Port p : b.getOutputs()) {
-            p.addMouseListener(new MouseAdapter() {
+            MouseAdapter adapter = new MouseAdapter() {
                 @Override
                 public void mousePressed(MouseEvent e) {
                 	if (!p.isConnected()) {
@@ -89,11 +91,12 @@ public class Canvas extends JLayeredPane {
                 		repaint();
                 	}
                 }
-            });
+            };
+            p.setClickablePartAdapter(adapter);
         }
         
         for (Port p : b.getInputs()) {
-            p.addMouseListener(new MouseAdapter() {
+            MouseAdapter adapter = new MouseAdapter() {
                 @Override
                 public void mousePressed(MouseEvent e) {
                 	if (p.isConnected()) {
@@ -116,7 +119,8 @@ public class Canvas extends JLayeredPane {
                     }
                     repaint();
                 }
-            });
+            };
+            p.setClickablePartAdapter(adapter);
         }
 
         b.addMouseListener(new MouseAdapter() {

@@ -1,4 +1,5 @@
 import java.awt.*;
+import java.awt.event.MouseAdapter;
 import javax.swing.*;
 
 public class Port extends JPanel {
@@ -26,13 +27,6 @@ public class Port extends JPanel {
 		setLayout(new BorderLayout());
 		setOpaque(false);
 		
-		if (isInput) {
-			setPreferredSize(new Dimension(90,20));
-		}
-		else {
-			setPreferredSize(new Dimension(40,20));
-		}
-		
 		this.clickablePart = new JComponent() {
 			@Override
             protected void paintComponent(Graphics g) {
@@ -55,9 +49,10 @@ public class Port extends JPanel {
         JLabel title = new JLabel(name);
         
         if (isInput) {
-        	defaultField.setPreferredSize(new Dimension(50,20));
+        	defaultField.setPreferredSize(new Dimension(50,16));
         	
         	this.add(clickablePart, BorderLayout.WEST);
+        	title.setBorder(BorderFactory.createEmptyBorder(0,0,0,3));
         	this.add(title, BorderLayout.CENTER);
         	if (!isActivationPort) this.add(defaultField, BorderLayout.EAST);
         }
@@ -101,6 +96,7 @@ public class Port extends JPanel {
 		if (isInput) {
 			this.removeAll();
 	        JLabel title = new JLabel(name);
+	        title.setBorder(BorderFactory.createEmptyBorder(0,0,0,3));
 			this.add(clickablePart, BorderLayout.WEST);
 			this.add(title, BorderLayout.CENTER);
 			if (!isActivationPort) this.add(defaultField, BorderLayout.EAST);
@@ -138,5 +134,9 @@ public class Port extends JPanel {
 
 	public void setOutputValue(String outputValue) {
 		this.outputValue = outputValue;
+	}
+	
+	public void setClickablePartAdapter(MouseAdapter adapter) {
+		clickablePart.addMouseListener(adapter);
 	}
 }

@@ -1,4 +1,5 @@
 import java.awt.*;
+import java.util.List;
 import javax.swing.*;
 
 public class BlocksPanel extends JPanel {
@@ -54,25 +55,25 @@ public class BlocksPanel extends JPanel {
         blockJList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
         // Initialize blocks
-        onStartBlock = new Block("On Start", BlockType.Event, 0, 1);
-        onFrame = new Block("On Frame", BlockType.Event, 0, 1);
-        onSpacePressed = new Block("On KeyPressed (Space)", BlockType.Event, 0, 1);
-        onLeftPressed = new Block("On KeyPressed (Left)", BlockType.Event, 0, 1);
-        onRightPressed = new Block("On KeyPressed (Right)", BlockType.Event, 0, 1);
-        onUpPressed = new Block("On KeyPressed (Up)", BlockType.Event, 0, 1);
-        onDownPressed = new Block("On KeyPressed (Down)", BlockType.Event, 0, 1);
+        onStartBlock = new Block("On Start", BlockType.Event, List.of(), List.of("Start"));
+        onFrame = new Block("On Frame", BlockType.Event, List.of(), List.of("On frame"));
+        onSpacePressed = new Block("On KeyPressed (Space)", BlockType.Event, List.of(), List.of("Space"));
+        onLeftPressed = new Block("On KeyPressed (Left)", BlockType.Event, List.of(), List.of("Left"));
+        onRightPressed = new Block("On KeyPressed (Right)", BlockType.Event, List.of(), List.of("Right"));
+        onUpPressed = new Block("On KeyPressed (Up)", BlockType.Event, List.of(), List.of("Up"));
+        onDownPressed = new Block("On KeyPressed (Down)", BlockType.Event, List.of(), List.of("Down"));
 
-        debugBlock = new Block("Debug Block", BlockType.Action, 2, 1);
-        setVarBlock = new Block("Set Variable", BlockType.Action, 3, 1);
+        debugBlock = new Block("Debug Block", BlockType.Action, List.of("In","content"), List.of("Out"));
+        setVarBlock = new Block("Set Variable", BlockType.Action, List.of("In", "Variable Name","Value"), List.of("Out"));
 
-        addBlock = new Block("Add", BlockType.Intermediary, 2, 1);
-        subBlock = new Block("Substract", BlockType.Intermediary, 2, 1);
-        multBlock = new Block("Multiply", BlockType.Intermediary, 2, 1);
-        divBlock = new Block("Divide", BlockType.Intermediary, 2, 1);
-        convertBlock = new Block("Convert", BlockType.Intermediary, 2, 1);
+        addBlock = new Block("Add", BlockType.Intermediary, List.of("Value", "Value"), List.of("Out"));
+        subBlock = new Block("Substract", BlockType.Intermediary, List.of("Value", "Value"), List.of("Out"));
+        multBlock = new Block("Multiply", BlockType.Intermediary, List.of("Value", "Value"), List.of("Out"));
+        divBlock = new Block("Divide", BlockType.Intermediary, List.of("Value", "Value"), List.of("Out"));
+        convertBlock = new Block("Convert", BlockType.Intermediary, List.of("Value", "Value"), List.of("Out"));
 
-        ifBlock = new Block("If Block", BlockType.Logic, 2, 1);
-        ifElseBlock = new Block("If Else Block", BlockType.Logic, 2, 2);
+        ifBlock = new Block("If Block", BlockType.Logic, List.of("In", "Condition"), List.of("Then"));
+        ifElseBlock = new Block("If Else Block", BlockType.Logic, List.of("In", "Condition"), List.of("Then", "Else"));
 
         // Add all blocks to the model
         filterBlocks(null);

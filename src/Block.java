@@ -9,12 +9,16 @@ public class Block extends JPanel {
 	private final List<Port> inputs;
 	private final List<Port> outputs;
     private final BlockType type;
+	private final List<String> inputNames;
+	private final List<String> outputNames;
 
-	public Block(String title, BlockType type, int nbInputs, int nbOutputs) {
+	public Block(String title, BlockType type, List<String> inputNames, List<String> outputNames) {
 		this.inputs = new ArrayList<>();
 		this.outputs = new ArrayList<>();
         this.title = title;
         this.type = type;
+        this.inputNames = inputNames;
+        this.outputNames = outputNames;
 		setLayout(new BorderLayout());
 		setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
 	    setBackground(new Color(230, 230, 250));
@@ -28,9 +32,9 @@ public class Block extends JPanel {
         leftPanel.setLayout(new GridLayout(0, 1, 0, 5));
         leftPanel.setOpaque(false);
 
-        for (int i = 0; i < nbInputs; i++) {
-            var isActivationPort = (i==0 && (type == BlockType.Action || type == BlockType.Logic));
-            Port p = new Port(this, true, "i_" + i, isActivationPort);
+        for (int i = 0; i < inputNames.size(); i++) {
+            var isActivationPort = (i==0 && type == BlockType.Action);
+            Port p = new Port(this, true, inputNames.get(i), isActivationPort);
             inputs.add(p);
             leftPanel.add(p);
         }
@@ -40,9 +44,9 @@ public class Block extends JPanel {
         rightPanel.setLayout(new GridLayout(0, 1, 0, 5));
         rightPanel.setOpaque(false);
 
-        for (int i = 0; i < nbOutputs; i++) {
-            var isActivationPort = ((i==0 && (type == BlockType.Action || type == BlockType.Event)) || type == BlockType.Logic);
-            Port p = new Port(this, false, "j_" + i, isActivationPort);
+        for (int i = 0; i < outputNames.size(); i++) {
+            var isActivationPort = (i==0 && (type == BlockType.Action || type == BlockType.Event));
+            Port p = new Port(this, false, outputNames.get(i), isActivationPort);
             outputs.add(p);
             rightPanel.add(p);
         }
@@ -210,6 +214,14 @@ public class Block extends JPanel {
 
     public String getTitle() {
         return title;
+    }
+
+    public List<String> getInputNames() {
+        return inputNames;
+    }
+    
+    public List<String> getOutputNames() {
+        return outputNames;
     }
 
 }

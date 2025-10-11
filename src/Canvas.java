@@ -3,6 +3,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.event.*;
 import java.awt.geom.CubicCurve2D;
 import java.util.*;
@@ -15,6 +16,13 @@ public class Canvas extends JLayeredPane {
 	private Port tempFrom;
 	private Point mousePos;
 	private Block currentSelectedBlock;
+	private Block copiedBlock;
+	
+	// Arrows to show where blocks are on the canvas
+	private boolean hasBlockLeft;
+	private boolean hasBlockRight;
+	private boolean hasBlockUp;
+	private boolean hasBlockDown;
 	
 	public Canvas() {
 		this.blocks = new ArrayList<>();
@@ -22,8 +30,15 @@ public class Canvas extends JLayeredPane {
 		this.tempFrom = null;
 		this.mousePos = null;
 		this.currentSelectedBlock = null;
+		this.copiedBlock = null;
+		
+		this.hasBlockLeft = false;
+		this.hasBlockRight = false;
+		this.hasBlockUp = false;
+		this.hasBlockDown = false;
 
 		setFocusable(true);
+		setLayout(null);
 		requestFocusInWindow();
 		
 		setupListeners();
@@ -36,6 +51,7 @@ public class Canvas extends JLayeredPane {
             public void mousePressed(MouseEvent e) {
             	tempFrom = null;
             	currentSelectedBlock = null;
+            	mousePos = e.getPoint();
             	repaint();
 			}
 		});
@@ -49,15 +65,39 @@ public class Canvas extends JLayeredPane {
 					repaint();
 				}
 			}
+			
+			@Override
+			public void mouseDragged(MouseEvent e) {
+				requestFocusInWindow();
+				for (Block block : blocks) {
+					int deltaX = mousePos.x - e.getPoint().x;
+					int deltaY = mousePos.y - e.getPoint().y;
+					Rectangle rect = block.getBounds();
+					block.setBounds(rect.x - deltaX, rect.y - deltaY, 200, Math.max(block.getInputs().size(), block.getOutputs().size()) * 21 + 16);
+				}
+				mousePos = e.getPoint();
+				repaint();
+			}
 		});
 		
 		addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
-            	if (e.getKeyCode() == KeyEvent.VK_DELETE || e.getKeyCode()==KeyEvent.VK_BACK_SPACE) {
+            	if (e.getKeyCode() == KeyEvent.VK_DELETE || e.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
             		if (currentSelectedBlock != null) {
             			removeBlock(currentSelectedBlock);
             			currentSelectedBlock = null;
+            		}
+            	}
+            	else if (e.isControlDown()) {
+            		if (e.getKeyCode() == KeyEvent.VK_C && currentSelectedBlock != null) {
+            			if (currentSelectedBlock != null) {
+                			copiedBlock = currentSelectedBlock.copy();
+                		}
+            		}
+            		else if (e.getKeyCode() == KeyEvent.VK_V && copiedBlock != null) {
+            			addBlock(copiedBlock, mousePos.x, mousePos.y);
+            			copiedBlock = currentSelectedBlock.copy();
             		}
             	}
             	repaint();
@@ -158,7 +198,7 @@ public class Canvas extends JLayeredPane {
         });
         
         blocks.add(b);
-        add(b, JLayeredPane.DEFAULT_LAYER);
+        add(b, Integer.valueOf(1));
         currentSelectedBlock = b;
         repaint();
     }
@@ -186,6 +226,14 @@ public class Canvas extends JLayeredPane {
 	@Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
+        
+        hasBlockLeft = false;
+        hasBlockRight = false;
+        hasBlockUp = false;
+        hasBlockDown = false;
+        
+        int width = getWidth();
+		int height = getHeight();
 
         Graphics2D g2 = (Graphics2D) g;
         g2.setStroke(new BasicStroke(2));
@@ -202,12 +250,44 @@ public class Canvas extends JLayeredPane {
             drawCurve(g2, a, mousePos);
         }
         for (Block b : blocks) {
-        	if (b != null && b != currentSelectedBlock) {
-    			b.setBorder(BorderFactory.createLineBorder(Color.black, 2));
-    		}
-        	else if (b != null && b == currentSelectedBlock) {
-        		b.setBorder(BorderFactory.createLineBorder(Color.red, 2));
+        	if (b != null) {
+        		if (b != currentSelectedBlock) {
+        			b.setBorder(BorderFactory.createLineBorder(Color.black, 2));
+        		}
+            	else if (b == currentSelectedBlock) {
+            		b.setBorder(BorderFactory.createLineBorder(Color.red, 2));
+            	}
+        		Rectangle rect = b.getBounds();
+        		if (rect.x + rect.width < 0) {
+        			hasBlockLeft = true;
+        		}
+        		if (rect.x > width) {
+        			hasBlockRight = true;
+        		}
+        		if (rect.y + rect.height < 0) {
+        			hasBlockUp = true;
+        		}
+        		if (rect.y > height) {
+        			hasBlockDown = true;
+        		}
+        		
         	}
+        }
+        
+        g2.setColor(Color.BLACK);
+        g2.setStroke(new BasicStroke(3));
+
+        if (hasBlockUp) {
+            drawTriangle(g2, width / 2, 20, 20, 10, "Up");
+        }
+        if (hasBlockDown) {
+            drawTriangle(g2, width / 2, height - 20, 20, 10, "Down");
+        }
+        if (hasBlockLeft) {
+            drawTriangle(g2, 20, height / 2, 20, 10, "Left");
+        }
+        if (hasBlockRight) {
+            drawTriangle(g2, width - 20, height / 2, 20, 10, "Right");
         }
     }
 
@@ -221,6 +301,29 @@ public class Canvas extends JLayeredPane {
                 a.x, a.y, ctrl1x, ctrl1y, ctrl2x, ctrl2y, b.x, b.y
         );
         g2.draw(curve);
+    }
+    
+    private void drawTriangle(Graphics2D g2, int xTip, int yTip, int baseWidth, int height, String direction) {
+    	if (direction == "Up") {
+    		g2.drawLine(xTip, yTip, xTip - baseWidth / 2, yTip + height);
+    		g2.drawLine(xTip - baseWidth / 2, yTip + height, xTip + baseWidth / 2, yTip + height);
+    		g2.drawLine(xTip + baseWidth / 2, yTip + height, xTip, yTip);
+    	}
+    	if (direction == "Down") {
+    		g2.drawLine(xTip, yTip, xTip + baseWidth / 2, yTip - height);
+    		g2.drawLine(xTip + baseWidth / 2, yTip - height, xTip - baseWidth / 2, yTip - height);
+    		g2.drawLine(xTip - baseWidth / 2, yTip - height, xTip, yTip);
+    	}
+    	if (direction == "Left") {
+    		g2.drawLine(xTip, yTip, xTip + height, yTip - baseWidth / 2);
+    		g2.drawLine(xTip + height, yTip - baseWidth / 2, xTip + height, yTip + baseWidth / 2);
+    		g2.drawLine(xTip + height, yTip + baseWidth / 2, xTip, yTip);
+    	}
+    	if (direction == "Right") {
+    		g2.drawLine(xTip, yTip, xTip - height, yTip - baseWidth / 2);
+    		g2.drawLine(xTip - height, yTip - baseWidth / 2, xTip - height, yTip + baseWidth / 2);
+    		g2.drawLine(xTip - height, yTip + baseWidth / 2, xTip, yTip);
+    	}
     }
 
     public List<Block> getBlocks() {

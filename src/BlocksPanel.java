@@ -6,6 +6,7 @@ public class BlocksPanel extends JPanel {
     // Actions
     private final Block debugBlock;
     private final Block setVarBlock;
+    private final Block newObjectBlock;
 
     // Events
     private final Block onStartBlock;
@@ -38,7 +39,7 @@ public class BlocksPanel extends JPanel {
 
     addFilterButton(buttonPanel, "All Blocks", null, "ressources/icons/all.png");
     addFilterButton(buttonPanel, "Event Blocks", BlockType.Event, "ressources/icons/event.png");
-    addFilterButton(buttonPanel, "Itermediary Blocks", BlockType.Intermediary, "ressources/icons/action.png");
+    addFilterButton(buttonPanel, "Intermediary Blocks", BlockType.Intermediary, "ressources/icons/action.png");
     addFilterButton(buttonPanel, "Action Blocks", BlockType.Action, "ressources/icons/intermediary.png");
     addFilterButton(buttonPanel, "Logic Blocks", BlockType.Logic, "ressources/icons/logic.png");
 
@@ -65,6 +66,7 @@ public class BlocksPanel extends JPanel {
 
         debugBlock = new Block("Debug Block", BlockType.Action, List.of("In","content"), List.of("Out"));
         setVarBlock = new Block("Set Variable", BlockType.Action, List.of("In", "Variable Name","Value"), List.of("Out"));
+        newObjectBlock = new Block("Create Object", BlockType.Action, List.of("In", "X", "Y", "Width", "Height"), List.of("Out"));
 
         addBlock = new Block("Add", BlockType.Intermediary, List.of("Value", "Value"), List.of("Out"));
         subBlock = new Block("Substract", BlockType.Intermediary, List.of("Value", "Value"), List.of("Out"));
@@ -106,6 +108,7 @@ public class BlocksPanel extends JPanel {
                 case Action -> {
                     model.addElement(debugBlock);
                     model.addElement(setVarBlock);
+                    model.addElement(newObjectBlock);
                 }
                 case Logic -> {
                     model.addElement(ifBlock);
@@ -132,6 +135,7 @@ public class BlocksPanel extends JPanel {
             // Actions
             model.addElement(debugBlock);
             model.addElement(setVarBlock);
+            model.addElement(newObjectBlock);
             // Logic
             model.addElement(ifBlock);
             model.addElement(ifElseBlock);
@@ -152,7 +156,7 @@ public class BlocksPanel extends JPanel {
         button.setMaximumSize(new Dimension(30, 30));
         
         button.setToolTipText(buttonName);
-        button.addActionListener(_ -> filterBlocks(filterType));
+        button.addActionListener(e -> filterBlocks(filterType));
 
         buttonPanel.add(button);
     }

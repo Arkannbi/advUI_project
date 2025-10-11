@@ -16,7 +16,7 @@ public class CodeGenerator {
 
     private String codeTemplate; // Stores the template with %s placeholders
     List<Map<String, String>> variables;
-
+    
     public CodeGenerator(MainFrame mainFrame) {
         this.mainFrame = mainFrame;
     }
@@ -206,10 +206,14 @@ public class CodeGenerator {
             import java.awt.*;
             import java.awt.event.KeyAdapter;
             import java.awt.event.KeyEvent;
+            import java.util.ArrayList;
+        	import java.util.List;
+            
             import javax.swing.*;
 
             public class GameRunner extends JPanel implements Runnable {
                 private Thread gameThread;
+                private List<GameObject> objects = new ArrayList<>();
 
                 // Variables
                 %s
@@ -251,6 +255,12 @@ public class CodeGenerator {
                 @Override
                 protected void paintComponent(Graphics g) {
                     super.paintComponent(g);
+                    
+                    for (GameObject obj : objects) {
+				        g.setColor(obj.color);
+				        g.fillRect(obj.x, obj.y, obj.width, obj.height);
+				    }
+				    
                     g.setColor(Color.BLUE);
                     g.fillRect(playerX, playerY, playerWidth, playerHeight);
                 }
@@ -275,6 +285,29 @@ public class CodeGenerator {
                     game.gameThread.start();
                 }
             }
+            
+            class GameObject {
+				public int x;
+				public int y;
+				public int width;
+				public int height;
+				
+				public Color color;
+				public boolean collides;
+				
+				 public GameObject(int x, int y, int width, int height, Color color, boolean collides) {
+			        this.x = x;
+			        this.y = y;
+			        this.width = width;
+			        this.height = height;
+			        this.color = color;
+			        this.collides = collides;
+			    }
+				 
+				 public Rectangle getBounds() {
+			        return new Rectangle(x, y, width, height);
+			    }
+			}
 
             """;
     }

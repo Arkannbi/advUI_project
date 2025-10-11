@@ -195,6 +195,15 @@ public class Block extends JPanel {
                             }
                        """;
             }
+            case "Create Object" -> {
+                String x = inputs.get(1).getDefaultValue();
+                String y = inputs.get(2).getDefaultValue();
+                String width = inputs.get(3).getDefaultValue();
+                String height = inputs.get(4).getDefaultValue();
+                return "objects.add(new GameObject(" 
+                    + x + ", " + y + ", " + width + ", " + height + ", "
+                    + "Color.black" + ", true));\n";
+            }
             default -> {
                 return "System.out.println(\"hey from another block!\");";
             }
@@ -222,6 +231,11 @@ public class Block extends JPanel {
     
     public List<String> getOutputNames() {
         return outputNames;
+    }
+    
+    public Block copy() {
+    	Block copy = new Block(this.title, this.type, new ArrayList<>(this.inputNames), new ArrayList<>(this.outputNames));
+    	return copy;
     }
 
 }

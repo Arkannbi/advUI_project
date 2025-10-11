@@ -48,7 +48,7 @@ public class VariableCreatorPanel extends JPanel {
 
 
         // Action to add a variable
-        addButton.addActionListener((ActionEvent _) -> {
+        addButton.addActionListener((ActionEvent e) -> {
             String varName = variableNameField.getText().trim();
             String varType = (String) typeSelector.getSelectedItem();
             String varValue;
@@ -100,7 +100,7 @@ public class VariableCreatorPanel extends JPanel {
         this.controller.setVariables(variables);
     }
 
-    private void addVariable(String varName, String varType, String varValue) {
+    public void addVariable(String varName, String varType, String varValue) {
         if (!varName.isEmpty()) {
             Map<String, String> var = new HashMap<>();
             var.put("name", varName);

@@ -304,22 +304,22 @@ public class Canvas extends JLayeredPane {
     }
     
     private void drawTriangle(Graphics2D g2, int xTip, int yTip, int baseWidth, int height, String direction) {
-    	if (direction == "Up") {
+    	if ("Up".equals(direction)) {
     		g2.drawLine(xTip, yTip, xTip - baseWidth / 2, yTip + height);
     		g2.drawLine(xTip - baseWidth / 2, yTip + height, xTip + baseWidth / 2, yTip + height);
     		g2.drawLine(xTip + baseWidth / 2, yTip + height, xTip, yTip);
     	}
-    	if (direction == "Down") {
+    	if ("Down".equals(direction)) {
     		g2.drawLine(xTip, yTip, xTip + baseWidth / 2, yTip - height);
     		g2.drawLine(xTip + baseWidth / 2, yTip - height, xTip - baseWidth / 2, yTip - height);
     		g2.drawLine(xTip - baseWidth / 2, yTip - height, xTip, yTip);
     	}
-    	if (direction == "Left") {
+    	if ("Left".equals(direction)) {
     		g2.drawLine(xTip, yTip, xTip + height, yTip - baseWidth / 2);
     		g2.drawLine(xTip + height, yTip - baseWidth / 2, xTip + height, yTip + baseWidth / 2);
     		g2.drawLine(xTip + height, yTip + baseWidth / 2, xTip, yTip);
     	}
-    	if (direction == "Right") {
+    	if ("Right".equals(direction)) {
     		g2.drawLine(xTip, yTip, xTip - height, yTip - baseWidth / 2);
     		g2.drawLine(xTip - height, yTip - baseWidth / 2, xTip - height, yTip + baseWidth / 2);
     		g2.drawLine(xTip - height, yTip + baseWidth / 2, xTip, yTip);

@@ -3,4 +3,5 @@ public enum BlockType {
     Action,
     Intermediary,
     Logic,
+    Condition,
 }

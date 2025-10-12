@@ -33,7 +33,7 @@ public class Block extends JPanel {
         leftPanel.setOpaque(false);
 
         for (int i = 0; i < inputNames.size(); i++) {
-            var isActivationPort = (i==0 && type == BlockType.Action);
+            var isActivationPort = (i==0 && (type == BlockType.Action || type == BlockType.Logic));
             Port p = new Port(this, true, inputNames.get(i), isActivationPort);
             inputs.add(p);
             leftPanel.add(p);
@@ -45,7 +45,7 @@ public class Block extends JPanel {
         rightPanel.setOpaque(false);
 
         for (int i = 0; i < outputNames.size(); i++) {
-            var isActivationPort = (i==0 && (type == BlockType.Action || type == BlockType.Event));
+            var isActivationPort = ((i==0 && (type == BlockType.Action || type == BlockType.Event)) || type == BlockType.Logic);
             Port p = new Port(this, false, outputNames.get(i), isActivationPort);
             outputs.add(p);
             rightPanel.add(p);
@@ -102,14 +102,68 @@ public class Block extends JPanel {
     // --- Import the code to the generated file ---
     public String getCode() {
         switch (title) {
+
+            // LOGIC
             case "If Block" -> {
-                String condition = inputs.get(1).getDefaultValue();
+                String condition = serializeFloatValue(inputs.get(1).getDefaultValue());
                 return "if (" + condition + ") { \n%s\n }";
             }
             case "If Else Block" -> {
-                String condition = inputs.get(1).getDefaultValue();
+                String condition = serializeFloatValue(inputs.get(1).getDefaultValue());
                 return "if (" + condition + ") { \n%s\n } else { \n%s\n }";
             }
+
+            // CONDITION
+            case "Not" -> {
+                String condition = inputs.get(0).getDefaultValue();
+                var output = "%!" + serializeFloatValue(condition);
+                outputs.get(0).setOutputValue(output);
+                return "";
+            }
+            case "And" -> {
+                String condition1 = inputs.get(0).getDefaultValue();
+                String condition2 = inputs.get(1).getDefaultValue();
+                var output = "%(" + serializeFloatValue(condition1) + " && " + serializeFloatValue(condition2) + ")" ;
+                outputs.get(0).setOutputValue(output);
+                return "";
+            }
+            case "Or" -> {
+                String condition1 = inputs.get(0).getDefaultValue();
+                String condition2 = inputs.get(1).getDefaultValue();
+                var output = "%(" + serializeFloatValue(condition1) + " || " + serializeFloatValue(condition2) + ")" ;
+                outputs.get(0).setOutputValue(output);
+                return "";
+            }
+            case "Xor" -> {
+                String condition1 = inputs.get(0).getDefaultValue();
+                String condition2 = inputs.get(1).getDefaultValue();
+                var output = "%(" + serializeFloatValue(condition1) + " ^ " + serializeFloatValue(condition2) + ")" ;
+                outputs.get(0).setOutputValue(output);
+                return "";
+            }
+            case "Inferior to" -> {
+                String number1 = inputs.get(0).getDefaultValue();
+                String number2 = inputs.get(1).getDefaultValue();
+                var output = "%" + serializeFloatValue(number1) + " <= " + serializeFloatValue(number2);
+                outputs.get(0).setOutputValue(output);
+                return "";
+            }
+            case "Stricly Inferior to" -> {
+                String number1 = inputs.get(0).getDefaultValue();
+                String number2 = inputs.get(1).getDefaultValue();
+                var output = "%" + serializeFloatValue(number1) + " < " + serializeFloatValue(number2);
+                outputs.get(0).setOutputValue(output);
+                return "";
+            }
+            case "Equals" -> {
+                String number1 = inputs.get(0).getDefaultValue();
+                String number2 = inputs.get(1).getDefaultValue();
+                var output = "%" + serializeFloatValue(number1) + " == " + serializeFloatValue(number2);
+                outputs.get(0).setOutputValue(output);
+                return "";
+            }
+
+            // ACTION
             case "Debug Block" -> {
                 String message = inputs.get(1).getDefaultValue();
                 return "System.out.println(" + serializeStringValue(message) + ");\n";
@@ -119,6 +173,8 @@ public class Block extends JPanel {
                 String variableValue = inputs.get(2).getDefaultValue();
                 return variableName + " = " + serializeFloatValue(variableValue) + ";";
             }
+
+            // INTERMEDIARY
             case "Add" -> {
                 String number1 = inputs.get(0).getDefaultValue();
                 String number2 = inputs.get(1).getDefaultValue();
@@ -154,6 +210,8 @@ public class Block extends JPanel {
                 outputs.get(0).setOutputValue(output);
                 return "";
             }
+
+            // EVENT
             case "On Start" -> {
                 return "System.out.println(\"On Start event triggered!\");\n%s";
             }
@@ -215,7 +273,8 @@ public class Block extends JPanel {
         
         for (var output : outputs) {
             var nb = output.getConnectedBlock();
-            if (nb != null) nextBlocks.add(nb);
+            nextBlocks.add(nb);
+            
         }
 
         return nextBlocks;

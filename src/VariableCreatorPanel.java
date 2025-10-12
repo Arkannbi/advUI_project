@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 import javax.swing.*;
 
-public class VariableCreatorPanel extends JPanel {
+public final class VariableCreatorPanel extends JPanel {
     private CodeGenerator controller;
 
     private final JTextField variableNameField; 			    // Text field to enter the variable name
@@ -48,7 +48,7 @@ public class VariableCreatorPanel extends JPanel {
 
 
         // Action to add a variable
-        addButton.addActionListener((ActionEvent e) -> {
+        addButton.addActionListener((ActionEvent _) -> {
             String varName = variableNameField.getText().trim();
             String varType = (String) typeSelector.getSelectedItem();
             String varValue;

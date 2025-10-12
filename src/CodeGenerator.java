@@ -140,7 +140,7 @@ public class CodeGenerator {
             String varValue = variable.get("value");
             variablesCode = variablesCode + "\n" + varType + " " + varName + " = " + varValue + ";";
         }
-        return String.format(currentCode, variablesCode, "%s", "%s", "%s");
+        return String.format(currentCode, variablesCode, "%s", "%s", "%s"); // Keep the "%s" to replace them later with the actual code
     }
     
     // Traverse the chain of blocks
@@ -153,18 +153,30 @@ public class CodeGenerator {
         
         List<Block> nextBlocks = currentBlock.getNextBlocks();
         
-        if (nextBlocks.isEmpty()) {
+        if (currentBlock.getType() == BlockType.Logic) {
+            System.out.println("logic !");
+            List<String> blocksCode = new ArrayList<>();
+            for (Block b : nextBlocks) {
+                System.out.println("block !");
+                System.out.println(b == null);
+                if (b == null) blocksCode.add("");
+                else blocksCode.add(processBlockChain(b, ""));
+            }
+            System.out.println(currentChainCode);
+            System.out.println(blocksCode.size());
+            return String.format(currentChainCode, blocksCode.toArray());
+            } else if (nextBlocks.isEmpty() || nextBlocks.getFirst() == null) {
             System.out.println("chain : " + currentBlock.getTitle() + " -> ???");
             return currentChainCode;
-        } else {
-            // Assuming a linear chain for sequential logic, process the first (and typically only) next block
-            Block nextBlock = nextBlocks.get(0); 
-            System.out.println("chain : " + currentBlock.getTitle() + " -> " + nextBlock.getTitle());
-            return processBlockChain(nextBlock, currentChainCode);
+            } else {
+                Block nextBlock = nextBlocks.get(0); 
+                System.out.println("chain : " + currentBlock.getTitle() + " -> " + nextBlock.getTitle());
+                return processBlockChain(nextBlock, currentChainCode);
+            }
         }
-    }
 
     private String BackpropagateBlockChain(Block currentBlock, String currentChainCode) {
+
         for (var port : currentBlock.getInputs()) {
             if (!port.isActivationPort && port.isConnected()) {
                 var previousBlock = port.getConnectedBlock();

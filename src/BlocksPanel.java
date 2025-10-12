@@ -28,6 +28,15 @@ public class BlocksPanel extends JPanel {
     private final Block ifBlock;
     private final Block ifElseBlock;
 
+    // Condition
+    private final Block notBlock;
+    private final Block andBlock;
+    private final Block orBlock;
+    private final Block xorBlock;
+    private final Block inferiorBlock;
+    private final Block inferiorStrictBlock;
+    private final Block equalsBlock;
+
     // Bloc lists
     private final DefaultListModel<Block> model;
     private final JList<Block> blockJList;
@@ -56,6 +65,7 @@ public class BlocksPanel extends JPanel {
         blockJList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
         // Initialize blocks
+        // event
         onStartBlock = new Block("On Start", BlockType.Event, List.of(), List.of("Start"));
         onFrame = new Block("On Frame", BlockType.Event, List.of(), List.of("On frame"));
         onSpacePressed = new Block("On KeyPressed (Space)", BlockType.Event, List.of(), List.of("Space"));
@@ -64,18 +74,31 @@ public class BlocksPanel extends JPanel {
         onUpPressed = new Block("On KeyPressed (Up)", BlockType.Event, List.of(), List.of("Up"));
         onDownPressed = new Block("On KeyPressed (Down)", BlockType.Event, List.of(), List.of("Down"));
 
+        // action
         debugBlock = new Block("Debug Block", BlockType.Action, List.of("In","content"), List.of("Out"));
         setVarBlock = new Block("Set Variable", BlockType.Action, List.of("In", "Variable Name","Value"), List.of("Out"));
         newObjectBlock = new Block("Create Object", BlockType.Action, List.of("In", "X", "Y", "Width", "Height"), List.of("Out"));
 
+        // intermediary
         addBlock = new Block("Add", BlockType.Intermediary, List.of("Value", "Value"), List.of("Out"));
         subBlock = new Block("Substract", BlockType.Intermediary, List.of("Value", "Value"), List.of("Out"));
         multBlock = new Block("Multiply", BlockType.Intermediary, List.of("Value", "Value"), List.of("Out"));
         divBlock = new Block("Divide", BlockType.Intermediary, List.of("Value", "Value"), List.of("Out"));
         convertBlock = new Block("Convert", BlockType.Intermediary, List.of("Value", "Value"), List.of("Out"));
 
+        // logic
         ifBlock = new Block("If Block", BlockType.Logic, List.of("In", "Condition"), List.of("Then"));
         ifElseBlock = new Block("If Else Block", BlockType.Logic, List.of("In", "Condition"), List.of("Then", "Else"));
+
+        // condition
+        notBlock = new Block("Not", BlockType.Condition, List.of("Condition"), List.of("Out"));
+        andBlock = new Block("And", BlockType.Condition, List.of("Condition", "Condition"), List.of("Out"));
+        orBlock = new Block("Or", BlockType.Condition, List.of("Condition", "Condition"), List.of("Out"));
+        xorBlock = new Block("Xor", BlockType.Condition, List.of("Condition", "Condition"), List.of("Out"));
+        inferiorBlock = new Block("Inferior to", BlockType.Condition, List.of("Value", "Value"), List.of("Out"));
+        inferiorStrictBlock = new Block("Stricly Inferior to", BlockType.Condition, List.of("Value", "Value"), List.of("Out"));
+        equalsBlock = new Block("Equals", BlockType.Condition, List.of("Value", "Value"), List.of("Out"));
+
 
         // Add all blocks to the model
         filterBlocks(null);
@@ -113,6 +136,14 @@ public class BlocksPanel extends JPanel {
                 case Logic -> {
                     model.addElement(ifBlock);
                     model.addElement(ifElseBlock);
+
+                    model.addElement(notBlock);
+                    model.addElement(andBlock);
+                    model.addElement(orBlock);
+                    model.addElement(xorBlock);
+                    model.addElement(equalsBlock);
+                    model.addElement(inferiorBlock);
+                    model.addElement(inferiorStrictBlock);
                 }
                 default -> {
                 }
@@ -139,6 +170,14 @@ public class BlocksPanel extends JPanel {
             // Logic
             model.addElement(ifBlock);
             model.addElement(ifElseBlock);
+            // Condition
+            model.addElement(notBlock);
+            model.addElement(andBlock);
+            model.addElement(orBlock);
+            model.addElement(xorBlock);
+            model.addElement(equalsBlock);
+            model.addElement(inferiorBlock);
+            model.addElement(inferiorStrictBlock);
        }
     }
 
@@ -156,7 +195,7 @@ public class BlocksPanel extends JPanel {
         button.setMaximumSize(new Dimension(30, 30));
         
         button.setToolTipText(buttonName);
-        button.addActionListener(e -> filterBlocks(filterType));
+        button.addActionListener(_ -> filterBlocks(filterType));
 
         buttonPanel.add(button);
     }

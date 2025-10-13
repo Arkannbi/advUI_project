@@ -1,3 +1,4 @@
+package blocks;
 public enum BlockType {
     Event,
     Action,

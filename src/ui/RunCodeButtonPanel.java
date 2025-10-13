@@ -1,3 +1,5 @@
+package ui;
+import codeGenerator.CodeGenerator;
 import java.awt.*;
 import javax.swing.*;
 
@@ -13,7 +15,7 @@ public class RunCodeButtonPanel extends JPanel {
         add(runCodeButton, BorderLayout.CENTER);
     }
 
-    public void setController(CodeGenerator controller) {
-        runCodeButton.addActionListener(_ -> controller.runCode());
+    public void setCodeGenerator(CodeGenerator codeGenerator) {
+        runCodeButton.addActionListener(_ -> codeGenerator.runCode());
     }
 }

@@ -1,4 +1,6 @@
+import codeGenerator.CodeGenerator;
 import javax.swing.*;
+import ui.MainFrame;
 
 public class Main {
 	public static void main(String[] args) {
@@ -7,9 +9,9 @@ public class Main {
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             frame.setSize(1000, 700);
 
-            CodeGenerator controller = new CodeGenerator( frame);
+            CodeGenerator codeGenerator = new CodeGenerator(frame);
 
-            frame.setController(controller);
+            frame.setCodeGenerator(codeGenerator);
 
             frame.setVisible(true);
         });

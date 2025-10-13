@@ -1,3 +1,6 @@
+package ui;
+import blocks.Block;
+import codeGenerator.CodeGenerator;
 import java.awt.*;
 import java.util.List;
 import javax.swing.*;
@@ -31,9 +34,9 @@ public class MainFrame extends JFrame {
         add(buttonPanel, BorderLayout.NORTH);
     }
 
-    public void setController(CodeGenerator controller) {
-        buttonPanel.setController(controller);
-        sidebarPanel.setController(controller);
+    public void setCodeGenerator(CodeGenerator codeGenerator) {
+        buttonPanel.setCodeGenerator(codeGenerator);
+        sidebarPanel.setCodeGenerator(codeGenerator);
     }
 
     public void showLog(String log) {

@@ -1,8 +1,10 @@
+package blocks;
 import java.awt.Point;
 import java.awt.datatransfer.*;
 import java.io.IOException;
 import java.util.List;
 import javax.swing.*;
+import ui.Canvas;
 
 // Custom TransferHandler for enabling drag-and-drop of Block from the toolboxPanel (the sidebar) and the canvas.
 public class BlockTransferHandler extends TransferHandler {

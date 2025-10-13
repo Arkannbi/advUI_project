@@ -1,3 +1,5 @@
+package ui;
+import codeGenerator.CodeGenerator;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
@@ -7,7 +9,7 @@ import java.util.Map;
 import javax.swing.*;
 
 public final class VariableCreatorPanel extends JPanel {
-    private CodeGenerator controller;
+    private CodeGenerator codeGenerator;
 
     private final JTextField variableNameField; 			    // Text field to enter the variable name
     private final JComboBox<String> typeSelector; 			    // Type Selcetor (to define the type of the variable)
@@ -95,9 +97,9 @@ public final class VariableCreatorPanel extends JPanel {
         }
     }
 
-    public void setController(CodeGenerator controller) {
-        this.controller = controller;
-        this.controller.setVariables(variables);
+    public void setCodeGenerator(CodeGenerator codeGenerator) {
+        this.codeGenerator = codeGenerator;
+        this.codeGenerator.setVariables(variables);
     }
 
     public void addVariable(String varName, String varType, String varValue) {
@@ -110,7 +112,7 @@ public final class VariableCreatorPanel extends JPanel {
             // Add a display string to the JList model
             variableListModel.addElement(varType + " " + varName + " : " + varValue);
             variableNameField.setText("");
-            if (this.controller != null) this.controller.setVariables(variables);
+            if (this.codeGenerator != null) this.codeGenerator.setVariables(variables);
         }
     }
 }

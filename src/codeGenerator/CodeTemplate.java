@@ -1,0 +1,124 @@
+package codeGenerator;
+
+import java.util.List;
+
+public class CodeTemplate {
+
+    public String build(String variablesCode, List<String> fragments) {
+        return String.format(TEMPLATE,
+                variablesCode,
+                fragments.get(0),
+                fragments.get(1),
+                fragments.get(2));
+    }
+
+    private static final String TEMPLATE = """
+            import java.awt.*;
+            import java.awt.event.KeyAdapter;
+            import java.awt.event.KeyEvent;
+            import java.util.ArrayList;
+        	import java.util.List;
+            
+            import javax.swing.*;
+
+            public class GameRunner extends JPanel implements Runnable {
+                private Thread gameThread;
+                private List<GameObject> objects = new ArrayList<>();
+
+                // Variables
+                %s
+
+                public GameRunner() {
+                    setFocusable(true);
+                    addKeyListener(new KeyAdapter() {
+                        @Override
+                        public void keyPressed(KeyEvent e) {
+                            // KeyPressed event
+                            %s 
+                        }
+                    });
+                }
+
+                @Override
+                public void run() {
+                    startGame();
+                    long lastTime = System.nanoTime();
+                    while (true) {
+                        long currentTime = System.nanoTime();
+                        deltaTime = (currentTime - lastTime) / 1_000_000_000.0f;
+                        lastTime = currentTime;
+                        update();
+                        repaint();
+                        try {
+                            Thread.sleep(16); // ~60 FPS
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+
+                private void update() {
+                    // OnFrameEvent
+                    %s 
+                }
+
+                @Override
+                protected void paintComponent(Graphics g) {
+                    super.paintComponent(g);
+                    
+                    for (GameObject obj : objects) {
+				        g.setColor(obj.color);
+				        g.fillRect(obj.x, obj.y, obj.width, obj.height);
+				    }
+				    
+                    g.setColor(Color.BLUE);
+                    g.fillRect(playerX, playerY, playerWidth, playerHeight);
+                }
+                
+                private void startGame() {
+                    // OnStart Event
+                    %s 
+                }
+
+                public static void main(String[] args) {
+                    System.out.println("Starting your game...");
+                    JFrame frame = new JFrame("Platformer Game");
+                    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                    frame.setSize(400, 300);
+                    frame.setLocationRelativeTo(null);
+
+                    GameRunner game = new GameRunner();
+                    frame.add(game);
+                    frame.setVisible(true);
+
+                    game.gameThread = new Thread(game);
+                    game.gameThread.start();
+                }
+            }
+            
+            class GameObject {
+				public int x;
+				public int y;
+				public int width;
+				public int height;
+				
+				public Color color;
+				public boolean collides;
+				
+				 public GameObject(int x, int y, int width, int height, Color color, boolean collides) {
+			        this.x = x;
+			        this.y = y;
+			        this.width = width;
+			        this.height = height;
+			        this.color = color;
+			        this.collides = collides;
+			    }
+				 
+				 public Rectangle getBounds() {
+			        return new Rectangle(x, y, width, height);
+			    }
+			}
+
+            """;
+    }
+

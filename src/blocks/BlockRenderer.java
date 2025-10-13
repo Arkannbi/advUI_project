@@ -1,3 +1,4 @@
+package blocks;
 import java.awt.Component;
 import javax.swing.*;
 

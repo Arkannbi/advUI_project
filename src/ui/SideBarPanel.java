@@ -1,3 +1,6 @@
+package ui;
+import blocks.BlocksPanel;
+import codeGenerator.CodeGenerator;
 import java.awt.*;
 import javax.swing.*;
 
@@ -26,7 +29,7 @@ public class SideBarPanel extends JPanel {
         add(variablesPanel, gbc);
     }
 
-    public void setController(CodeGenerator controller) {
-        variablesPanel.setController(controller);
+    public void setCodeGenerator(CodeGenerator codeGenerator) {
+        variablesPanel.setCodeGenerator(codeGenerator);
     }
 }

@@ -37,6 +37,7 @@ public final class VariableCreatorPanel extends JPanel {
         // Panel for variable creation (horizontal layout)
         JPanel inputPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         inputPanel.setPreferredSize(new Dimension(0, 100));
+        inputPanel.setBackground(Settings.getInstance().baseColor);
         variableNameField = new JTextField(10);
         variableNameField.setBackground(Settings.getInstance().baseColor);
         variableNameField.setForeground(Settings.getInstance().textColor);
@@ -49,6 +50,7 @@ public final class VariableCreatorPanel extends JPanel {
         inputPanel.add(typeSelector);
         inputPanel.add(addButton);
 
+
         // List of existing variables setup
         variableListModel = new DefaultListModel<>();
         variableJList = new JList<>(variableListModel);
@@ -56,6 +58,8 @@ public final class VariableCreatorPanel extends JPanel {
         // Enable drag from the variable list using the custom TransferHandler
         variableJList.setTransferHandler(new VariableTransferHandler());
         variableJList.setDragEnabled(true); 
+        variableJList.setBackground(Settings.getInstance().secondaryColor);
+        variableJList.setForeground(Settings.getInstance().textColor);
 
         // Scroll Pane to store the list of variables
         JScrollPane scrollPane = new JScrollPane(variableJList);

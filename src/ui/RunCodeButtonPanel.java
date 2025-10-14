@@ -2,6 +2,7 @@ package ui;
 import codeGenerator.CodeGenerator;
 import java.awt.*;
 import javax.swing.*;
+import settings.Settings;
 
 public class RunCodeButtonPanel extends JPanel {
 
@@ -12,6 +13,8 @@ public class RunCodeButtonPanel extends JPanel {
         setPreferredSize(new Dimension(800, 50));
 
         runCodeButton = new JButton("Run Code");
+        runCodeButton.setBackground(Settings.getInstance().tertiaryColor);
+        runCodeButton.setForeground(Settings.getInstance().textColor);
         add(runCodeButton, BorderLayout.CENTER);
     }
 

@@ -222,35 +222,35 @@ public class Block extends JPanel {
             }
             case "On KeyPressed (Space)" -> {
                 return """
-                            if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+                            if (keysPressed.contains(KeyEvent.VK_SPACE)) {
                                 %s
                             }
                        """;
             }
             case "On KeyPressed (Left)" -> {
                 return """
-                            if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+                            if (keysPressed.contains(KeyEvent.VK_LEFT)) {
                                 %s
                             }
                        """;
             }
             case "On KeyPressed (Right)" -> {
                 return """
-                            if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+                            if (keysPressed.contains(KeyEvent.VK_RIGHT)) {
                                 %s
                             }
                        """;
             }
             case "On KeyPressed (Up)" -> {
                 return """
-                            if (e.getKeyCode() == KeyEvent.VK_UP) {
+                            if (keysPressed.contains(KeyEvent.VK_UP)) {
                                 %s
                             }
                        """;
             }
             case "On KeyPressed (Down)" -> {
                 return """
-                            if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+                            if (keysPressed.contains(KeyEvent.VK_DOWN)) {
                                 %s
                             }
                        """;

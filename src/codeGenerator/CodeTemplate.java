@@ -18,12 +18,15 @@ public class CodeTemplate {
             import java.awt.event.KeyEvent;
             import java.util.ArrayList;
         	import java.util.List;
+        	import java.util.HashSet;
+    		import java.util.Set;
             
             import javax.swing.*;
 
             public class GameRunner extends JPanel implements Runnable {
                 private Thread gameThread;
                 private List<GameObject> objects = new ArrayList<>();
+                private Set<Integer> keysPressed = new HashSet<>();
 
                 // Variables
                 %s
@@ -34,7 +37,13 @@ public class CodeTemplate {
                         @Override
                         public void keyPressed(KeyEvent e) {
                             // KeyPressed event
-                            %s 
+                            keysPressed.add(e.getKeyCode());
+                        }
+                        
+                        @Override 
+                        public void keyReleased(KeyEvent e) {
+    		                // KeyReleased event
+                            keysPressed.remove(e.getKeyCode());
                         }
                     });
                 }
@@ -47,6 +56,10 @@ public class CodeTemplate {
                         long currentTime = System.nanoTime();
                         deltaTime = (currentTime - lastTime) / 1_000_000_000.0f;
                         lastTime = currentTime;
+                        
+                        // Player actions
+                        %s 
+                        
                         update();
                         repaint();
                         try {

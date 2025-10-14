@@ -16,6 +16,6 @@ public class RunCodeButtonPanel extends JPanel {
     }
 
     public void setCodeGenerator(CodeGenerator codeGenerator) {
-        runCodeButton.addActionListener(_ -> codeGenerator.runCode());
+        runCodeButton.addActionListener(e -> codeGenerator.runCode());
     }
 }

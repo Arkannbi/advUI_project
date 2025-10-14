@@ -45,16 +45,16 @@ public class BlocksPanel extends JPanel {
     public BlocksPanel() {
         setLayout(new BorderLayout());
 
-    JPanel buttonPanel = new JPanel(new GridLayout(1, 4, 0, 0));
-
-    addFilterButton(buttonPanel, "All Blocks", null, "ressources/icons/all.png");
-    addFilterButton(buttonPanel, "Event Blocks", BlockType.Event, "ressources/icons/event.png");
-    addFilterButton(buttonPanel, "Intermediary Blocks", BlockType.Intermediary, "ressources/icons/action.png");
-    addFilterButton(buttonPanel, "Action Blocks", BlockType.Action, "ressources/icons/intermediary.png");
-    addFilterButton(buttonPanel, "Logic Blocks", BlockType.Logic, "ressources/icons/logic.png");
-
-    // Add panel to layout
-    add(buttonPanel, BorderLayout.NORTH);
+	    JPanel buttonPanel = new JPanel(new GridLayout(1, 4, 0, 0));
+	    
+	    addFilterButton(buttonPanel, "All Blocks", null, "ressources/icons/all.png");
+	    addFilterButton(buttonPanel, "Event Blocks", BlockType.Event, "ressources/icons/event.png");
+	    addFilterButton(buttonPanel, "Intermediary Blocks", BlockType.Intermediary, "ressources/icons/action.png");
+	    addFilterButton(buttonPanel, "Action Blocks", BlockType.Action, "ressources/icons/intermediary.png");
+	    addFilterButton(buttonPanel, "Logic Blocks", BlockType.Logic, "ressources/icons/logic.png");
+	
+	    // Add panel to layout
+	    add(buttonPanel, BorderLayout.NORTH);
 
 
         // JList Setup
@@ -68,7 +68,7 @@ public class BlocksPanel extends JPanel {
         // Initialize blocks
         // event
         onStartBlock = new Block("On Start", BlockType.Event, List.of(), List.of("Start"));
-        onFrame = new Block("On Frame", BlockType.Event, List.of(), List.of("On frame"));
+        onFrame = new Block("On Frame", BlockType.Event, List.of(), List.of("Frame"));
         onSpacePressed = new Block("On KeyPressed (Space)", BlockType.Event, List.of(), List.of("Space"));
         onLeftPressed = new Block("On KeyPressed (Left)", BlockType.Event, List.of(), List.of("Left"));
         onRightPressed = new Block("On KeyPressed (Right)", BlockType.Event, List.of(), List.of("Right"));
@@ -77,7 +77,7 @@ public class BlocksPanel extends JPanel {
 
         // action
         debugBlock = new Block("Debug Block", BlockType.Action, List.of("In","content"), List.of("Out"));
-        setVarBlock = new Block("Set Variable", BlockType.Action, List.of("In", "Variable Name","Value"), List.of("Out"));
+        setVarBlock = new Block("Set Variable", BlockType.Action, List.of("In", "Name","Value"), List.of("Out"));
         newObjectBlock = new Block("Create Object", BlockType.Action, List.of("In", "X", "Y", "Width", "Height"), List.of("Out"));
 
         // intermediary
@@ -97,7 +97,7 @@ public class BlocksPanel extends JPanel {
         orBlock = new Block("Or", BlockType.Condition, List.of("Condition", "Condition"), List.of("Out"));
         xorBlock = new Block("Xor", BlockType.Condition, List.of("Condition", "Condition"), List.of("Out"));
         inferiorBlock = new Block("Inferior to", BlockType.Condition, List.of("Value", "Value"), List.of("Out"));
-        inferiorStrictBlock = new Block("Stricly Inferior to", BlockType.Condition, List.of("Value", "Value"), List.of("Out"));
+        inferiorStrictBlock = new Block("Strictly Inferior to", BlockType.Condition, List.of("Value", "Value"), List.of("Out"));
         equalsBlock = new Block("Equals", BlockType.Condition, List.of("Value", "Value"), List.of("Out"));
 
 
@@ -196,7 +196,7 @@ public class BlocksPanel extends JPanel {
         button.setMaximumSize(new Dimension(30, 30));
         
         button.setToolTipText(buttonName);
-        button.addActionListener(_ -> filterBlocks(filterType));
+        button.addActionListener(e -> filterBlocks(filterType));
 
         buttonPanel.add(button);
     }

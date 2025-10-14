@@ -1,6 +1,11 @@
 package ui;
+import blocks.Block;
+import blocks.BlockTransferHandler;
+import blocks.Connection;
+import blocks.Port;
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -9,11 +14,6 @@ import java.awt.event.*;
 import java.awt.geom.CubicCurve2D;
 import java.util.*;
 import javax.swing.*;
-
-import blocks.Block;
-import blocks.BlockTransferHandler;
-import blocks.Connection;
-import blocks.Port;
 
 public class Canvas extends JLayeredPane {
 	private final List<Block> blocks;
@@ -79,7 +79,7 @@ public class Canvas extends JLayeredPane {
 					int deltaX = mousePos.x - e.getPoint().x;
 					int deltaY = mousePos.y - e.getPoint().y;
 					Rectangle rect = block.getBounds();
-					block.setBounds(rect.x - deltaX, rect.y - deltaY, 200, Math.max(block.getInputs().size(), block.getOutputs().size()) * 21 + 16);
+					block.setBounds(rect.x - deltaX, rect.y - deltaY, rect.width, rect.height);
 				}
 				mousePos = e.getPoint();
 				repaint();
@@ -114,7 +114,8 @@ public class Canvas extends JLayeredPane {
 	public void addBlock(Block b, int x, int y) {
 		// A bit ugly but to make it simple we're using hardcoded port sizes and their number to create the good block size
         // And we have to do it here because blocks aren't instantiated with x and y coordinates, as they depend on the canvas
-		b.setBounds(x, y, 200, Math.max(b.getInputs().size(), b.getOutputs().size()) * 21 + 16);
+		Dimension d = b.getPreferredSize();
+		b.setBounds(x, y, 200, d.height);
 
         for (Port p : b.getOutputs()) {
             MouseAdapter adapter = new MouseAdapter() {

@@ -1,5 +1,7 @@
 package ui;
 import java.awt.*;
+import java.io.File;
+import java.io.IOException;
 import javax.swing.*;
 
 public class ConsolePanel extends JPanel {
@@ -10,6 +12,15 @@ public class ConsolePanel extends JPanel {
         setPreferredSize(new Dimension(800, 150));
 
         textArea = new JTextArea("\n  >> Welcome to the newest no code game engine!");
+                File font_file = new File("ressources/fonts/CascadiaCode.ttf");
+        try {
+            Font font = Font.createFont(Font.TRUETYPE_FONT, font_file);
+            font = font.deriveFont(Font.ITALIC, 12f);
+            textArea.setFont(font);
+        }
+        catch (IOException | FontFormatException e)  {
+        	e.printStackTrace();
+        }
         textArea.setEditable(false);
 
         JScrollPane scrollPane = new JScrollPane(textArea);

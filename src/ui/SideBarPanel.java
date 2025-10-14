@@ -8,25 +8,22 @@ public class SideBarPanel extends JPanel {
     VariableCreatorPanel variablesPanel;
 
     public SideBarPanel() {
-        setPreferredSize(new Dimension(150, 600));
+        setPreferredSize(new Dimension(200, 600));
         setBackground(Color.WHITE);
         setOpaque(true);
-        setLayout(new GridBagLayout());
-
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.fill = GridBagConstraints.BOTH;
-        gbc.weightx = 1.0;
-        gbc.gridx = 0;
-        gbc.gridy = 0;
+        setLayout(new BorderLayout());
+        setBorder(BorderFactory.createBevelBorder(1, Color.gray, Color.white));
 
         BlocksPanel blocksPanel = new BlocksPanel();
-        gbc.weighty = 0.7;
-        add(blocksPanel, gbc);
-
-        gbc.gridy = 1;
         variablesPanel = new VariableCreatorPanel();
-        gbc.weighty = 0.3;
-        add(variablesPanel, gbc);
+        
+        JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, blocksPanel, variablesPanel);
+        splitPane.setResizeWeight(0.7);
+        splitPane.setContinuousLayout(true);
+        splitPane.setDividerSize(10);
+        splitPane.setBorder(null);
+
+        add(splitPane);
     }
 
     public void setCodeGenerator(CodeGenerator codeGenerator) {

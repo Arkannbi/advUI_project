@@ -50,7 +50,7 @@ public final class VariableCreatorPanel extends JPanel {
 
 
         // Action to add a variable
-        addButton.addActionListener((ActionEvent _) -> {
+        addButton.addActionListener((ActionEvent e) -> {
             String varName = variableNameField.getText().trim();
             String varType = (String) typeSelector.getSelectedItem();
             String varValue;

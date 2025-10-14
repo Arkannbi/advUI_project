@@ -22,10 +22,11 @@ public class Block extends JPanel {
         this.outputNames = outputNames;
 		setLayout(new BorderLayout());
 		setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
-	    setBackground(new Color(230, 230, 250));
 	    
 	    // Block title
 	    JLabel titleLabel = new JLabel(title);
+        titleLabel.setFont(titleLabel.getFont().deriveFont(Font.BOLD + Font.ITALIC, 14f));
+	    titleLabel.setBorder(BorderFactory.createEmptyBorder(0,0,5,0));
         add(titleLabel, BorderLayout.NORTH);
         
         // Left panel containing inputs
@@ -296,6 +297,20 @@ public class Block extends JPanel {
     public Block copy() {
     	Block copy = new Block(this.title, this.type, new ArrayList<>(this.inputNames), new ArrayList<>(this.outputNames));
     	return copy;
+    }
+
+    @Override
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        Graphics2D g2d = (Graphics2D) g;
+        Color color1 = new Color(230, 230, 250);
+        Color color2 = new Color(220, 220, 240);
+        int width = getWidth();
+        int height = getHeight();
+        GradientPaint paint = new GradientPaint(
+            0, 0, color1, 0, height, color2);
+        g2d.setPaint(paint);
+        g2d.fillRect(0, 0, width, height);
     }
 
 }

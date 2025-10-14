@@ -2,6 +2,7 @@ package blocks;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import javax.swing.*;
+import settings.Settings;
 
 public class Port extends JPanel {
 	public final boolean isActivationPort;
@@ -49,9 +50,14 @@ public class Port extends JPanel {
         clickablePart.setPreferredSize(new Dimension(16, 16));
         
         JLabel title = new JLabel(name);
+
+		title.setForeground(Settings.getInstance().textColor);
         
         if (isInput) {
         	defaultField.setPreferredSize(new Dimension(50,16));
+			defaultField.setBackground(Settings.getInstance().secondaryColor);
+			defaultField.setForeground(Settings.getInstance().textColor);
+			defaultField.setBorder(null);
         	
         	this.add(clickablePart, BorderLayout.WEST);
         	title.setBorder(BorderFactory.createEmptyBorder(0,0,0,3));

@@ -3,16 +3,17 @@ import blocks.BlocksPanel;
 import codeGenerator.CodeGenerator;
 import java.awt.*;
 import javax.swing.*;
+import settings.Settings;
 
 public class SideBarPanel extends JPanel {
     VariableCreatorPanel variablesPanel;
 
     public SideBarPanel() {
         setPreferredSize(new Dimension(200, 600));
-        setBackground(Color.WHITE);
+        setBackground(Settings.getInstance().secondaryColor);
         setOpaque(true);
         setLayout(new BorderLayout());
-        setBorder(BorderFactory.createBevelBorder(1, Color.gray, Color.white));
+        // setBorder(BorderFactory.createBevelBorder(1, Color.gray, Color.white));
 
         BlocksPanel blocksPanel = new BlocksPanel();
         variablesPanel = new VariableCreatorPanel();
@@ -22,6 +23,8 @@ public class SideBarPanel extends JPanel {
         splitPane.setContinuousLayout(true);
         splitPane.setDividerSize(10);
         splitPane.setBorder(null);
+        splitPane.setOpaque(true);
+        splitPane.setBackground(Settings.getInstance().baseColor);
 
         add(splitPane);
     }

@@ -3,8 +3,8 @@ import blocks.Block;
 import blocks.BlockTransferHandler;
 import blocks.Connection;
 import blocks.Port;
+import blocks.RoundedBorder;
 import java.awt.BasicStroke;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -14,6 +14,7 @@ import java.awt.event.*;
 import java.awt.geom.CubicCurve2D;
 import java.util.*;
 import javax.swing.*;
+import settings.Settings;
 
 public class Canvas extends JLayeredPane {
 	private final List<Block> blocks;
@@ -49,6 +50,9 @@ public class Canvas extends JLayeredPane {
 		
 		setupListeners();
         setTransferHandler(new BlockTransferHandler());
+
+		setBackground(Settings.getInstance().secondaryColor);
+		setOpaque(true);
 	}
 	
 	private void setupListeners() {
@@ -243,6 +247,7 @@ public class Canvas extends JLayeredPane {
 		int height = getHeight();
 
         Graphics2D g2 = (Graphics2D) g;
+		g2.setColor(Settings.getInstance().textColor);
         g2.setStroke(new BasicStroke(2));
 
         for (Connection c : connections) {
@@ -259,10 +264,10 @@ public class Canvas extends JLayeredPane {
         for (Block b : blocks) {
         	if (b != null) {
         		if (b != currentSelectedBlock) {
-        			b.setBorder(BorderFactory.createLineBorder(Color.black, 2));
+        			b.setBorder(new RoundedBorder(b.getBorderColor(b.getType()), 2, 15));
         		}
             	else if (b == currentSelectedBlock) {
-            		b.setBorder(BorderFactory.createLineBorder(Color.red, 2));
+            		b.setBorder(new RoundedBorder(Settings.getInstance().textColor, 2, 15));
             	}
         		Rectangle rect = b.getBounds();
         		if (rect.x + rect.width < 0) {
@@ -281,7 +286,7 @@ public class Canvas extends JLayeredPane {
         	}
         }
         
-        g2.setColor(Color.BLACK);
+        g2.setColor(Settings.getInstance().textColor);
         g2.setStroke(new BasicStroke(3));
 
         if (hasBlockUp) {

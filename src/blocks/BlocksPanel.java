@@ -2,41 +2,42 @@ package blocks;
 import java.awt.*;
 import java.util.List;
 import javax.swing.*;
+import settings.Settings;
 
 public class BlocksPanel extends JPanel {
     // Actions
-    private final Block debugBlock;
-    private final Block setVarBlock;
-    private final Block newObjectBlock;
+    private final JPanel debugBlock;
+    private final JPanel setVarBlock;
+    private final JPanel newObjectBlock;
 
     // Events
-    private final Block onStartBlock;
-    private final Block onFrame;
-    private final Block onSpacePressed;
-    private final Block onLeftPressed;
-    private final Block onRightPressed; 
-    private final Block onUpPressed;
-    private final Block onDownPressed;
+    private final JPanel onStartBlock;
+    private final JPanel onFrame;
+    private final JPanel onSpacePressed;
+    private final JPanel onLeftPressed;
+    private final JPanel onRightPressed; 
+    private final JPanel onUpPressed;
+    private final JPanel onDownPressed;
 
     // Intermediary
-    private final Block addBlock;
-    private final Block subBlock;
-    private final Block multBlock;
-    private final Block divBlock;
-    private final Block convertBlock;
+    private final JPanel addBlock;
+    private final JPanel subBlock;
+    private final JPanel multBlock;
+    private final JPanel divBlock;
+    private final JPanel convertBlock;
 
     // Logic
-    private final Block ifBlock;
-    private final Block ifElseBlock;
+    private final JPanel ifBlock;
+    private final JPanel ifElseBlock;
 
     // Condition
-    private final Block notBlock;
-    private final Block andBlock;
-    private final Block orBlock;
-    private final Block xorBlock;
-    private final Block inferiorBlock;
-    private final Block inferiorStrictBlock;
-    private final Block equalsBlock;
+    private final JPanel notBlock;
+    private final JPanel andBlock;
+    private final JPanel orBlock;
+    private final JPanel xorBlock;
+    private final JPanel inferiorBlock;
+    private final JPanel inferiorStrictBlock;
+    private final JPanel equalsBlock;
 
     // Bloc lists
     private final DefaultListModel<Block> model;
@@ -44,6 +45,7 @@ public class BlocksPanel extends JPanel {
 
     public BlocksPanel() {
         setLayout(new BorderLayout());
+        setOpaque(false);
 
 	    JPanel buttonPanel = new JPanel(new GridLayout(1, 4, 0, 0));
 	    
@@ -54,6 +56,7 @@ public class BlocksPanel extends JPanel {
 	    addFilterButton(buttonPanel, "Logic Blocks", BlockType.Logic, "ressources/icons/logic.png");
 	
 	    // Add panel to layout
+        buttonPanel.setOpaque(false);
 	    add(buttonPanel, BorderLayout.NORTH);
 
 
@@ -64,41 +67,44 @@ public class BlocksPanel extends JPanel {
         blockJList.setDragEnabled(true);
         blockJList.setTransferHandler(new BlockTransferHandler());
         blockJList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        blockJList.setBackground(Settings.getInstance().baseColor);
+        blockJList.setOpaque(true);
+
 
         // Initialize blocks
         // event
-        onStartBlock = new Block("On Start", BlockType.Event, List.of(), List.of("Start"));
-        onFrame = new Block("On Frame", BlockType.Event, List.of(), List.of("Frame"));
-        onSpacePressed = new Block("On KeyPressed (Space)", BlockType.Event, List.of(), List.of("Space"));
-        onLeftPressed = new Block("On KeyPressed (Left)", BlockType.Event, List.of(), List.of("Left"));
-        onRightPressed = new Block("On KeyPressed (Right)", BlockType.Event, List.of(), List.of("Right"));
-        onUpPressed = new Block("On KeyPressed (Up)", BlockType.Event, List.of(), List.of("Up"));
-        onDownPressed = new Block("On KeyPressed (Down)", BlockType.Event, List.of(), List.of("Down"));
+        onStartBlock = createBlockPanel("On Start", BlockType.Event, List.of(), List.of("Start"));
+        onFrame = createBlockPanel("On Frame", BlockType.Event, List.of(), List.of("Frame"));
+        onSpacePressed = createBlockPanel("On KeyPressed (Space)", BlockType.Event, List.of(), List.of("Space"));
+        onLeftPressed = createBlockPanel("On KeyPressed (Left)", BlockType.Event, List.of(), List.of("Left"));
+        onRightPressed = createBlockPanel("On KeyPressed (Right)", BlockType.Event, List.of(), List.of("Right"));
+        onUpPressed = createBlockPanel("On KeyPressed (Up)", BlockType.Event, List.of(), List.of("Up"));
+        onDownPressed = createBlockPanel("On KeyPressed (Down)", BlockType.Event, List.of(), List.of("Down"));
 
         // action
-        debugBlock = new Block("Debug Block", BlockType.Action, List.of("In","content"), List.of("Out"));
-        setVarBlock = new Block("Set Variable", BlockType.Action, List.of("In", "Name","Value"), List.of("Out"));
-        newObjectBlock = new Block("Create Object", BlockType.Action, List.of("In", "X", "Y", "Width", "Height"), List.of("Out"));
+        debugBlock = createBlockPanel("Debug Block", BlockType.Action, List.of("In","content"), List.of("Out"));
+        setVarBlock = createBlockPanel("Set Variable", BlockType.Action, List.of("In", "Name","Value"), List.of("Out"));
+        newObjectBlock = createBlockPanel("Create Object", BlockType.Action, List.of("In", "X", "Y", "Width", "Height"), List.of("Out"));
 
         // intermediary
-        addBlock = new Block("Add", BlockType.Intermediary, List.of("Value", "Value"), List.of("Out"));
-        subBlock = new Block("Substract", BlockType.Intermediary, List.of("Value", "Value"), List.of("Out"));
-        multBlock = new Block("Multiply", BlockType.Intermediary, List.of("Value", "Value"), List.of("Out"));
-        divBlock = new Block("Divide", BlockType.Intermediary, List.of("Value", "Value"), List.of("Out"));
-        convertBlock = new Block("Convert", BlockType.Intermediary, List.of("Value", "Value"), List.of("Out"));
+        addBlock = createBlockPanel("Add", BlockType.Intermediary, List.of("Value", "Value"), List.of("Out"));
+        subBlock = createBlockPanel("Substract", BlockType.Intermediary, List.of("Value", "Value"), List.of("Out"));
+        multBlock = createBlockPanel("Multiply", BlockType.Intermediary, List.of("Value", "Value"), List.of("Out"));
+        divBlock = createBlockPanel("Divide", BlockType.Intermediary, List.of("Value", "Value"), List.of("Out"));
+        convertBlock = createBlockPanel("Convert", BlockType.Intermediary, List.of("Value", "Value"), List.of("Out"));
 
         // logic
-        ifBlock = new Block("If Block", BlockType.Logic, List.of("In", "Condition"), List.of("Then"));
-        ifElseBlock = new Block("If Else Block", BlockType.Logic, List.of("In", "Condition"), List.of("Then", "Else"));
+        ifBlock = createBlockPanel("If Block", BlockType.Logic, List.of("In", "Condition"), List.of("Then"));
+        ifElseBlock = createBlockPanel("If Else Block", BlockType.Logic, List.of("In", "Condition"), List.of("Then", "Else"));
 
         // condition
-        notBlock = new Block("Not", BlockType.Condition, List.of("Condition"), List.of("Out"));
-        andBlock = new Block("And", BlockType.Condition, List.of("Condition", "Condition"), List.of("Out"));
-        orBlock = new Block("Or", BlockType.Condition, List.of("Condition", "Condition"), List.of("Out"));
-        xorBlock = new Block("Xor", BlockType.Condition, List.of("Condition", "Condition"), List.of("Out"));
-        inferiorBlock = new Block("Inferior to", BlockType.Condition, List.of("Value", "Value"), List.of("Out"));
-        inferiorStrictBlock = new Block("Strictly Inferior to", BlockType.Condition, List.of("Value", "Value"), List.of("Out"));
-        equalsBlock = new Block("Equals", BlockType.Condition, List.of("Value", "Value"), List.of("Out"));
+        notBlock = createBlockPanel("Not", BlockType.Condition, List.of("Condition"), List.of("Out"));
+        andBlock = createBlockPanel("And", BlockType.Condition, List.of("Condition", "Condition"), List.of("Out"));
+        orBlock = createBlockPanel("Or", BlockType.Condition, List.of("Condition", "Condition"), List.of("Out"));
+        xorBlock = createBlockPanel("Xor", BlockType.Condition, List.of("Condition", "Condition"), List.of("Out"));
+        inferiorBlock = createBlockPanel("Inferior to", BlockType.Condition, List.of("Value", "Value"), List.of("Out"));
+        inferiorStrictBlock = createBlockPanel("Strictly Inferior to", BlockType.Condition, List.of("Value", "Value"), List.of("Out"));
+        equalsBlock = createBlockPanel("Equals", BlockType.Condition, List.of("Value", "Value"), List.of("Out"));
 
 
         // Add all blocks to the model
@@ -106,6 +112,11 @@ public class BlocksPanel extends JPanel {
 
         JScrollPane scrollPane = new JScrollPane(blockJList);
         scrollPane.setPreferredSize(new Dimension(200, 300));
+        scrollPane.setOpaque(false);
+        
+        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+
         add(scrollPane, BorderLayout.CENTER);
     }
 
@@ -114,71 +125,71 @@ public class BlocksPanel extends JPanel {
        if (type != null) {
             switch (type) {
                 case Event -> {
-                    model.addElement(onStartBlock);
-                    model.addElement(onFrame);
-                    model.addElement(onSpacePressed);
-                    model.addElement(onLeftPressed);
-                    model.addElement(onRightPressed);
-                    model.addElement(onUpPressed);
-                    model.addElement(onDownPressed);
+                    model.addElement((Block)onStartBlock.getComponent(0));
+                    model.addElement((Block)onFrame.getComponent(0));
+                    model.addElement((Block)onSpacePressed.getComponent(0));
+                    model.addElement((Block)onLeftPressed.getComponent(0));
+                    model.addElement((Block)onRightPressed.getComponent(0));
+                    model.addElement((Block)onUpPressed.getComponent(0));
+                    model.addElement((Block)onDownPressed.getComponent(0));
                 }
                 case Intermediary -> {
-                    model.addElement(addBlock);
-                    model.addElement(subBlock);
-                    model.addElement(multBlock);
-                    model.addElement(divBlock);
-                    model.addElement(convertBlock);
+                    model.addElement((Block)addBlock.getComponent(0));
+                    model.addElement((Block)subBlock.getComponent(0));
+                    model.addElement((Block)multBlock.getComponent(0));
+                    model.addElement((Block)divBlock.getComponent(0));
+                    model.addElement((Block)convertBlock.getComponent(0));
                 }
                 case Action -> {
-                    model.addElement(debugBlock);
-                    model.addElement(setVarBlock);
-                    model.addElement(newObjectBlock);
+                    model.addElement((Block)debugBlock.getComponent(0));
+                    model.addElement((Block)setVarBlock.getComponent(0));
+                    model.addElement((Block)newObjectBlock.getComponent(0));
                 }
                 case Logic -> {
-                    model.addElement(ifBlock);
-                    model.addElement(ifElseBlock);
+                    model.addElement((Block)ifBlock.getComponent(0));
+                    model.addElement((Block)ifElseBlock.getComponent(0));
 
-                    model.addElement(notBlock);
-                    model.addElement(andBlock);
-                    model.addElement(orBlock);
-                    model.addElement(xorBlock);
-                    model.addElement(equalsBlock);
-                    model.addElement(inferiorBlock);
-                    model.addElement(inferiorStrictBlock);
+                    model.addElement((Block)notBlock.getComponent(0));
+                    model.addElement((Block)andBlock.getComponent(0));
+                    model.addElement((Block)orBlock.getComponent(0));
+                    model.addElement((Block)xorBlock.getComponent(0));
+                    model.addElement((Block)equalsBlock.getComponent(0));
+                    model.addElement((Block)inferiorBlock.getComponent(0));
+                    model.addElement((Block)inferiorStrictBlock.getComponent(0));
                 }
                 default -> {
                 }
             }
        } else {
             // Events
-            model.addElement(onStartBlock);
-            model.addElement(onFrame);
-            model.addElement(onSpacePressed);
-            model.addElement(onLeftPressed);
-            model.addElement(onRightPressed);
-            model.addElement(onUpPressed);
-            model.addElement(onDownPressed);
+            model.addElement((Block)onStartBlock.getComponent(0));
+            model.addElement((Block)onFrame.getComponent(0));
+            model.addElement((Block)onSpacePressed.getComponent(0));
+            model.addElement((Block)onLeftPressed.getComponent(0));
+            model.addElement((Block)onRightPressed.getComponent(0));
+            model.addElement((Block)onUpPressed.getComponent(0));
+            model.addElement((Block)onDownPressed.getComponent(0));
             // Intermediary
-            model.addElement(addBlock);
-            model.addElement(subBlock);
-            model.addElement(multBlock);
-            model.addElement(divBlock);
-            model.addElement(convertBlock);
+            model.addElement((Block)addBlock.getComponent(0));
+            model.addElement((Block)subBlock.getComponent(0));
+            model.addElement((Block)multBlock.getComponent(0));
+            model.addElement((Block)divBlock.getComponent(0));
+            model.addElement((Block)convertBlock.getComponent(0));
             // Actions
-            model.addElement(debugBlock);
-            model.addElement(setVarBlock);
-            model.addElement(newObjectBlock);
+            model.addElement((Block)debugBlock.getComponent(0));
+            model.addElement((Block)setVarBlock.getComponent(0));
+            model.addElement((Block)newObjectBlock.getComponent(0));
             // Logic
-            model.addElement(ifBlock);
-            model.addElement(ifElseBlock);
+            model.addElement((Block)ifBlock.getComponent(0));
+            model.addElement((Block)ifElseBlock.getComponent(0));
             // Condition
-            model.addElement(notBlock);
-            model.addElement(andBlock);
-            model.addElement(orBlock);
-            model.addElement(xorBlock);
-            model.addElement(equalsBlock);
-            model.addElement(inferiorBlock);
-            model.addElement(inferiorStrictBlock);
+            model.addElement((Block)notBlock.getComponent(0));
+            model.addElement((Block)andBlock.getComponent(0));
+            model.addElement((Block)orBlock.getComponent(0));
+            model.addElement((Block)xorBlock.getComponent(0));
+            model.addElement((Block)equalsBlock.getComponent(0));
+            model.addElement((Block)inferiorBlock.getComponent(0));
+            model.addElement((Block)inferiorStrictBlock.getComponent(0));
        }
     }
 
@@ -200,4 +211,17 @@ public class BlocksPanel extends JPanel {
 
         buttonPanel.add(button);
     }
+
+    private JPanel createBlockPanel(String title, BlockType type, List<String> inputs, List<String> outputs) {
+        JPanel panel = new JPanel(new BorderLayout());
+        panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        
+        Block block = new Block(title, type, inputs, outputs);
+        // Ajouter un padding au block
+        block.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        
+        panel.add(block, BorderLayout.CENTER);
+        return panel;
+    }
+
 }

@@ -3,9 +3,10 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.*;
+import settings.Settings;
 
 
-public class Block extends JPanel {
+public final class Block extends JPanel {
     private final String title;
 	private final List<Port> inputs;
 	private final List<Port> outputs;
@@ -13,59 +14,60 @@ public class Block extends JPanel {
 	private final List<String> inputNames;
 	private final List<String> outputNames;
 
-	public Block(String title, BlockType type, List<String> inputNames, List<String> outputNames) {
-		this.inputs = new ArrayList<>();
-		this.outputs = new ArrayList<>();
+    public Block(String title, BlockType type, List<String> inputNames, List<String> outputNames) {
+        this.inputs = new ArrayList<>();
+        this.outputs = new ArrayList<>();
         this.title = title;
         this.type = type;
         this.inputNames = inputNames;
         this.outputNames = outputNames;
-		setLayout(new BorderLayout());
-		setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
-	    
-	    // Block title
-	    JLabel titleLabel = new JLabel(title);
+
+        setLayout(new BorderLayout());
+        setOpaque(false);
+
+        // Custom rounded border with color based on type
+        setBorder(new RoundedBorder(getBorderColor(type), 2, 15));
+
+        // Block title
+        JLabel titleLabel = new JLabel(title);
         titleLabel.setFont(titleLabel.getFont().deriveFont(Font.BOLD + Font.ITALIC, 14f));
-	    titleLabel.setBorder(BorderFactory.createEmptyBorder(0,0,5,0));
+        titleLabel.setForeground(Settings.getInstance().textColor); // White font
+        titleLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 5, 0));
         add(titleLabel, BorderLayout.NORTH);
-        
+
         // Left panel containing inputs
         JPanel leftPanel = new JPanel();
         leftPanel.setLayout(new GridLayout(0, 1, 0, 5));
         leftPanel.setOpaque(false);
-
         for (int i = 0; i < inputNames.size(); i++) {
-            var isActivationPort = (i==0 && (type == BlockType.Action || type == BlockType.Logic));
+            boolean isActivationPort = (i == 0 && (type == BlockType.Action || type == BlockType.Logic));
             Port p = new Port(this, true, inputNames.get(i), isActivationPort);
             inputs.add(p);
             leftPanel.add(p);
         }
-        
+
         // Right panel containing outputs
         JPanel rightPanel = new JPanel();
         rightPanel.setLayout(new GridLayout(0, 1, 0, 5));
         rightPanel.setOpaque(false);
-
         for (int i = 0; i < outputNames.size(); i++) {
-            var isActivationPort = ((i==0 && (type == BlockType.Action || type == BlockType.Event)) || type == BlockType.Logic);
+            boolean isActivationPort = ((i == 0 && (type == BlockType.Action || type == BlockType.Event)) || type == BlockType.Logic);
             Port p = new Port(this, false, outputNames.get(i), isActivationPort);
             outputs.add(p);
             rightPanel.add(p);
         }
 
-        // Wrap them so that they keep their preferred size instead of stretching
+        // Wrap them so that they keep their preferred size
         JPanel leftWrapper = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
         leftWrapper.setOpaque(false);
         leftWrapper.add(leftPanel);
-
         JPanel rightWrapper = new JPanel(new FlowLayout(FlowLayout.RIGHT, 0, 0));
         rightWrapper.setOpaque(false);
         rightWrapper.add(rightPanel);
-
         add(leftWrapper, BorderLayout.WEST);
         add(rightWrapper, BorderLayout.EAST);
-	}
-	
+    }
+    
 	 public List<Port> getInputs() {
 		 return inputs;
 	 }
@@ -299,18 +301,26 @@ public class Block extends JPanel {
     	return copy;
     }
 
+    public Color getBorderColor(BlockType type) {
+        return switch (type) {
+            case Action -> Color.RED;
+            case Logic -> Color.MAGENTA;
+            case Condition -> Color.PINK;
+            case Event -> Color.GREEN;
+            default -> Color.BLUE;
+        };
+    }
+
     @Override
-    public void paintComponent(Graphics g) {
+    protected void paintComponent(Graphics g) {
+        Graphics2D g2d = (Graphics2D) g.create();
+        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        g2d.setColor(Settings.getInstance().baseColor);
+        g2d.fillRoundRect(0, 0, getWidth(), getHeight(), 15, 15);
         super.paintComponent(g);
-        Graphics2D g2d = (Graphics2D) g;
-        Color color1 = new Color(230, 230, 250);
-        Color color2 = new Color(220, 220, 240);
-        int width = getWidth();
-        int height = getHeight();
-        GradientPaint paint = new GradientPaint(
-            0, 0, color1, 0, height, color2);
-        g2d.setPaint(paint);
-        g2d.fillRect(0, 0, width, height);
+        g2d.dispose();
     }
 
 }
+
+

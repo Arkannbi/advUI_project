@@ -3,6 +3,7 @@ import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import javax.swing.*;
+import settings.Settings;
 
 public class ConsolePanel extends JPanel {
     private final JTextArea textArea;
@@ -10,6 +11,7 @@ public class ConsolePanel extends JPanel {
     public ConsolePanel() {
         setLayout(new BorderLayout());
         setPreferredSize(new Dimension(800, 150));
+
 
         textArea = new JTextArea("\n  >> Welcome to the newest no code game engine!");
                 File font_file = new File("ressources/fonts/CascadiaCode.ttf");
@@ -22,6 +24,10 @@ public class ConsolePanel extends JPanel {
         	e.printStackTrace();
         }
         textArea.setEditable(false);
+
+        textArea.setBackground(Settings.getInstance().tertiaryColor);
+        textArea.setForeground(Settings.getInstance().textColor);
+        textArea.setOpaque(true);
 
         JScrollPane scrollPane = new JScrollPane(textArea);
         add(scrollPane, BorderLayout.CENTER);

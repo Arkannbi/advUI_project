@@ -7,6 +7,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.swing.*;
+import javax.swing.border.TitledBorder;
+import settings.Settings;
 
 public final class VariableCreatorPanel extends JPanel {
     private CodeGenerator codeGenerator;
@@ -20,14 +22,24 @@ public final class VariableCreatorPanel extends JPanel {
 
     public VariableCreatorPanel() {
         setLayout(new BorderLayout());
-        setBorder(BorderFactory.createTitledBorder("Variable Creator"));
-        setBackground(Color.WHITE);
+        setBorder(BorderFactory.createTitledBorder(
+            BorderFactory.createEtchedBorder(),
+            "Variable Creator",
+            TitledBorder.DEFAULT_JUSTIFICATION,
+            TitledBorder.DEFAULT_POSITION,
+            null,
+            Settings.getInstance().textColor
+        ));
+
+        setBackground(Settings.getInstance().baseColor);
         setOpaque(true);
 
         // Panel for variable creation (horizontal layout)
         JPanel inputPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         inputPanel.setPreferredSize(new Dimension(0, 100));
         variableNameField = new JTextField(10);
+        variableNameField.setBackground(Settings.getInstance().baseColor);
+        variableNameField.setForeground(Settings.getInstance().textColor);
         String[] types = {"boolean", "int", "float", "String"};
         typeSelector = new JComboBox<>(types);
         addButton = new JButton("Add Variable");

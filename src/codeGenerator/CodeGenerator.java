@@ -101,7 +101,7 @@ public class CodeGenerator {
             return String.format(chainCode, blocksCode.toArray());
         }
 
-        if (nextBlocks.isEmpty() || nextBlocks.getFirst() == null)
+        if (nextBlocks.isEmpty() || nextBlocks.get(0) == null)
             return chainCode;
 
         return processBlockChain(nextBlocks.get(0), chainCode);

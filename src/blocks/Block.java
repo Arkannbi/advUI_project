@@ -171,7 +171,7 @@ public class Block extends JPanel {
                 return "System.out.println(" + serializeStringValue(message) + ");\n";
             }
             case "Set Variable" -> {
-                String variableName = inputs.get(1).getDefaultValue();
+                String variableName = serializeFloatValue(inputs.get(1).getDefaultValue());
                 String variableValue = inputs.get(2).getDefaultValue();
                 return variableName + " = " + serializeFloatValue(variableValue) + ";";
             }

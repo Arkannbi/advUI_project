@@ -41,9 +41,13 @@ public final class VariableCreatorPanel extends JPanel {
         variableListModel = new DefaultListModel<>();
         variableJList = new JList<>(variableListModel);
 
+        // Enable drag from the variable list using the custom TransferHandler
+        variableJList.setTransferHandler(new VariableTransferHandler());
+        variableJList.setDragEnabled(true); 
+
         // Scroll Pane to store the list of variables
         JScrollPane scrollPane = new JScrollPane(variableJList);
-        scrollPane.setPreferredSize(new Dimension(0, 200)); // Ensure visible space
+        scrollPane.setPreferredSize(new Dimension(0, 200));
 
         // Internal list to store variables (name, type)
         variables = new ArrayList<>();

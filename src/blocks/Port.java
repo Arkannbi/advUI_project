@@ -27,6 +27,7 @@ public class Port extends JPanel {
 		
 		setLayout(new BorderLayout());
 		setOpaque(false);
+
 		
 		this.clickablePart = new JComponent() {
 			@Override

@@ -214,6 +214,13 @@ public final class Block extends JPanel {
                 outputs.get(0).setOutputValue(output);
                 return "";
             }
+            case "Random" -> {
+            	String min = inputs.get(0).getDefaultValue();
+            	String max = inputs.get(1).getDefaultValue();
+            	var output = "%(int) ((Math.random() * (" + serializeFloatValue(max) + " - " + serializeFloatValue(min) + ")) + " + serializeFloatValue(min) + ")";
+            	outputs.get(0).setOutputValue(output);
+            	return "";
+            }
 
             // EVENT
             case "On Start" -> {
@@ -258,13 +265,20 @@ public final class Block extends JPanel {
                        """;
             }
             case "Create Object" -> {
-                String x = inputs.get(1).getDefaultValue();
-                String y = inputs.get(2).getDefaultValue();
-                String width = inputs.get(3).getDefaultValue();
-                String height = inputs.get(4).getDefaultValue();
-                return "objects.add(new GameObject(" 
+            	String name = inputs.get(1).getDefaultValue();
+                String x = inputs.get(2).getDefaultValue();
+                String y = inputs.get(3).getDefaultValue();
+                String width = inputs.get(4).getDefaultValue();
+                String height = inputs.get(5).getDefaultValue();
+                return "GameObject " + name + " = new GameObject(" 
                     + x + ", " + y + ", " + width + ", " + height + ", "
-                    + "Color.black" + ", true));\n";
+                    + "Color.black" + ", true);\n objects.add(" + name + ");";
+            }
+            case "Set Object Variable" -> {
+            	String objectName = inputs.get(1).getDefaultValue();
+            	String varName = inputs.get(2).getDefaultValue();
+            	String value = inputs.get(3).getDefaultValue();
+            	return objectName + "." + varName + " = " + serializeFloatValue(value) + ";";
             }
             default -> {
                 return "System.out.println(\"hey from another block!\");";

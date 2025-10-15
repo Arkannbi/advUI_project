@@ -9,6 +9,7 @@ public class BlocksPanel extends JPanel {
     private final Block debugBlock;
     private final Block setVarBlock;
     private final Block newObjectBlock;
+    private final Block setObjectVarBlock;
 
     // Events
     private final Block onStartBlock;
@@ -25,6 +26,7 @@ public class BlocksPanel extends JPanel {
     private final Block multBlock;
     private final Block divBlock;
     private final Block convertBlock;
+    private final Block randomBlock;
 
     // Logic
     private final Block ifBlock;
@@ -84,7 +86,8 @@ public class BlocksPanel extends JPanel {
         // action
         debugBlock = new Block("Debug Block", BlockType.Action, List.of("In","content"), List.of("Out"));
         setVarBlock = new Block("Set Variable", BlockType.Action, List.of("In", "Name","Value"), List.of("Out"));
-        newObjectBlock = new Block("Create Object", BlockType.Action, List.of("In", "X", "Y", "Width", "Height"), List.of("Out"));
+        newObjectBlock = new Block("Create Object", BlockType.Action, List.of("In", "Name", "X", "Y", "Width", "Height"), List.of("Out"));
+        setObjectVarBlock = new Block("Set Object Variable", BlockType.Action, List.of("In", "Object", "Variable", "Value"), List.of("Out"));
 
         // intermediary
         addBlock = new Block("Add", BlockType.Intermediary, List.of("Value", "Value"), List.of("Out"));
@@ -92,6 +95,7 @@ public class BlocksPanel extends JPanel {
         multBlock = new Block("Multiply", BlockType.Intermediary, List.of("Value", "Value"), List.of("Out"));
         divBlock = new Block("Divide", BlockType.Intermediary, List.of("Value", "Value"), List.of("Out"));
         convertBlock = new Block("Convert", BlockType.Intermediary, List.of("Value", "Value"), List.of("Out"));
+        randomBlock = new Block("Random", BlockType.Intermediary, List.of("Min", "Max"), List.of("Out"));
 
         // logic
         ifBlock = new Block("If Block", BlockType.Logic, List.of("In", "Condition"), List.of("Then"));
@@ -115,7 +119,6 @@ public class BlocksPanel extends JPanel {
         scrollPane.setOpaque(false);
         
         scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
 
         add(scrollPane, BorderLayout.CENTER);
     }
@@ -139,11 +142,13 @@ public class BlocksPanel extends JPanel {
                     model.addElement(multBlock);
                     model.addElement(divBlock);
                     model.addElement(convertBlock);
+                    model.addElement(randomBlock);
                 }
                 case Action -> {
                     model.addElement(debugBlock);
                     model.addElement(setVarBlock);
                     model.addElement(newObjectBlock);
+                    model.addElement(setObjectVarBlock);
                 }
                 case Logic -> {
                     model.addElement(ifBlock);
@@ -175,10 +180,12 @@ public class BlocksPanel extends JPanel {
             model.addElement(multBlock);
             model.addElement(divBlock);
             model.addElement(convertBlock);
+            model.addElement(randomBlock);
             // Actions
             model.addElement(debugBlock);
             model.addElement(setVarBlock);
             model.addElement(newObjectBlock);
+            model.addElement(setObjectVarBlock);
             // Logic
             model.addElement(ifBlock);
             model.addElement(ifElseBlock);

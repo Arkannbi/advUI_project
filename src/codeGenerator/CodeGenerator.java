@@ -12,9 +12,11 @@ public class CodeGenerator {
     private final CodeTemplate codeTemplate = new CodeTemplate();
     private final CodeExecutor executor = new CodeExecutor();
     private List<Map<String, String>> variables;
+    private final CodeSerializer serializer;
 
     public CodeGenerator(MainFrame mainFrame) {
         this.mainFrame = mainFrame;
+        serializer = new CodeSerializer();
     }
 
     public void setVariables(List<Map<String, String>> variables) {
@@ -33,8 +35,6 @@ public class CodeGenerator {
             mainFrame.showLog("Failed to write source file.");
             return;
         }
-        CodeSerializer serializer= new CodeSerializer();
-        serializer.serializeToXML("./bite.xlm", variables, mainFrame);
 
         if (!executor.compile(dirPath, className)) {
             mainFrame.showLog("Compilation failed. Check generated code.");
@@ -90,6 +90,7 @@ public class CodeGenerator {
 
     /** Recursive traversal through connected logic blocks */
     private String processBlockChain(Block currentBlock, String chainCode) {
+        if (currentBlock == null) return "";
         chainCode = backpropagateInputs(currentBlock, chainCode);
 
         chainCode += "\n" + currentBlock.getCode();
@@ -111,6 +112,7 @@ public class CodeGenerator {
 
     /** Recursively add input-connected blocks before the current one */
     private String backpropagateInputs(Block currentBlock, String chainCode) {
+        if (currentBlock == null) return "";
         for (var port : currentBlock.getInputs()) {
             if (!port.isActivationPort && port.isConnected()) {
                 var prev = port.getConnectedBlock();
@@ -129,5 +131,13 @@ public class CodeGenerator {
             case "On Start" -> 2;
             default -> -1;
         };
+    }
+
+    public void saveProject(String filepath) {
+        serializer.serializeToXML("./serializedCode.xml", variables, mainFrame);
+    }
+
+    public void loadProject(String filepath) {
+        serializer.loadFromXML("./serializedCode.xml", mainFrame.getCanvas());
     }
 }

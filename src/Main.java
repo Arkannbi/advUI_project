@@ -16,7 +16,7 @@ public class Main {
 
             
             CodeSerializer serializer= new CodeSerializer();
-            serializer.loadFromXML("./bite.xlm", frame.getCanvas());
+            serializer.loadFromXML("./serializedCode.xml", frame.getCanvas());
 
             frame.setVisible(true);
         });

@@ -165,10 +165,7 @@ public class Canvas extends JLayeredPane {
                 		p.disconnect();
                 	}
                     if (tempFrom != null && (p.isActivationPort == tempFrom.isActivationPort)) {
-                        connections.add(new Connection(tempFrom, p));
-						System.err.println("CONECTION");
-                        tempFrom.connect(p);
-                        p.connect(tempFrom);
+						connectPort(tempFrom, p);
                         tempFrom = null;
                     }
                     repaint();
@@ -345,4 +342,10 @@ public class Canvas extends JLayeredPane {
     public List<Block> getBlocks() {
         return blocks;
     }
+
+	public void connectPort(Port from, Port to) {
+		connections.add(new Connection(from, to));
+		from.connect(to);
+		to.connect(from);
+	}
 }

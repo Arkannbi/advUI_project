@@ -33,6 +33,8 @@ public class CodeGenerator {
             mainFrame.showLog("Failed to write source file.");
             return;
         }
+        CodeSerializer serializer= new CodeSerializer();
+        serializer.serializeToXML("./bite.xlm", variables, mainFrame);
 
         if (!executor.compile(dirPath, className)) {
             mainFrame.showLog("Compilation failed. Check generated code.");
@@ -67,7 +69,7 @@ public class CodeGenerator {
             }
 
             String fullChain = String.format(eventCode, chainCode);
-            addCodeToFragment(fullChain, fragmentIndex);
+            eventCodeFragments.set(fragmentIndex, eventCodeFragments.get(fragmentIndex) + fullChain + "\n");
         }
 
         return codeTemplate.build(variablesCode, eventCodeFragments);
@@ -127,10 +129,5 @@ public class CodeGenerator {
             case "On Start" -> 2;
             default -> -1;
         };
-    }
-
-    private void addCodeToFragment(String code, int index) {
-        String indented = code.replaceAll("(?m)^", "        ");
-        eventCodeFragments.set(index, eventCodeFragments.get(index) + indented + "\n");
     }
 }

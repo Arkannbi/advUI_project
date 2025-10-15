@@ -1,4 +1,5 @@
 import codeGenerator.CodeGenerator;
+import codeGenerator.CodeSerializer;
 import javax.swing.*;
 import ui.MainFrame;
 
@@ -12,6 +13,10 @@ public class Main {
             CodeGenerator codeGenerator = new CodeGenerator(frame);
 
             frame.setCodeGenerator(codeGenerator);
+
+            
+            CodeSerializer serializer= new CodeSerializer();
+            serializer.loadFromXML("./bite.xlm", frame.getCanvas());
 
             frame.setVisible(true);
         });

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Program>
+    <Variables>
+        <Variable name="deltaTime" type="float" value="0.0f"/>
+        <Variable name="playerX" type="int" value="200"/>
+        <Variable name="playerY" type="int" value="200"/>
+        <Variable name="playerWidth" type="int" value="50"/>
+        <Variable name="playerHeight" type="int" value="50"/>
+    </Variables>
+    <Blocks>
+        <Block id="922829817" name="On Start" type="Event" x="120" y="110">
+            <Inputs/>
+            <Outputs>
+                <Output connectedTo="932841031" id="1016529587" name="Start"/>
+            </Outputs>
+        </Block>
+        <Block id="859252402" name="Debug Block" type="Action" x="295" y="206">
+            <Inputs>
+                <Input connectedTo="1016529587" id="932841031" name="In"/>
+                <Input connectedTo="239627956" id="172088855" name="content"/>
+            </Inputs>
+            <Outputs>
+                <Output connectedTo="798383956" id="172914516" name="Out"/>
+            </Outputs>
+        </Block>
+        <Block id="35869283" name="Add" type="Intermediary" x="126" y="328">
+            <Inputs>
+                <Input id="1660985986" name="Value" value="25"/>
+                <Input id="1749646003" name="Value" value="25"/>
+            </Inputs>
+            <Outputs>
+                <Output connectedTo="172088855" id="239627956" name="Out"/>
+            </Outputs>
+        </Block>
+        <Block id="1389973132" name="Set Variable" type="Action" x="472" y="100">
+            <Inputs>
+                <Input connectedTo="172914516" id="798383956" name="In"/>
+                <Input id="1025681369" name="Name" value="%playerX"/>
+                <Input id="2048806740" name="Value" value="10"/>
+            </Inputs>
+            <Outputs>
+                <Output id="1178883542" name="Out"/>
+            </Outputs>
+        </Block>
+    </Blocks>
+</Program>

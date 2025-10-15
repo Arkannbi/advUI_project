@@ -46,4 +46,8 @@ public class MainFrame extends JFrame {
     public List<Block> getCanvasBlocks() {
         return canvas.getBlocks();
     }
+
+    public Canvas getCanvas() {
+        return canvas;
+    }
 }

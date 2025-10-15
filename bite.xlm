@@ -8,38 +8,58 @@
         <Variable name="playerHeight" type="int" value="50"/>
     </Variables>
     <Blocks>
-        <Block id="922829817" name="On Start" type="Event" x="120" y="110">
+        <Block id="687791372" name="Create Object" type="Action" x="362" y="-11">
+            <Inputs>
+                <Input connectedTo="1752278268" id="219430821" name="In"/>
+                <Input id="1329114419" name="Name" value="john"/>
+                <Input id="2048625266" name="X" value="40"/>
+                <Input id="668096654" name="Y" value="40"/>
+                <Input id="668717888" name="Width" value="20"/>
+                <Input id="363012694" name="Height" value="20"/>
+            </Inputs>
+            <Outputs>
+                <Output id="646822482" name="Out"/>
+            </Outputs>
+        </Block>
+        <Block id="128401508" name="On Start" type="Event" x="106" y="-32">
             <Inputs/>
             <Outputs>
-                <Output connectedTo="932841031" id="1016529587" name="Start"/>
+                <Output connectedTo="219430821" id="1752278268" name="Start"/>
             </Outputs>
         </Block>
-        <Block id="859252402" name="Debug Block" type="Action" x="295" y="206">
+        <Block id="1095106190" name="Set Object Variable" type="Action" x="413" y="215">
             <Inputs>
-                <Input connectedTo="1016529587" id="932841031" name="In"/>
-                <Input connectedTo="239627956" id="172088855" name="content"/>
+                <Input connectedTo="1878737872" id="180899889" name="In"/>
+                <Input id="1105256728" name="Object" value="john"/>
+                <Input id="582662180" name="Variable" value="X"/>
+                <Input connectedTo="1653991558" id="687966430" name="Value"/>
             </Inputs>
             <Outputs>
-                <Output connectedTo="798383956" id="172914516" name="Out"/>
+                <Output id="714372413" name="Out"/>
             </Outputs>
         </Block>
-        <Block id="35869283" name="Add" type="Intermediary" x="126" y="328">
+        <Block id="1104161829" name="Get Object Variable" type="Intermediary" x="9" y="312">
             <Inputs>
-                <Input id="1660985986" name="Value" value="25"/>
-                <Input id="1749646003" name="Value" value="25"/>
+                <Input id="465429655" name="Object" value="john"/>
+                <Input id="1396055277" name="Variable" value="X"/>
             </Inputs>
             <Outputs>
-                <Output connectedTo="172088855" id="239627956" name="Out"/>
+                <Output connectedTo="975600162" id="532960892" name="Out"/>
             </Outputs>
         </Block>
-        <Block id="1389973132" name="Set Variable" type="Action" x="472" y="100">
+        <Block id="530096046" name="Add" type="Intermediary" x="237" y="349">
             <Inputs>
-                <Input connectedTo="172914516" id="798383956" name="In"/>
-                <Input id="1025681369" name="Name" value="%playerX"/>
-                <Input id="2048806740" name="Value" value="10"/>
+                <Input connectedTo="532960892" id="975600162" name="Value"/>
+                <Input id="707428351" name="Value" value="10"/>
             </Inputs>
             <Outputs>
-                <Output id="1178883542" name="Out"/>
+                <Output connectedTo="687966430" id="1653991558" name="Out"/>
+            </Outputs>
+        </Block>
+        <Block id="578898009" name="On KeyPressed (Right)" type="Event" x="89" y="170">
+            <Inputs/>
+            <Outputs>
+                <Output connectedTo="180899889" id="1878737872" name="Right"/>
             </Outputs>
         </Block>
     </Blocks>

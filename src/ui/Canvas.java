@@ -10,6 +10,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.RenderingHints;
 import java.awt.event.*;
 import java.awt.geom.CubicCurve2D;
 import java.util.*;
@@ -289,18 +290,19 @@ public class Canvas extends JLayeredPane {
         
         g2.setColor(Settings.getInstance().textColor);
         g2.setStroke(new BasicStroke(3));
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
         if (hasBlockUp) {
-            drawTriangle(g2, width / 2, 20, 20, 10, "Up");
+            drawArrow(g2, width / 2, 20, 20, 10, "Up");
         }
         if (hasBlockDown) {
-            drawTriangle(g2, width / 2, height - 20, 20, 10, "Down");
+            drawArrow(g2, width / 2, height - 20, 20, 10, "Down");
         }
         if (hasBlockLeft) {
-            drawTriangle(g2, 20, height / 2, 20, 10, "Left");
+            drawArrow(g2, 20, height / 2, 20, 10, "Left");
         }
         if (hasBlockRight) {
-            drawTriangle(g2, width - 20, height / 2, 20, 10, "Right");
+            drawArrow(g2, width - 20, height / 2, 20, 10, "Right");
         }
     }
 
@@ -316,26 +318,22 @@ public class Canvas extends JLayeredPane {
         g2.draw(curve);
     }
     
-    private void drawTriangle(Graphics2D g2, int xTip, int yTip, int baseWidth, int height, String direction) {
+    private void drawArrow(Graphics2D g2, int xTip, int yTip, int baseWidth, int height, String direction) {
     	if ("Up".equals(direction)) {
     		g2.drawLine(xTip, yTip, xTip - baseWidth / 2, yTip + height);
-    		g2.drawLine(xTip - baseWidth / 2, yTip + height, xTip + baseWidth / 2, yTip + height);
-    		g2.drawLine(xTip + baseWidth / 2, yTip + height, xTip, yTip);
+    		g2.drawLine(xTip, yTip, xTip + baseWidth / 2, yTip + height);
     	}
     	if ("Down".equals(direction)) {
     		g2.drawLine(xTip, yTip, xTip + baseWidth / 2, yTip - height);
-    		g2.drawLine(xTip + baseWidth / 2, yTip - height, xTip - baseWidth / 2, yTip - height);
-    		g2.drawLine(xTip - baseWidth / 2, yTip - height, xTip, yTip);
+    		g2.drawLine(xTip, yTip, xTip - baseWidth / 2, yTip - height);
     	}
     	if ("Left".equals(direction)) {
     		g2.drawLine(xTip, yTip, xTip + height, yTip - baseWidth / 2);
-    		g2.drawLine(xTip + height, yTip - baseWidth / 2, xTip + height, yTip + baseWidth / 2);
-    		g2.drawLine(xTip + height, yTip + baseWidth / 2, xTip, yTip);
+    		g2.drawLine(xTip, yTip, xTip + height, yTip + baseWidth / 2);
     	}
     	if ("Right".equals(direction)) {
     		g2.drawLine(xTip, yTip, xTip - height, yTip - baseWidth / 2);
-    		g2.drawLine(xTip - height, yTip - baseWidth / 2, xTip - height, yTip + baseWidth / 2);
-    		g2.drawLine(xTip - height, yTip + baseWidth / 2, xTip, yTip);
+    		g2.drawLine(xTip, yTip, xTip - height, yTip + baseWidth / 2);
     	}
     }
 

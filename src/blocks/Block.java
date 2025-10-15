@@ -265,20 +265,27 @@ public final class Block extends JPanel {
                        """;
             }
             case "Create Object" -> {
-            	String name = inputs.get(1).getDefaultValue();
+            	String name = inputs.get(1).getDefaultValue().toLowerCase();
                 String x = inputs.get(2).getDefaultValue();
                 String y = inputs.get(3).getDefaultValue();
                 String width = inputs.get(4).getDefaultValue();
                 String height = inputs.get(5).getDefaultValue();
-                return "GameObject " + name + " = new GameObject(" 
+                return "objects.put(\"" + name + "\", new GameObject(" 
                     + x + ", " + y + ", " + width + ", " + height + ", "
-                    + "Color.black" + ", true);\n objects.add(" + name + ");";
+                    + "Color.black" + ", true));\n";
             }
             case "Set Object Variable" -> {
-            	String objectName = inputs.get(1).getDefaultValue();
-            	String varName = inputs.get(2).getDefaultValue();
+            	String objectName = inputs.get(1).getDefaultValue().toLowerCase();
+            	String varName = inputs.get(2).getDefaultValue().toLowerCase();
             	String value = inputs.get(3).getDefaultValue();
-            	return objectName + "." + varName + " = " + serializeFloatValue(value) + ";";
+            	return "objects.get(\"" + objectName + "\")." + varName + " = " + serializeFloatValue(value) + ";";
+            }
+            case "Get Object Variable" -> {
+            	String objectName = inputs.get(0).getDefaultValue().toLowerCase();
+            	String varName = inputs.get(1).getDefaultValue().toLowerCase();
+            	var output = "objects.get(\"" + objectName + "\")." + varName;
+            	outputs.get(0).setOutputValue(output);
+            	return "";
             }
             default -> {
                 return "System.out.println(\"hey from another block!\");";

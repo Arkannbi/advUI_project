@@ -10,6 +10,7 @@ public class BlocksPanel extends JPanel {
     private final Block setVarBlock;
     private final Block newObjectBlock;
     private final Block setObjectVarBlock;
+    private final Block getObjectVarBlock;
 
     // Events
     private final Block onStartBlock;
@@ -88,7 +89,7 @@ public class BlocksPanel extends JPanel {
         setVarBlock = new Block("Set Variable", BlockType.Action, List.of("In", "Name","Value"), List.of("Out"));
         newObjectBlock = new Block("Create Object", BlockType.Action, List.of("In", "Name", "X", "Y", "Width", "Height"), List.of("Out"));
         setObjectVarBlock = new Block("Set Object Variable", BlockType.Action, List.of("In", "Object", "Variable", "Value"), List.of("Out"));
-
+        
         // intermediary
         addBlock = new Block("Add", BlockType.Intermediary, List.of("Value", "Value"), List.of("Out"));
         subBlock = new Block("Substract", BlockType.Intermediary, List.of("Value", "Value"), List.of("Out"));
@@ -96,6 +97,7 @@ public class BlocksPanel extends JPanel {
         divBlock = new Block("Divide", BlockType.Intermediary, List.of("Value", "Value"), List.of("Out"));
         convertBlock = new Block("Convert", BlockType.Intermediary, List.of("Value", "Value"), List.of("Out"));
         randomBlock = new Block("Random", BlockType.Intermediary, List.of("Min", "Max"), List.of("Out"));
+        getObjectVarBlock = new Block("Get Object Variable", BlockType.Intermediary, List.of("Object", "Variable"), List.of("Out"));
 
         // logic
         ifBlock = new Block("If Block", BlockType.Logic, List.of("In", "Condition"), List.of("Then"));
@@ -143,6 +145,7 @@ public class BlocksPanel extends JPanel {
                     model.addElement(divBlock);
                     model.addElement(convertBlock);
                     model.addElement(randomBlock);
+                    model.addElement(getObjectVarBlock);
                 }
                 case Action -> {
                     model.addElement(debugBlock);
@@ -181,6 +184,7 @@ public class BlocksPanel extends JPanel {
             model.addElement(divBlock);
             model.addElement(convertBlock);
             model.addElement(randomBlock);
+            model.addElement(getObjectVarBlock);
             // Actions
             model.addElement(debugBlock);
             model.addElement(setVarBlock);

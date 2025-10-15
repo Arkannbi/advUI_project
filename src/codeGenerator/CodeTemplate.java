@@ -20,12 +20,14 @@ public class CodeTemplate {
         	import java.util.List;
         	import java.util.HashSet;
     		import java.util.Set;
+    		import java.util.HashMap;
+    		import java.util.Map;
             
             import javax.swing.*;
 
             public class GameRunner extends JPanel implements Runnable {
                 private Thread gameThread;
-                private List<GameObject> objects = new ArrayList<>();
+                private Map<String, GameObject> objects = new HashMap<>();
                 private Set<Integer> keysPressed = new HashSet<>();
 
                 // Variables
@@ -79,7 +81,7 @@ public class CodeTemplate {
                 protected void paintComponent(Graphics g) {
                     super.paintComponent(g);
                     
-                    for (GameObject obj : objects) {
+                    for (GameObject obj : objects.values()) {
 				        g.setColor(obj.color);
 				        g.fillRect(obj.x, obj.y, obj.width, obj.height);
 				    }

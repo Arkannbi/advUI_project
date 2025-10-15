@@ -6,6 +6,12 @@ public class Settings {
     public Color secondaryColor = Color.GRAY;
     public Color tertiaryColor = Color.BLACK;
     
+    public Color portColorInput = Color.BLUE;
+    public Color portColorOutput = Color.RED;
+
+    public Color portColorInActivation = Color.CYAN;
+    public Color portColorOutActivation = Color.MAGENTA;
+
     public Color textColor = Color.WHITE;
 
 

@@ -4,11 +4,11 @@ import java.awt.*;
 import javax.swing.*;
 import settings.Settings;
 
-public class RunCodeButtonPanel extends JPanel {
+public class HeaderPanel extends JPanel {
 
     private final JButton runCodeButton;
 
-    public RunCodeButtonPanel() {
+    public HeaderPanel() {
         setLayout(new BorderLayout());
         setPreferredSize(new Dimension(800, 50));
 

@@ -35,9 +35,9 @@ public class Port extends JPanel {
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
 				if (isActivationPort)
-                	g.setColor(isInput ? Color.CYAN : Color.MAGENTA);
+                	g.setColor(isInput ? Settings.getInstance().portColorInActivation : Settings.getInstance().portColorOutActivation);
 				else
-                	g.setColor(isInput ? Color.BLUE : Color.RED);
+                	g.setColor(isInput ? Settings.getInstance().portColorInput : Settings.getInstance().portColorOutput);
                 if (!isConnected) {
                 	g.fillOval(2, 2, getWidth() - 4, getHeight() - 4);
                 }

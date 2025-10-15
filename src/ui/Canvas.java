@@ -162,8 +162,9 @@ public class Canvas extends JLayeredPane {
                 		connections.removeAll(toRemove);
                 		p.disconnect();
                 	}
-                    if (tempFrom != null) {
+                    if (tempFrom != null && (p.isActivationPort == tempFrom.isActivationPort)) {
                         connections.add(new Connection(tempFrom, p));
+						System.err.println("CONECTION");
                         tempFrom.connect(p);
                         p.connect(tempFrom);
                         tempFrom = null;

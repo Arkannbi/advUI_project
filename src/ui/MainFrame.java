@@ -9,7 +9,7 @@ public class MainFrame extends JFrame {
 
     private final SideBarPanel sidebarPanel;
     private final Canvas canvas;
-    private final RunCodeButtonPanel buttonPanel;
+    private final HeaderPanel headerPanel;
     private final ConsolePanel consolePanel;
 
     public MainFrame() {
@@ -21,7 +21,7 @@ public class MainFrame extends JFrame {
 
         this.sidebarPanel = new SideBarPanel();
         this.canvas = new Canvas();
-        this.buttonPanel = new RunCodeButtonPanel();
+        this.headerPanel = new HeaderPanel();
         this.consolePanel = new ConsolePanel();
 
         // Create a center container with its own BorderLayout
@@ -31,11 +31,11 @@ public class MainFrame extends JFrame {
 
         add(sidebarPanel, BorderLayout.WEST);
         add(centerPanel, BorderLayout.CENTER);
-        add(buttonPanel, BorderLayout.NORTH);
+        add(headerPanel, BorderLayout.NORTH);
     }
 
     public void setCodeGenerator(CodeGenerator codeGenerator) {
-        buttonPanel.setCodeGenerator(codeGenerator);
+        headerPanel.setCodeGenerator(codeGenerator);
         sidebarPanel.setCodeGenerator(codeGenerator);
     }
 

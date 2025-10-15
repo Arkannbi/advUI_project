@@ -91,6 +91,7 @@ public class Port extends JPanel {
 		if (isInput) {
 			this.removeAll();
 	        JLabel title = new JLabel(name);
+	        title.setForeground(Settings.getInstance().textColor);
 			this.add(clickablePart, BorderLayout.WEST);
 			this.add(title, BorderLayout.CENTER);
 			revalidate();
@@ -105,6 +106,7 @@ public class Port extends JPanel {
 			this.removeAll();
 	        JLabel title = new JLabel(name);
 	        title.setBorder(BorderFactory.createEmptyBorder(0,0,0,3));
+	        title.setForeground(Settings.getInstance().textColor);
 			this.add(clickablePart, BorderLayout.WEST);
 			this.add(title, BorderLayout.CENTER);
 			if (!isActivationPort) this.add(defaultField, BorderLayout.EAST);

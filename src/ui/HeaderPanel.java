@@ -13,7 +13,7 @@ public class HeaderPanel extends JPanel {
         setPreferredSize(new Dimension(800, 50));
 
         runCodeButton = new JButton("Run Code");
-        runCodeButton.setBackground(Settings.getInstance().tertiaryColor);
+        runCodeButton.setBackground(Settings.getInstance().buttonColor);
         runCodeButton.setForeground(Settings.getInstance().textColor);
         add(runCodeButton, BorderLayout.CENTER);
     }

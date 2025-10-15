@@ -12,7 +12,7 @@ public class SideBarPanel extends JPanel {
     VariableCreatorPanel variablesPanel;
 
     public SideBarPanel() {
-        setPreferredSize(new Dimension(200, 600));
+        setPreferredSize(new Dimension(210, 600));
         setBackground(Settings.getInstance().secondaryColor);
         setOpaque(true);
         setLayout(new BorderLayout());

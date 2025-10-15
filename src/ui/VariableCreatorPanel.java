@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Map;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
+import javax.swing.plaf.basic.BasicComboBoxUI;
+
 import settings.Settings;
 
 public final class VariableCreatorPanel extends JPanel {
@@ -43,7 +45,21 @@ public final class VariableCreatorPanel extends JPanel {
         variableNameField.setForeground(Settings.getInstance().textColor);
         String[] types = {"boolean", "int", "float", "String"};
         typeSelector = new JComboBox<>(types);
+        typeSelector.setUI(new BasicComboBoxUI() {
+            @Override
+            protected JButton createArrowButton() {
+                JButton arrowButton = super.createArrowButton();
+                arrowButton.setBorder(BorderFactory.createEmptyBorder());
+                arrowButton.setBackground(Settings.getInstance().buttonColor);
+                arrowButton.setForeground(Settings.getInstance().textColor);
+                return arrowButton;
+            }
+        });
+        typeSelector.setBackground(Settings.getInstance().buttonColor);
+        typeSelector.setForeground(Settings.getInstance().textColor);
         addButton = new JButton("Add Variable");
+        addButton.setBackground(Settings.getInstance().buttonColor);
+        addButton.setForeground(Settings.getInstance().textColor);
 
         // Inputs
         inputPanel.add(variableNameField);

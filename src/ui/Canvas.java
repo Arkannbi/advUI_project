@@ -59,6 +59,7 @@ public class Canvas extends JLayeredPane {
 		addMouseListener(new MouseAdapter() {
 			@Override
             public void mousePressed(MouseEvent e) {
+				requestFocusInWindow();
             	tempFrom = null;
             	currentSelectedBlock = null;
             	mousePos = e.getPoint();
@@ -69,7 +70,6 @@ public class Canvas extends JLayeredPane {
 		addMouseMotionListener(new MouseMotionAdapter() {
 			@Override
 			public void mouseMoved(MouseEvent e) {
-				requestFocusInWindow();
 				mousePos = e.getPoint();
 				if (tempFrom != null) {
 					repaint();
@@ -125,6 +125,7 @@ public class Canvas extends JLayeredPane {
             MouseAdapter adapter = new MouseAdapter() {
                 @Override
                 public void mousePressed(MouseEvent e) {
+                	requestFocusInWindow();
                 	if (!p.isConnected()) {
                         tempFrom = p;
                 	}
@@ -147,6 +148,7 @@ public class Canvas extends JLayeredPane {
         }
         
         for (Port p : b.getInputs()) {
+        	requestFocusInWindow();
             MouseAdapter adapter = new MouseAdapter() {
                 @Override
                 public void mousePressed(MouseEvent e) {
@@ -178,6 +180,7 @@ public class Canvas extends JLayeredPane {
         b.addMouseListener(new MouseAdapter() {
         	@Override
         	public void mousePressed(MouseEvent e) {
+        		requestFocusInWindow();
         		mousePos = e.getPoint();
         		tempFrom = null;
         		currentSelectedBlock = b;

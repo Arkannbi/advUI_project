@@ -13,6 +13,8 @@ public class Settings {
     public Color portColorOutActivation = Color.MAGENTA;
 
     public Color textColor = Color.WHITE;
+    
+    public Color buttonColor = new Color(30,30,80);
 
 
     private static final Settings instance = new Settings();

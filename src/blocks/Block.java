@@ -264,6 +264,25 @@ public final class Block extends JPanel {
                             }
                        """;
             }
+            case "Collision" -> {
+                String obj1 = inputs.get(0).getDefaultValue().toLowerCase();
+            	String obj2 = inputs.get(1).getDefaultValue().toLowerCase();
+                var output = "(" +
+                    "objects.get(\"" + obj1 + "\").x < objects.get(\"" + obj2 + "\").x + objects.get(\"" + obj2 + "\").width" +
+                    " && objects.get(\"" + obj1 + "\").x + objects.get(\"" + obj1 + "\").width > objects.get(\"" + obj2 + "\").x" +
+                    " && objects.get(\"" + obj1 + "\").y < objects.get(\"" + obj2 + "\").y + objects.get(\"" + obj2 + "\").height" +
+                    " && objects.get(\"" + obj1 + "\").y + objects.get(\"" + obj1 + "\").height > objects.get(\"" + obj2 + "\").y" +
+                    ")";
+                outputs.get(0).setOutputValue(output);
+            	return "";
+            }
+            case "Get Object Variable" -> {
+            	String objectName = inputs.get(0).getDefaultValue().toLowerCase();
+            	String varName = inputs.get(1).getDefaultValue().toLowerCase();
+            	var output = "objects.get(\"" + objectName + "\")." + varName;
+            	outputs.get(0).setOutputValue(output);
+            	return "";
+            }
             case "Create Object" -> {
             	String name = inputs.get(1).getDefaultValue().toLowerCase();
                 String x = inputs.get(2).getDefaultValue();
@@ -279,13 +298,6 @@ public final class Block extends JPanel {
             	String varName = inputs.get(2).getDefaultValue().toLowerCase();
             	String value = inputs.get(3).getDefaultValue();
             	return "objects.get(\"" + objectName + "\")." + varName + " = " + serializeFloatValue(value) + ";";
-            }
-            case "Get Object Variable" -> {
-            	String objectName = inputs.get(0).getDefaultValue().toLowerCase();
-            	String varName = inputs.get(1).getDefaultValue().toLowerCase();
-            	var output = "objects.get(\"" + objectName + "\")." + varName;
-            	outputs.get(0).setOutputValue(output);
-            	return "";
             }
             default -> {
                 return "System.out.println(\"hey from another block!\");";

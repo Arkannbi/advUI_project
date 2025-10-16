@@ -25,23 +25,13 @@ public class CodeGenerator {
 
     /** Entry point — generates, compiles, and runs code */
     public void runCode() {
-        mainFrame.showLog("\n--- CODE GENERATION STARTED ---");
-
-        String generatedCode = generateCode();
         String dirPath = "./generated/";
         String className = "GameRunner";
 
-        if (!executor.writeFile(dirPath, className + ".java", generatedCode)) {
-            mainFrame.showLog("Failed to write source file.");
-            return;
-        }
+        saveProject("./autosave.xml");
 
-        if (!executor.compile(dirPath, className)) {
-            mainFrame.showLog("Compilation failed. Check generated code.");
-            return;
-        }
-
-        executor.runJavaClass(dirPath, className, mainFrame);
+        if (exportProject(dirPath, className));
+            executor.runJavaClass(dirPath, className, mainFrame);
     }
 
     /** Builds the full code from template, variables, and events */
@@ -134,10 +124,29 @@ public class CodeGenerator {
     }
 
     public void saveProject(String filepath) {
-        serializer.serializeToXML("./serializedCode.xml", variables, mainFrame);
+        serializer.serializeToXML(filepath, variables, mainFrame);
     }
 
     public void loadProject(String filepath) {
-        serializer.loadFromXML("./serializedCode.xml", mainFrame.getCanvas());
+        serializer.loadFromXML(filepath, mainFrame.getCanvas());
+    }
+
+    public boolean exportProject(String dirPath, String className) {
+        
+        mainFrame.showLog("\n--- CODE GENERATION STARTED ---");
+
+        String generatedCode = generateCode();
+
+        if (!executor.writeFile(dirPath, className + ".java", generatedCode)) {
+            mainFrame.showLog("Failed to write source file.");
+            return false;
+        }
+
+        if (!executor.compile(dirPath, className)) {
+            mainFrame.showLog("Compilation failed. Check generated code.");
+            return false;
+        }
+
+        return true;
     }
 }

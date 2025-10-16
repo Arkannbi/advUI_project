@@ -41,6 +41,7 @@ public class BlocksPanel extends JPanel {
     private final Block inferiorBlock;
     private final Block inferiorStrictBlock;
     private final Block equalsBlock;
+    private final Block collisionBlock;
 
     // Bloc lists
     private final DefaultListModel<Block> model;
@@ -111,6 +112,7 @@ public class BlocksPanel extends JPanel {
         inferiorBlock = new Block("Inferior to", BlockType.Condition, List.of("Value", "Value"), List.of("Out"));
         inferiorStrictBlock = new Block("Strictly Inferior to", BlockType.Condition, List.of("Value", "Value"), List.of("Out"));
         equalsBlock = new Block("Equals", BlockType.Condition, List.of("Value", "Value"), List.of("Out"));
+        collisionBlock = new Block("Collision", BlockType.Condition, List.of("Object", "Object"), List.of("Out"));
 
 
         // Add all blocks to the model
@@ -164,6 +166,7 @@ public class BlocksPanel extends JPanel {
                     model.addElement(equalsBlock);
                     model.addElement(inferiorBlock);
                     model.addElement(inferiorStrictBlock);
+                    model.addElement(collisionBlock);
                 }
                 default -> {
                 }
@@ -201,6 +204,7 @@ public class BlocksPanel extends JPanel {
             model.addElement(equalsBlock);
             model.addElement(inferiorBlock);
             model.addElement(inferiorStrictBlock);
+            model.addElement(collisionBlock);
        }
     }
 

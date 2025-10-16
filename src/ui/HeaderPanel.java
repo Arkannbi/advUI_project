@@ -66,7 +66,7 @@ public class HeaderPanel extends JPanel {
             JFileChooser chooser = new JFileChooser();
             chooser.setDialogTitle("Export Project");
             if (chooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
-                saveProject(chooser.getSelectedFile().getAbsolutePath());
+                exportProject(chooser.getSelectedFile().getAbsolutePath());
             }
         });
     }
@@ -80,6 +80,12 @@ public class HeaderPanel extends JPanel {
     private void loadProject(String filepath) {
         if (codeGenerator != null) {
             codeGenerator.loadProject(filepath);
+        }
+    }
+
+    private void exportProject(String dirPath) {
+        if (codeGenerator != null) {
+            codeGenerator.exportProject(dirPath, "GameRunner");
         }
     }
 }

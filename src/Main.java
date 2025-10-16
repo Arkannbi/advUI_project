@@ -16,7 +16,7 @@ public class Main {
 
             
             CodeSerializer serializer= new CodeSerializer();
-            serializer.loadFromXML("./serializedCode.xml", frame.getCanvas());
+            serializer.loadFromXML("./autosave.xml", frame.getCanvas());
 
             frame.setVisible(true);
         });

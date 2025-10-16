@@ -291,7 +291,7 @@ public final class Block extends JPanel {
                 String height = inputs.get(5).getDefaultValue();
                 return "objects.put(\"" + name + "\", new GameObject(" 
                     + x + ", " + y + ", " + width + ", " + height + ", "
-                    + "Color.black" + ", true));\n";
+                    + "Color.black));\n";
             }
             case "Set Object Variable" -> {
             	String objectName = inputs.get(1).getDefaultValue().toLowerCase();

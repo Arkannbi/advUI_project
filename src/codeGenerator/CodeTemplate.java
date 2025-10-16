@@ -35,6 +35,7 @@ public class CodeTemplate {
 
                 public GameRunner() {
                     setFocusable(true);
+                    objects.put("player", new GameObject(playerX, playerY, playerWidth, playerHeight, Color.blue));
                     addKeyListener(new KeyAdapter() {
                         @Override
                         public void keyPressed(KeyEvent e) {
@@ -85,9 +86,6 @@ public class CodeTemplate {
 				        g.setColor(obj.color);
 				        g.fillRect(obj.x, obj.y, obj.width, obj.height);
 				    }
-				    
-                    g.setColor(Color.BLUE);
-                    g.fillRect(playerX, playerY, playerWidth, playerHeight);
                 }
                 
                 private void startGame() {
@@ -118,15 +116,13 @@ public class CodeTemplate {
 				public int height;
 				
 				public Color color;
-				public boolean collides;
 				
-				 public GameObject(int x, int y, int width, int height, Color color, boolean collides) {
+				 public GameObject(int x, int y, int width, int height, Color color) {
 			        this.x = x;
 			        this.y = y;
 			        this.width = width;
 			        this.height = height;
 			        this.color = color;
-			        this.collides = collides;
 			    }
 				 
 				 public Rectangle getBounds() {

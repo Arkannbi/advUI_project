@@ -18,6 +18,7 @@ public class HeaderPanel extends JPanel {
         setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
         setPreferredSize(new Dimension(800, 50));
         setBackground(Settings.getInstance().baseColor);
+        setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Settings.getInstance().tertiaryColor));
         setOpaque(true);
 
         // Initialisation des boutons

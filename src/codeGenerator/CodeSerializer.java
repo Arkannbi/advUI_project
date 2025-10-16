@@ -171,12 +171,12 @@ public class CodeSerializer {
 
                 Block block = new Block(name, type, inputs, outputs);
 
-                // Ajout des valeurs par défaut
+                // Add default values
                 for (int j = 0; j < block.getInputs().size(); j++) {
                     Port p = block.getInputs().get(j);
                     p.setDefaultValue(inputDefaultValues.get(j));
 
-                    // Stocker le port par son ID XML (si disponible)
+                    // Stock the port by its XML id (if available)
                     Element input = (Element) inputNodes.item(j);
                     String portId = input.getAttribute("id");
                     if (portId != null && !portId.isEmpty()) {

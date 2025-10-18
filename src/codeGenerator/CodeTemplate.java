@@ -35,7 +35,7 @@ public class CodeTemplate {
 
                 public GameRunner() {
                     setFocusable(true);
-                    objects.put("player", new GameObject(playerX, playerY, playerWidth, playerHeight, Color.blue));
+                    objects.put("player", new GameObject(player_initial_x, player_initial_y, player_initial_width, player_initial_height, Color.blue));
                     addKeyListener(new KeyAdapter() {
                         @Override
                         public void keyPressed(KeyEvent e) {

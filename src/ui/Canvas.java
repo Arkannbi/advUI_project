@@ -236,6 +236,32 @@ public class Canvas extends JLayeredPane {
 		connections.remove(c);
 	}
 	
+	public void restart() {
+		// Technically only removing blocks should work but just to be sure
+		List<Connection> connectionsToRemove = new ArrayList<>();
+		List<Block> blocksToRemove = new ArrayList<>();
+		for (Connection c : connections) {
+			connectionsToRemove.add(c);
+		}
+		for (Block b : blocks) {
+			blocksToRemove.add(b);
+		}
+		connections.removeAll(connectionsToRemove);
+		blocks.removeAll(blocksToRemove);
+		tempFrom = null;
+		mousePos = null;
+		currentSelectedBlock = null;
+		copiedBlock = null;
+		
+		hasBlockLeft = false;
+		hasBlockRight = false;
+		hasBlockUp = false;
+		hasBlockDown = false;
+		
+		// To remove panels from the JLayeredPanel
+		removeAll();
+	}
+	
 	@Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);

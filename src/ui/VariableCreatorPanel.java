@@ -103,10 +103,10 @@ public final class VariableCreatorPanel extends JPanel {
         });
 
         addVariable("deltaTime", "float", "0.0f");
-        addVariable("playerX", "int", "200");
-        addVariable("playerY", "int", "200");
-        addVariable("playerWidth", "int", "50");
-        addVariable("playerHeight", "int", "50");
+        addVariable("player_initial_x", "int", "200");
+        addVariable("player_initial_y", "int", "200");
+        addVariable("player_initial_width", "int", "50");
+        addVariable("player_initial_height", "int", "50");
         // Add components to main panel
         add(inputPanel, BorderLayout.NORTH);
         add(scrollPane, BorderLayout.CENTER);

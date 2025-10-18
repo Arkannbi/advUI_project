@@ -121,7 +121,7 @@ public class CodeSerializer {
 
     public void loadFromXML(String filePath, Canvas canvas) {
         try {
-            canvas.removeAll();
+            canvas.restart();
             File xmlFile = new File(filePath);
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();

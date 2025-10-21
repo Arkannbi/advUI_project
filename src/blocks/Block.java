@@ -152,7 +152,7 @@ public final class Block extends JPanel {
                 outputs.get(0).setOutputValue(output);
                 return "";
             }
-            case "Stricly Inferior to" -> {
+            case "Strictly Inferior to" -> {
                 String number1 = inputs.get(0).getDefaultValue();
                 String number2 = inputs.get(1).getDefaultValue();
                 var output = "%" + serializeFloatValue(number1) + " < " + serializeFloatValue(number2);

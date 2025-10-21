@@ -260,6 +260,7 @@ public class Canvas extends JLayeredPane {
 		
 		// To remove panels from the JLayeredPanel
 		removeAll();
+		repaint();
 	}
 	
 	@Override

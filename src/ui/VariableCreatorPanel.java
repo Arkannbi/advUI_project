@@ -9,7 +9,6 @@ import java.util.Map;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import javax.swing.plaf.basic.BasicComboBoxUI;
-
 import settings.Settings;
 
 public final class VariableCreatorPanel extends JPanel {
@@ -103,10 +102,6 @@ public final class VariableCreatorPanel extends JPanel {
         });
 
         addVariable("deltaTime", "float", "0.0f");
-        addVariable("player_initial_x", "int", "200");
-        addVariable("player_initial_y", "int", "200");
-        addVariable("player_initial_width", "int", "50");
-        addVariable("player_initial_height", "int", "50");
         // Add components to main panel
         add(inputPanel, BorderLayout.NORTH);
         add(scrollPane, BorderLayout.CENTER);
@@ -118,7 +113,7 @@ public final class VariableCreatorPanel extends JPanel {
         return variables;
     }
 
-    // Setter for the list of variables (useful for loading existing variables)
+    // Setter for the list of variables
     public void setVariables(List<Map<String, String>> variables) {
         this.variables.clear();
         this.variables.addAll(variables);
@@ -129,13 +124,15 @@ public final class VariableCreatorPanel extends JPanel {
     private void updateVariableListModel() {
         variableListModel.clear();
         for (Map<String, String> var : variables) {
-            variableListModel.addElement(var.get("name") + " (" + var.get("type") + ")");
+            var varName = var.get("name");
+            var varType = var.get("type");
+            var varValue = var.get("value");
+            variableListModel.addElement(varType + " " + varName + " : " + varValue);
         }
     }
 
     public void setCodeGenerator(CodeGenerator codeGenerator) {
         this.codeGenerator = codeGenerator;
-        this.codeGenerator.setVariables(variables);
     }
 
     public void addVariable(String varName, String varType, String varValue) {
@@ -148,7 +145,6 @@ public final class VariableCreatorPanel extends JPanel {
             // Add a display string to the JList model
             variableListModel.addElement(varType + " " + varName + " : " + varValue);
             variableNameField.setText("");
-            if (this.codeGenerator != null) this.codeGenerator.setVariables(variables);
         }
     }
 }

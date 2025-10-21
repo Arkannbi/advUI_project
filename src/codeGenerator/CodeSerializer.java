@@ -19,10 +19,11 @@ import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.*;
 import ui.Canvas;
 import ui.MainFrame;
+import ui.VariableCreatorPanel;
 
 public class CodeSerializer {
 
-    public void serializeToXML(String filePath, List<Map<String, String>> variables, MainFrame mainFrame) {
+    public void serializeToXML(String filePath, VariableCreatorPanel variablesPanel, MainFrame mainFrame) {
         try {
             // Create XML document
             DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
@@ -37,6 +38,7 @@ public class CodeSerializer {
             Element varsElement = doc.createElement("Variables");
             root.appendChild(varsElement);
 
+            var variables = variablesPanel.getVariables();
             if (variables != null) {
                 for (Map<String, String> var : variables) {
                     Element varElem = doc.createElement("Variable");
@@ -119,7 +121,7 @@ public class CodeSerializer {
     }
 
 
-    public void loadFromXML(String filePath, Canvas canvas) {
+    public void loadFromXML(String filePath, VariableCreatorPanel variablesPanel, Canvas canvas) {
         try {
             canvas.restart();
             File xmlFile = new File(filePath);
@@ -128,15 +130,33 @@ public class CodeSerializer {
             Document doc = builder.parse(xmlFile);
             doc.getDocumentElement().normalize();
 
+            // Variables
+            List<Map<String,String>> variables = new ArrayList();
+
+
+            NodeList varNodes = doc.getElementsByTagName("Variable");
+            for (int i = 0; i < varNodes.getLength(); i++) {
+                Element varElem = (Element) varNodes.item(i);
+
+                Map<String, String> varMap = new HashMap<>();
+
+                varMap.put("name", varElem.getAttribute("name"));
+                varMap.put("type", varElem.getAttribute("type"));
+                varMap.put("value", varElem.getAttribute("value"));
+
+                variables.add(varMap);
+            }
+            variablesPanel.setVariables(variables);
+            System.err.println(variables);
+
             Map<String, Port> portMap = new HashMap<>();
 
             NodeList blockNodes = doc.getElementsByTagName("Block");
 
-            // Creation of blocks and ports
+            // Blocks
             for (int i = 0; i < blockNodes.getLength(); i++) {
                 Element blockElem = (Element) blockNodes.item(i);
 
-                String id = blockElem.getAttribute("id");
                 String name = blockElem.getAttribute("name");
                 String typeStr = blockElem.getAttribute("type");
                 int x = Integer.parseInt(blockElem.getAttribute("x"));
@@ -214,7 +234,6 @@ public class CodeSerializer {
                         Port toPort = portMap.get(toPortId);
 
                         if (fromPort != null && toPort != null) {
-                            System.out.println("From " + fromPort.getName() + " to " + toPort.getName());
                             canvas.connectPort(fromPort, toPort);
                         } else {
                             System.err.println("Cannot create connexion (" + fromPortId + " -> " + toPortId + ")");

@@ -11,10 +11,13 @@ public class HeaderPanel extends JPanel {
     private final JButton loadButton;
     private final JButton saveButton;
     private final JButton exportButton;
+    private final JButton clearButton;
+
+    private final Canvas canvas;
 
     private CodeGenerator codeGenerator;
 
-    public HeaderPanel() {
+    public HeaderPanel(Canvas canvas) {
         setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
         setPreferredSize(new Dimension(800, 50));
         setBackground(Settings.getInstance().baseColor);
@@ -26,10 +29,13 @@ public class HeaderPanel extends JPanel {
         loadButton = new JButton("Load");
         saveButton = new JButton("Save");
         exportButton = new JButton("Export");
+        clearButton = new JButton("Clear Code");
+
+        this.canvas = canvas;
 
         Color textColor = Settings.getInstance().textColor;
 
-        JButton[] buttons = { runCodeButton, loadButton, saveButton, exportButton };
+        JButton[] buttons = { runCodeButton, loadButton, saveButton, exportButton, clearButton };
         for (JButton button : buttons) {
             button.setBackground(Settings.getInstance().secondaryColor);
             button.setForeground(textColor);
@@ -41,10 +47,8 @@ public class HeaderPanel extends JPanel {
     public void setCodeGenerator(CodeGenerator codeGenerator) {
         this.codeGenerator = codeGenerator;
 
-        // Lancement du code
         runCodeButton.addActionListener(e -> codeGenerator.runCode());
 
-        // Sauvegarde du projet
         saveButton.addActionListener(e -> {
             JFileChooser chooser = new JFileChooser();
             chooser.setDialogTitle("Save Project");
@@ -53,7 +57,6 @@ public class HeaderPanel extends JPanel {
             }
         });
 
-        // Chargement d’un projet
         loadButton.addActionListener(e -> {
             JFileChooser chooser = new JFileChooser();
             chooser.setDialogTitle("Load Project");
@@ -62,13 +65,16 @@ public class HeaderPanel extends JPanel {
             }
         });
 
-        // Export du projet (même que save pour l’instant)
         exportButton.addActionListener(e -> {
             JFileChooser chooser = new JFileChooser();
             chooser.setDialogTitle("Export Project");
             if (chooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
                 exportProject(chooser.getSelectedFile().getAbsolutePath());
             }
+        });
+
+        clearButton.addActionListener(e -> {
+            canvas.restart();
         });
     }
 

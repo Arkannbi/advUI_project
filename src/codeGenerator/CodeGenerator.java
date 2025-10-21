@@ -4,26 +4,24 @@ import blocks.BlockType;
 import java.util.*;
 import javax.swing.JLabel;
 import ui.MainFrame;
+import ui.VariableCreatorPanel;
 
 public class CodeGenerator {
 
     private final MainFrame mainFrame;
+    private final VariableCreatorPanel variablesPanel;
     private final List<String> eventCodeFragments = new ArrayList<>(List.of("", "", ""));
     private final CodeTemplate codeTemplate = new CodeTemplate();
     private final CodeExecutor executor = new CodeExecutor();
-    private List<Map<String, String>> variables;
     private final CodeSerializer serializer;
 
     public CodeGenerator(MainFrame mainFrame) {
         this.mainFrame = mainFrame;
+        this.variablesPanel = mainFrame.getVariablePanel();
         serializer = new CodeSerializer();
     }
 
-    public void setVariables(List<Map<String, String>> variables) {
-        this.variables = variables;
-    }
-
-    /** Entry point — generates, compiles, and runs code */
+    // Entry point — generates, compiles, and runs code
     public void runCode() {
         String dirPath = "./generated/";
         String className = "GameRunner";
@@ -34,7 +32,7 @@ public class CodeGenerator {
             executor.runJavaClass(dirPath, className, mainFrame);
     }
 
-    /** Builds the full code from template, variables, and events */
+    // Builds the full code from template, variables, and events
     private String generateCode() {
         mainFrame.showLog("Generating code...");
 
@@ -65,8 +63,9 @@ public class CodeGenerator {
         return codeTemplate.build(variablesCode, eventCodeFragments);
     }
 
-    /** Converts variable maps to Java declarations */
+    // Converts variable maps to Java declarations
     private String generateVariableDeclarations() {
+        var variables = variablesPanel.getVariables();
         if (variables == null) return "";
         StringBuilder sb = new StringBuilder();
         for (var variable : variables) {
@@ -78,10 +77,11 @@ public class CodeGenerator {
         return sb.toString();
     }
 
-    /** Recursive traversal through connected logic blocks */
+    // Recursive traversal through connected logic blocks
     private String processBlockChain(Block currentBlock, String chainCode) {
         if (currentBlock == null) return "";
         chainCode = backpropagateInputs(currentBlock, chainCode);
+
 
         chainCode += "\n" + currentBlock.getCode();
         List<Block> nextBlocks = currentBlock.getNextBlocks();
@@ -124,11 +124,11 @@ public class CodeGenerator {
     }
 
     public void saveProject(String filepath) {
-        serializer.serializeToXML(filepath, variables, mainFrame);
+        serializer.serializeToXML(filepath, variablesPanel, mainFrame);
     }
 
     public void loadProject(String filepath) {
-        serializer.loadFromXML(filepath, mainFrame.getCanvas());
+        serializer.loadFromXML(filepath, variablesPanel, mainFrame.getCanvas());
     }
 
     public boolean exportProject(String dirPath, String className) {

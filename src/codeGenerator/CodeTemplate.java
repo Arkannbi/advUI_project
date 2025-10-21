@@ -35,7 +35,7 @@ public class CodeTemplate {
 
                 public GameRunner() {
                     setFocusable(true);
-                    objects.put("player", new GameObject(player_initial_x, player_initial_y, player_initial_width, player_initial_height, Color.blue));
+                    objects.put("player", new GameObject(200, 150, 30, 30, Color.blue));
                     addKeyListener(new KeyAdapter() {
                         @Override
                         public void keyPressed(KeyEvent e) {
@@ -84,7 +84,7 @@ public class CodeTemplate {
                     
                     for (GameObject obj : objects.values()) {
 				        g.setColor(obj.color);
-				        g.fillRect(obj.x, obj.y, obj.width, obj.height);
+				        g.fillRect((int)obj.x, (int)obj.y, (int)obj.width, (int)obj.height);
 				    }
                 }
                 
@@ -97,7 +97,7 @@ public class CodeTemplate {
                     System.out.println("Starting your game...");
                     JFrame frame = new JFrame("Platformer Game");
                     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                    frame.setSize(400, 300);
+                    frame.setSize(500, 400);
                     frame.setLocationRelativeTo(null);
 
                     GameRunner game = new GameRunner();
@@ -110,14 +110,14 @@ public class CodeTemplate {
             }
             
             class GameObject {
-				public int x;
-				public int y;
-				public int width;
-				public int height;
+				public float x;
+				public float y;
+				public float width;
+				public float height;
 				
 				public Color color;
 				
-				 public GameObject(int x, int y, int width, int height, Color color) {
+				 public GameObject(float x, float y, float width, float height, Color color) {
 			        this.x = x;
 			        this.y = y;
 			        this.width = width;
@@ -126,7 +126,7 @@ public class CodeTemplate {
 			    }
 				 
 				 public Rectangle getBounds() {
-			        return new Rectangle(x, y, width, height);
+			        return new Rectangle((int)x, (int)y, (int)width, (int)height);
 			    }
 			}
 

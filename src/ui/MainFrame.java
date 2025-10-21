@@ -3,6 +3,8 @@ import blocks.Block;
 import codeGenerator.CodeGenerator;
 import java.awt.*;
 import java.util.List;
+import java.util.Map;
+
 import javax.swing.*;
 
 public class MainFrame extends JFrame {
@@ -21,7 +23,7 @@ public class MainFrame extends JFrame {
 
         this.sidebarPanel = new SideBarPanel();
         this.canvas = new Canvas();
-        this.headerPanel = new HeaderPanel();
+        this.headerPanel = new HeaderPanel(canvas);
         this.consolePanel = new ConsolePanel();
 
         // Create a center container with its own BorderLayout
@@ -49,5 +51,10 @@ public class MainFrame extends JFrame {
 
     public Canvas getCanvas() {
         return canvas;
+    }
+
+    
+    public VariableCreatorPanel getVariablePanel() {
+        return sidebarPanel.getVariablePanel();
     }
 }

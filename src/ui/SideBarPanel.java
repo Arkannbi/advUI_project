@@ -3,6 +3,9 @@ package ui;
 import blocks.BlocksPanel;
 import codeGenerator.CodeGenerator;
 import java.awt.*;
+import java.util.Map;
+import java.util.List;
+
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicSplitPaneDivider;
 import javax.swing.plaf.basic.BasicSplitPaneUI;
@@ -43,5 +46,10 @@ public class SideBarPanel extends JPanel {
 
     public void setCodeGenerator(CodeGenerator codeGenerator) {
         variablesPanel.setCodeGenerator(codeGenerator);
+    }
+
+  
+    public VariableCreatorPanel getVariablePanel() {
+        return variablesPanel;
     }
 }
